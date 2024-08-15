@@ -417,12 +417,21 @@ searchBar.addEventListener('keydown', (e) => {
 function handleEscapeKey(e) {
     if (e.key === 'Escape') {
         const searchDialog = document.getElementById('searchDialog');
-        if (searchDialog.style.display === 'flex') {
+        const newDreamnodeDialog = document.getElementById('newDreamnodeDialog');
+        const metadataDialog = document.getElementById('metadataDialog');
+
+        if (searchDialog.style.display !== 'none') {
             searchDialog.style.display = 'none';
             const searchBar = document.getElementById('searchBar');
             searchBar.value = '';
             currentSearchTerm = '';
             displayDreamnodes(sortDreamnodes(allDreamnodes, currentSortMethod));
+        } else if (newDreamnodeDialog.style.display !== 'none') {
+            newDreamnodeDialog.style.display = 'none';
+        } else if (metadataDialog.style.display !== 'none') {
+            metadataDialog.style.display = 'none';
+        } else {
+            exitFullScreen();
         }
     }
 }
@@ -430,14 +439,14 @@ function handleEscapeKey(e) {
 document.addEventListener('keydown', (e) => {
     if (e.metaKey && e.key === 'o') {
         e.preventDefault();
-        searchDialog.style.display = 'block';
+        searchDialog.style.display = 'flex';
         searchBar.focus();
         searchBar.value = currentSearchTerm;
     } else if (e.metaKey && e.key === 'n') {
         e.preventDefault();
         newDreamnodeDialog.style.display = 'block';
         dreamnodeNameInput.focus();
-    } else {
+    } else if (e.key === 'Escape') {
         handleEscapeKey(e);
     }
 });
@@ -479,5 +488,3 @@ function updateActiveButton(activeMethod) {
 }
 
 logger.log('renderer.js loaded');
-// Add event listener for Escape key
-document.addEventListener('keydown', handleEscapeKey);
