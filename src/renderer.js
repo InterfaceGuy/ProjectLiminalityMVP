@@ -332,16 +332,11 @@ function generateDreamTalk(dreamnode) {
     return `DreamTalk for ${dreamnode}`;
 }
 
-function filterDreamnodes(searchTerm) {
-    return allDreamnodes.filter(dreamnode => 
+function filterAndSortDreamnodes(searchTerm, sortMethod) {
+    const filtered = allDreamnodes.filter(dreamnode => 
         dreamnode.name.toLowerCase().includes(searchTerm.toLowerCase())
-    ).sort((a, b) => {
-        const aStartsWith = a.name.toLowerCase().startsWith(searchTerm.toLowerCase());
-        const bStartsWith = b.name.toLowerCase().startsWith(searchTerm.toLowerCase());
-        if (aStartsWith && !bStartsWith) return -1;
-        if (!aStartsWith && bStartsWith) return 1;
-        return a.name.localeCompare(b.name);
-    });
+    );
+    return sortDreamnodes(filtered, sortMethod);
 }
 
 // New DreamNode dialog functionality
@@ -406,19 +401,19 @@ ipcRenderer.on('dreamnode-created', (event, success) => {
 
 searchBar.addEventListener('input', (e) => {
     currentSearchTerm = e.target.value;
-    displayDreamnodes(filterDreamnodes(currentSearchTerm));
+    displayDreamnodes(filterAndSortDreamnodes(currentSearchTerm, currentSortMethod));
 });
 
-searchBar.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
+function handleEscapeKey(e) {
+    if (e.key === 'Escape' && searchDialog.style.display === 'block') {
         searchDialog.style.display = 'none';
         searchBar.value = '';
         currentSearchTerm = '';
-        displayDreamnodes(allDreamnodes);
-    } else if (e.key === 'Enter') {
-        searchDialog.style.display = 'none';
+        displayDreamnodes(sortDreamnodes(allDreamnodes, currentSortMethod));
     }
-});
+}
+
+searchBar.addEventListener('keydown', handleEscapeKey);
 
 document.addEventListener('keydown', (e) => {
     if (e.metaKey && e.key === 'o') {
@@ -430,6 +425,8 @@ document.addEventListener('keydown', (e) => {
         e.preventDefault();
         newDreamnodeDialog.style.display = 'block';
         dreamnodeNameInput.focus();
+    } else {
+        handleEscapeKey(e);
     }
 });
 
@@ -449,7 +446,7 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', () => {
             logger.log(`Sort method changed to: ${method}`);
             currentSortMethod = method;
-            displayDreamnodes(sortDreamnodes(allDreamnodes, currentSortMethod));
+            displayDreamnodes(filterAndSortDreamnodes(currentSearchTerm, currentSortMethod));
             updateActiveButton(method);
         });
         sortButtons.appendChild(button);
