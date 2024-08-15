@@ -43,8 +43,30 @@
     </div>
     <div id="metadataDialog" class="dialog">
         <h2>Edit Metadata</h2>
-        <form id="metadataForm"></form>
-        <button id="updateMetadataBtn">Update</button>
+        <form id="metadataForm">
+            <label for="dateCreated">Date Created:</label>
+            <input type="datetime-local" id="dateCreated" name="dateCreated">
+            <button type="button" class="now-btn" data-for="dateCreated">Now</button>
+
+            <label for="dateModified">Date Modified:</label>
+            <input type="datetime-local" id="dateModified" name="dateModified">
+            <button type="button" class="now-btn" data-for="dateModified">Now</button>
+
+            <label for="interactions">Interactions:</label>
+            <input type="number" id="interactions" name="interactions" min="0">
+
+            <label>Type:</label>
+            <div class="radio-group">
+                <input type="radio" id="typeIdea" name="type" value="idea">
+                <label for="typeIdea">Idea</label>
+                <input type="radio" id="typePerson" name="type" value="person">
+                <label for="typePerson">Person</label>
+            </div>
+        </form>
+        <div class="dialog-buttons">
+            <button id="updateMetadataBtn">Update</button>
+            <button id="cancelMetadataBtn">Cancel</button>
+        </div>
     </div>
     <script src="renderer.js"></script>
 </body>

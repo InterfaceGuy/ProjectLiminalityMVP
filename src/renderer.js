@@ -266,31 +266,50 @@ function showMetadataDialog(dreamnode) {
     const metadataDialog = document.getElementById('metadataDialog');
     const metadataForm = document.getElementById('metadataForm');
     
-    metadataForm.innerHTML = '';
-    
-    for (const [key, value] of Object.entries(metadata)) {
-        const label = document.createElement('label');
-        label.textContent = key;
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.value = value;
-        input.name = key;
-        metadataForm.appendChild(label);
-        metadataForm.appendChild(input);
-    }
+    // Set values for each input
+    document.getElementById('dateCreated').value = metadata.dateCreated ? new Date(metadata.dateCreated).toISOString().slice(0, 16) : '';
+    document.getElementById('dateModified').value = metadata.dateModified ? new Date(metadata.dateModified).toISOString().slice(0, 16) : '';
+    document.getElementById('interactions').value = metadata.interactions || 0;
+    document.querySelector(`input[name="type"][value="${metadata.type || 'idea'}"]`).checked = true;
     
     metadataDialog.style.display = 'block';
     
     const updateMetadataBtn = document.getElementById('updateMetadataBtn');
-    updateMetadataBtn.onclick = () => {
-        const updatedMetadata = {};
-        const formData = new FormData(metadataForm);
-        for (const [key, value] of formData.entries()) {
-            updatedMetadata[key] = value;
-        }
-        updateMetadata(dreamnode, updatedMetadata);
+    const cancelMetadataBtn = document.getElementById('cancelMetadataBtn');
+    
+    const closeDialog = () => {
         metadataDialog.style.display = 'none';
+        document.removeEventListener('keydown', handleEscapeKey);
     };
+    
+    const handleEscapeKey = (e) => {
+        if (e.key === 'Escape') {
+            closeDialog();
+        }
+    };
+    
+    document.addEventListener('keydown', handleEscapeKey);
+    
+    updateMetadataBtn.onclick = () => {
+        const updatedMetadata = {
+            dateCreated: document.getElementById('dateCreated').value,
+            dateModified: document.getElementById('dateModified').value,
+            interactions: parseInt(document.getElementById('interactions').value, 10),
+            type: document.querySelector('input[name="type"]:checked').value
+        };
+        updateMetadata(dreamnode, updatedMetadata);
+        closeDialog();
+    };
+    
+    cancelMetadataBtn.onclick = closeDialog;
+    
+    // Add functionality for "Now" buttons
+    document.querySelectorAll('.now-btn').forEach(btn => {
+        btn.onclick = () => {
+            const inputId = btn.getAttribute('data-for');
+            document.getElementById(inputId).value = new Date().toISOString().slice(0, 16);
+        };
+    });
 }
 
 function getMetadata(dreamnode) {
