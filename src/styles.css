@@ -5,24 +5,54 @@ body {
     background-color: #000000;
     color: #ffffff;
     position: relative;
-    overflow: hidden;
+    overflow: auto;
 }
 
-body::after {
-    content: '';
+.fade-frame {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(
-        ellipse at center,
-        rgba(0, 0, 0, 0) 0%,
-        rgba(0, 0, 0, 0) 70%,
-        rgba(0, 0, 0, 0.7) 100%
-    );
     pointer-events: none;
     z-index: 9999;
+}
+
+.fade-top, .fade-bottom, .fade-left, .fade-right {
+    position: absolute;
+    background: linear-gradient(to var(--direction), rgba(0,0,0,0.7), rgba(0,0,0,0));
+}
+
+.fade-top, .fade-bottom {
+    left: 0;
+    right: 0;
+    height: 100px;
+}
+
+.fade-left, .fade-right {
+    top: 0;
+    bottom: 0;
+    width: 100px;
+}
+
+.fade-top {
+    top: 0;
+    --direction: bottom;
+}
+
+.fade-bottom {
+    bottom: 0;
+    --direction: top;
+}
+
+.fade-left {
+    left: 0;
+    --direction: right;
+}
+
+.fade-right {
+    right: 0;
+    --direction: left;
 }
 
 h1 {
