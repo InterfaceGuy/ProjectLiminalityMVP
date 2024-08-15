@@ -16,12 +16,45 @@ function getDreamnodes() {
         if (fs.statSync(fullPath).isDirectory()) {
             const gitPath = path.join(fullPath, '.git');
             if (fs.existsSync(gitPath)) {
-                dreamnodes.push(file);
+                const plPath = path.join(fullPath, '.pl');
+                let metadata = {};
+                if (fs.existsSync(plPath)) {
+                    metadata = JSON.parse(fs.readFileSync(plPath, 'utf-8'));
+                } else {
+                    metadata = createPlFile(file);
+                }
+                dreamnodes.push({ name: file, ...metadata });
             }
         }
     });
 
     return dreamnodes;
+}
+
+function createPlFile(dreamnodeName) {
+    const plPath = path.join(VAULT_PATH, dreamnodeName, '.pl');
+    const metadata = {
+        dateCreated: new Date().toISOString(),
+        dateModified: new Date().toISOString(),
+        interactions: 0,
+        type: 'idea'
+    };
+    fs.writeFileSync(plPath, JSON.stringify(metadata, null, 2));
+    return metadata;
+}
+
+function updatePlFile(dreamnodeName) {
+    const plPath = path.join(VAULT_PATH, dreamnodeName, '.pl');
+    let metadata = {};
+    if (fs.existsSync(plPath)) {
+        metadata = JSON.parse(fs.readFileSync(plPath, 'utf-8'));
+    } else {
+        metadata = createPlFile(dreamnodeName);
+    }
+    metadata.dateModified = new Date().toISOString();
+    metadata.interactions += 1;
+    fs.writeFileSync(plPath, JSON.stringify(metadata, null, 2));
+    return metadata;
 }
 
 function getMediaFile(dreamnodeName) {
