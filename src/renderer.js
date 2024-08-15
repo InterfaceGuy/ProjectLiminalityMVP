@@ -371,13 +371,31 @@ document.addEventListener('DOMContentLoaded', () => {
     logger.log(`Sorted dreamnodes: ${JSON.stringify(sortedDreamnodes)}`);
     displayDreamnodes(sortedDreamnodes);
 
-    const sortSelect = document.getElementById('sortSelect');
-    sortSelect.addEventListener('change', (e) => {
-        logger.log(`Sort method changed to: ${e.target.value}`);
-        currentSortMethod = e.target.value;
-        displayDreamnodes(sortDreamnodes(allDreamnodes, currentSortMethod));
+    const sortButtons = document.getElementById('sortButtons');
+    ['alphabetical', 'dateCreated', 'dateModified', 'activity'].forEach(method => {
+        const button = document.createElement('button');
+        button.textContent = method.charAt(0).toUpperCase() + method.slice(1);
+        button.addEventListener('click', () => {
+            logger.log(`Sort method changed to: ${method}`);
+            currentSortMethod = method;
+            displayDreamnodes(sortDreamnodes(allDreamnodes, currentSortMethod));
+            updateActiveButton(method);
+        });
+        sortButtons.appendChild(button);
     });
+    updateActiveButton(currentSortMethod);
 });
 
 // Add this at the end of the file
+function updateActiveButton(activeMethod) {
+    const buttons = document.querySelectorAll('#sortButtons button');
+    buttons.forEach(button => {
+        if (button.textContent.toLowerCase() === activeMethod) {
+            button.classList.add('active');
+        } else {
+            button.classList.remove('active');
+        }
+    });
+}
+
 logger.log('renderer.js loaded');
