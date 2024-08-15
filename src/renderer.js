@@ -5,6 +5,9 @@ const path = require('path');
 const VAULT_PATH = '/Users/davidrug/Library/Mobile Documents/iCloud~md~obsidian/Documents/InterBrain';
 
 let allDreamnodes = [];
+let currentSortMethod = 'alphabetical';
+
+let allDreamnodes = [];
 let currentSearchTerm = '';
 
 function getDreamnodes() {
@@ -90,12 +93,11 @@ function displayDreamnodes(dreamnodes) {
     dreamnodes.forEach(dreamnode => {
         const listItem = document.createElement('div');
         listItem.className = 'dreamnode-item';
-        listItem.setAttribute('data-dreamnode', dreamnode);
+        listItem.setAttribute('data-dreamnode', dreamnode.name);
         
-        const dreamnodeType = getDreamnodeType(dreamnode);
-        listItem.classList.add(dreamnodeType === 'person' ? 'person-node' : 'idea-node');
+        listItem.classList.add(dreamnode.type === 'person' ? 'person-node' : 'idea-node');
         
-        const mediaFile = getMediaFile(dreamnode);
+        const mediaFile = getMediaFile(dreamnode.name);
         if (mediaFile) {
             if (mediaFile.format === 'mp4') {
                 const video = document.createElement('video');
@@ -112,20 +114,36 @@ function displayDreamnodes(dreamnodes) {
         }
         
         const label = document.createElement('span');
-        label.textContent = dreamnode;
+        label.textContent = dreamnode.name;
         listItem.appendChild(label);
         
         listItem.addEventListener('click', () => {
-            centerDreamnode(dreamnode);
+            updatePlFile(dreamnode.name);
+            centerDreamnode(dreamnode.name);
         });
 
         listItem.addEventListener('contextmenu', (e) => {
             e.preventDefault();
-            showContextMenu(e, dreamnode);
+            showContextMenu(e, dreamnode.name);
         });
 
         dreamnodeList.appendChild(listItem);
     });
+}
+
+function sortDreamnodes(dreamnodes, method) {
+    switch (method) {
+        case 'alphabetical':
+            return dreamnodes.sort((a, b) => a.name.localeCompare(b.name));
+        case 'dateCreated':
+            return dreamnodes.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated));
+        case 'dateModified':
+            return dreamnodes.sort((a, b) => new Date(b.dateModified) - new Date(a.dateModified));
+        case 'activity':
+            return dreamnodes.sort((a, b) => b.interactions - a.interactions);
+        default:
+            return dreamnodes;
+    }
 }
 
 function centerDreamnode(dreamnode) {
@@ -314,4 +332,10 @@ document.addEventListener('keydown', (e) => {
 
 // Initialize
 allDreamnodes = getDreamnodes();
-displayDreamnodes(allDreamnodes);
+displayDreamnodes(sortDreamnodes(allDreamnodes, currentSortMethod));
+
+const sortSelect = document.getElementById('sortSelect');
+sortSelect.addEventListener('change', (e) => {
+    currentSortMethod = e.target.value;
+    displayDreamnodes(sortDreamnodes(allDreamnodes, currentSortMethod));
+});
