@@ -427,10 +427,7 @@ function handleEscapeKey(e) {
         } else {
             // Always reset search when Escape is pressed
             searchDialog.style.display = 'none';
-            const searchBar = document.getElementById('searchBar');
-            searchBar.value = '';
-            currentSearchTerm = '';
-            displayDreamnodes(sortDreamnodes(allDreamnodes, currentSortMethod));
+            clearSearch();
             exitFullScreen();
         }
     }
@@ -439,17 +436,34 @@ function handleEscapeKey(e) {
 document.addEventListener('keydown', (e) => {
     if (e.metaKey && e.key === 'o') {
         e.preventDefault();
-        searchDialog.style.display = 'flex';
-        searchBar.focus();
-        searchBar.value = currentSearchTerm;
+        searchDialog.style.display = searchDialog.style.display === 'none' ? 'flex' : 'none';
+        if (searchDialog.style.display === 'flex') {
+            searchBar.focus();
+        }
     } else if (e.metaKey && e.key === 'n') {
         e.preventDefault();
         newDreamnodeDialog.style.display = 'block';
         dreamnodeNameInput.focus();
     } else if (e.key === 'Escape') {
         handleEscapeKey(e);
+    } else if (e.key.length === 1 && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        // Single character key pressed without modifiers
+        if (searchDialog.style.display === 'none') {
+            currentSearchTerm += e.key;
+            displayDreamnodes(filterAndSortDreamnodes(currentSearchTerm, currentSortMethod));
+        }
+    } else if (e.key === 'Backspace' && searchDialog.style.display === 'none') {
+        currentSearchTerm = currentSearchTerm.slice(0, -1);
+        displayDreamnodes(filterAndSortDreamnodes(currentSearchTerm, currentSortMethod));
     }
 });
+
+// Add this function to clear the search when Escape is pressed
+function clearSearch() {
+    currentSearchTerm = '';
+    searchBar.value = '';
+    displayDreamnodes(sortDreamnodes(allDreamnodes, currentSortMethod));
+}
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
