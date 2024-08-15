@@ -1,0 +1,103 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #000000;
+}
+
+h1 {
+    color: #333;
+}
+
+#dreamnodeList {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.dreamnode-item {
+    background-color: #000000;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+}
+
+.dreamnode-item:hover {
+    background-color: #000000;
+}
+
+.dreamnode-item img, .dreamnode-item video {
+    max-width: 100%;
+    height: 150px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.dreamnode-item span {
+    text-align: center;
+    word-break: break-word;
+}
+
+.dialog {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #000000;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.dialog input[type="text"] {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+.dialog button {
+    margin-right: 10px;
+}
+
+.search-dialog {
+    top: 38.2%; /* Golden ratio */
+    width: 60%;
+    max-width: 600px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    padding: 10px;
+}
+
+#searchBar {
+    width: 100%;
+    font-size: 18px;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color: transparent;
+    outline: none;
+}
+
+#newDreamnodeBtn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#newDreamnodeBtn:hover {
+    background-color: #45a049;
+}

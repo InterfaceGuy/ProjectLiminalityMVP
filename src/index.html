@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dreamnode Explorer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="searchDialog" class="dialog search-dialog">
+        <input type="text" id="searchBar" placeholder="Search DreamNodes...">
+    </div>
+    <h1>Dreamnode Explorer</h1>
+    <button id="newDreamnodeBtn">New DreamNode</button>
+    <div id="newDreamnodeDialog" class="dialog">
+        <h2>Create New DreamNode</h2>
+        <input type="text" id="dreamnodeName" placeholder="DreamNode Name">
+        <div>
+            <input type="checkbox" id="cloneCheckbox">
+            <label for="cloneCheckbox">Clone existing repository</label>
+        </div>
+        <input type="text" id="repoUrl" placeholder="Repository URL" style="display: none;">
+        <button id="createDreamnodeBtn">Create</button>
+        <button id="cancelBtn">Cancel</button>
+    </div>
+    <div id="dreamnodeList"></div>
+    <script src="renderer.js"></script>
+</body>
+</html>
