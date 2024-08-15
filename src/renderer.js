@@ -1,6 +1,7 @@
 const { ipcRenderer, clipboard } = require('electron');
 const fs = require('fs-extra');
 const path = require('path');
+const logger = require('./logger');
 
 const VAULT_PATH = '/Users/davidrug/Library/Mobile Documents/iCloud~md~obsidian/Documents/InterBrain';
 
@@ -9,35 +10,35 @@ let currentSortMethod = 'alphabetical';
 let currentSearchTerm = '';
 
 function getDreamnodes() {
-    console.log('Getting dreamnodes from:', VAULT_PATH);
+    logger.log(`Getting dreamnodes from: ${VAULT_PATH}`);
     const dreamnodes = [];
     const files = fs.readdirSync(VAULT_PATH);
-    console.log('Files in VAULT_PATH:', files);
+    logger.log(`Files in VAULT_PATH: ${files.join(', ')}`);
 
     files.forEach(file => {
         const fullPath = path.join(VAULT_PATH, file);
-        console.log('Checking file:', file);
+        logger.log(`Checking file: ${file}`);
         if (fs.statSync(fullPath).isDirectory()) {
             const gitPath = path.join(fullPath, '.git');
-            console.log('Checking for .git in:', gitPath);
+            logger.log(`Checking for .git in: ${gitPath}`);
             if (fs.existsSync(gitPath)) {
                 const plPath = path.join(fullPath, '.pl');
-                console.log('Checking for .pl in:', plPath);
+                logger.log(`Checking for .pl in: ${plPath}`);
                 let metadata = {};
                 if (fs.existsSync(plPath)) {
                     metadata = JSON.parse(fs.readFileSync(plPath, 'utf-8'));
-                    console.log('Metadata found:', metadata);
+                    logger.log(`Metadata found: ${JSON.stringify(metadata)}`);
                 } else {
                     metadata = createPlFile(file);
-                    console.log('Created new metadata:', metadata);
+                    logger.log(`Created new metadata: ${JSON.stringify(metadata)}`);
                 }
                 dreamnodes.push({ name: file, ...metadata });
-                console.log('Added dreamnode:', { name: file, ...metadata });
+                logger.log(`Added dreamnode: ${JSON.stringify({ name: file, ...metadata })}`);
             }
         }
     });
 
-    console.log('Returning dreamnodes:', dreamnodes);
+    logger.log(`Returning dreamnodes: ${JSON.stringify(dreamnodes)}`);
     return dreamnodes;
 }
 
@@ -94,16 +95,16 @@ function getDreamnodeType(dreamnodeName) {
 }
 
 function displayDreamnodes(dreamnodes) {
-    console.log('Displaying dreamnodes:', dreamnodes);
+    logger.log(`Displaying dreamnodes: ${JSON.stringify(dreamnodes)}`);
     const dreamnodeList = document.getElementById('dreamnodeList');
     if (!dreamnodeList) {
-        console.error('dreamnodeList element not found');
+        logger.log('dreamnodeList element not found');
         return;
     }
     dreamnodeList.innerHTML = ''; // Clear existing list
 
     dreamnodes.forEach(dreamnode => {
-        console.log('Creating element for dreamnode:', dreamnode);
+        logger.log(`Creating element for dreamnode: ${JSON.stringify(dreamnode)}`);
         const listItem = document.createElement('div');
         listItem.className = 'dreamnode-item';
         listItem.setAttribute('data-dreamnode', dreamnode.name);
@@ -112,7 +113,7 @@ function displayDreamnodes(dreamnodes) {
         
         const mediaFile = getMediaFile(dreamnode.name);
         if (mediaFile) {
-            console.log('Media file found for dreamnode:', mediaFile);
+            logger.log(`Media file found for dreamnode: ${JSON.stringify(mediaFile)}`);
             if (mediaFile.format === 'mp4') {
                 const video = document.createElement('video');
                 video.src = mediaFile.path;
@@ -126,7 +127,7 @@ function displayDreamnodes(dreamnodes) {
                 listItem.appendChild(img);
             }
         } else {
-            console.log('No media file found for dreamnode:', dreamnode.name);
+            logger.log(`No media file found for dreamnode: ${dreamnode.name}`);
         }
         
         const label = document.createElement('span');
@@ -145,7 +146,7 @@ function displayDreamnodes(dreamnodes) {
 
         dreamnodeList.appendChild(listItem);
     });
-    console.log('Finished displaying dreamnodes');
+    logger.log('Finished displaying dreamnodes');
 }
 
 function sortDreamnodes(dreamnodes, method) {
@@ -349,20 +350,20 @@ document.addEventListener('keydown', (e) => {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOMContentLoaded event fired');
+    logger.log('DOMContentLoaded event fired');
     allDreamnodes = getDreamnodes();
-    console.log('All dreamnodes:', allDreamnodes);
+    logger.log(`All dreamnodes: ${JSON.stringify(allDreamnodes)}`);
     const sortedDreamnodes = sortDreamnodes(allDreamnodes, currentSortMethod);
-    console.log('Sorted dreamnodes:', sortedDreamnodes);
+    logger.log(`Sorted dreamnodes: ${JSON.stringify(sortedDreamnodes)}`);
     displayDreamnodes(sortedDreamnodes);
 
     const sortSelect = document.getElementById('sortSelect');
     sortSelect.addEventListener('change', (e) => {
-        console.log('Sort method changed to:', e.target.value);
+        logger.log(`Sort method changed to: ${e.target.value}`);
         currentSortMethod = e.target.value;
         displayDreamnodes(sortDreamnodes(allDreamnodes, currentSortMethod));
     });
 });
 
 // Add this at the end of the file
-console.log('renderer.js loaded');
+logger.log('renderer.js loaded');
