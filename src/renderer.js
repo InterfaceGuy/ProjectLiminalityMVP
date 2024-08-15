@@ -420,17 +420,17 @@ function handleEscapeKey(e) {
         const newDreamnodeDialog = document.getElementById('newDreamnodeDialog');
         const metadataDialog = document.getElementById('metadataDialog');
 
-        if (searchDialog.style.display !== 'none') {
+        if (newDreamnodeDialog.style.display !== 'none') {
+            newDreamnodeDialog.style.display = 'none';
+        } else if (metadataDialog.style.display !== 'none') {
+            metadataDialog.style.display = 'none';
+        } else {
+            // Always reset search when Escape is pressed
             searchDialog.style.display = 'none';
             const searchBar = document.getElementById('searchBar');
             searchBar.value = '';
             currentSearchTerm = '';
             displayDreamnodes(sortDreamnodes(allDreamnodes, currentSortMethod));
-        } else if (newDreamnodeDialog.style.display !== 'none') {
-            newDreamnodeDialog.style.display = 'none';
-        } else if (metadataDialog.style.display !== 'none') {
-            metadataDialog.style.display = 'none';
-        } else {
             exitFullScreen();
         }
     }
