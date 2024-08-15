@@ -85,9 +85,18 @@ function centerDreamnode(dreamnode) {
     dreamnodes.forEach(node => {
         if (node.getAttribute('data-dreamnode') === dreamnode) {
             node.classList.add('centered');
+            node.addEventListener('click', exitFullScreen);
         } else {
             node.classList.add('hidden');
         }
+    });
+}
+
+function exitFullScreen() {
+    const dreamnodes = document.querySelectorAll('.dreamnode-item');
+    dreamnodes.forEach(node => {
+        node.classList.remove('centered', 'hidden');
+        node.removeEventListener('click', exitFullScreen);
     });
 }
 
