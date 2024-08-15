@@ -404,6 +404,16 @@ searchBar.addEventListener('input', (e) => {
     displayDreamnodes(filterAndSortDreamnodes(currentSearchTerm, currentSortMethod));
 });
 
+searchBar.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        searchDialog.style.display = 'none';
+        // Keep the current search term and sorting
+    } else if (e.key === 'Escape') {
+        handleEscapeKey(e);
+    }
+});
+
 function handleEscapeKey(e) {
     if (e.key === 'Escape' && searchDialog.style.display === 'block') {
         searchDialog.style.display = 'none';
@@ -412,8 +422,6 @@ function handleEscapeKey(e) {
         displayDreamnodes(sortDreamnodes(allDreamnodes, currentSortMethod));
     }
 }
-
-searchBar.addEventListener('keydown', handleEscapeKey);
 
 document.addEventListener('keydown', (e) => {
     if (e.metaKey && e.key === 'o') {
