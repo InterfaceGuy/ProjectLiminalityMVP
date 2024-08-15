@@ -6,8 +6,6 @@ const VAULT_PATH = '/Users/davidrug/Library/Mobile Documents/iCloud~md~obsidian/
 
 let allDreamnodes = [];
 let currentSortMethod = 'alphabetical';
-
-let allDreamnodes = [];
 let currentSearchTerm = '';
 
 function getDreamnodes() {
@@ -331,11 +329,13 @@ document.addEventListener('keydown', (e) => {
 });
 
 // Initialize
-allDreamnodes = getDreamnodes();
-displayDreamnodes(sortDreamnodes(allDreamnodes, currentSortMethod));
-
-const sortSelect = document.getElementById('sortSelect');
-sortSelect.addEventListener('change', (e) => {
-    currentSortMethod = e.target.value;
+document.addEventListener('DOMContentLoaded', () => {
+    allDreamnodes = getDreamnodes();
     displayDreamnodes(sortDreamnodes(allDreamnodes, currentSortMethod));
+
+    const sortSelect = document.getElementById('sortSelect');
+    sortSelect.addEventListener('change', (e) => {
+        currentSortMethod = e.target.value;
+        displayDreamnodes(sortDreamnodes(allDreamnodes, currentSortMethod));
+    });
 });
