@@ -186,3 +186,21 @@ h1 {
 .dreamnode-item.hidden {
     display: none;
 }
+
+/* Customizing the scrollbar */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #333333;
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #444444;
+}
