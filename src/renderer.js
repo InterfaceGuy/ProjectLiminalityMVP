@@ -9,26 +9,35 @@ let currentSortMethod = 'alphabetical';
 let currentSearchTerm = '';
 
 function getDreamnodes() {
+    console.log('Getting dreamnodes from:', VAULT_PATH);
     const dreamnodes = [];
     const files = fs.readdirSync(VAULT_PATH);
+    console.log('Files in VAULT_PATH:', files);
 
     files.forEach(file => {
         const fullPath = path.join(VAULT_PATH, file);
+        console.log('Checking file:', file);
         if (fs.statSync(fullPath).isDirectory()) {
             const gitPath = path.join(fullPath, '.git');
+            console.log('Checking for .git in:', gitPath);
             if (fs.existsSync(gitPath)) {
                 const plPath = path.join(fullPath, '.pl');
+                console.log('Checking for .pl in:', plPath);
                 let metadata = {};
                 if (fs.existsSync(plPath)) {
                     metadata = JSON.parse(fs.readFileSync(plPath, 'utf-8'));
+                    console.log('Metadata found:', metadata);
                 } else {
                     metadata = createPlFile(file);
+                    console.log('Created new metadata:', metadata);
                 }
                 dreamnodes.push({ name: file, ...metadata });
+                console.log('Added dreamnode:', { name: file, ...metadata });
             }
         }
     });
 
+    console.log('Returning dreamnodes:', dreamnodes);
     return dreamnodes;
 }
 
