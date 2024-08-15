@@ -33,7 +33,7 @@ app.on('activate', () => {
     }
 });
 
-ipcMain.on('create-dreamnode', (event, { name, clone, repoUrl }) => {
+ipcMain.on('create-dreamnode', (event, { name, clone, repoUrl, type }) => {
     const dreamnodePath = path.join(VAULT_PATH, name);
 
     if (fs.existsSync(dreamnodePath)) {
@@ -42,6 +42,10 @@ ipcMain.on('create-dreamnode', (event, { name, clone, repoUrl }) => {
     }
 
     fs.mkdirSync(dreamnodePath);
+
+    // Create .pl file
+    const plContent = `type: ${type || 'idea'}`;
+    fs.writeFileSync(path.join(dreamnodePath, '.pl'), plContent);
 
     if (clone) {
         exec(`git clone ${repoUrl} "${dreamnodePath}"`, (error) => {

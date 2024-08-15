@@ -38,6 +38,18 @@ function getMediaFile(dreamnodeName) {
     return null;
 }
 
+function getDreamnodeType(dreamnodeName) {
+    const plPath = path.join(VAULT_PATH, dreamnodeName, '.pl');
+    if (fs.existsSync(plPath)) {
+        const content = fs.readFileSync(plPath, 'utf-8');
+        const typeMatch = content.match(/type:\s*(\w+)/);
+        if (typeMatch && typeMatch[1]) {
+            return typeMatch[1].toLowerCase();
+        }
+    }
+    return 'idea'; // Default to 'idea' if no .pl file or type not specified
+}
+
 function displayDreamnodes(dreamnodes) {
     const dreamnodeList = document.getElementById('dreamnodeList');
     dreamnodeList.innerHTML = ''; // Clear existing list
@@ -46,6 +58,9 @@ function displayDreamnodes(dreamnodes) {
         const listItem = document.createElement('div');
         listItem.className = 'dreamnode-item';
         listItem.setAttribute('data-dreamnode', dreamnode);
+        
+        const dreamnodeType = getDreamnodeType(dreamnode);
+        listItem.classList.add(dreamnodeType === 'person' ? 'person-node' : 'idea-node');
         
         const mediaFile = getMediaFile(dreamnode);
         if (mediaFile) {
@@ -205,6 +220,7 @@ createDreamnodeBtn.addEventListener('click', () => {
     const name = dreamnodeNameInput.value.trim();
     const clone = cloneCheckbox.checked;
     const repoUrl = repoUrlInput.value.trim();
+    const type = document.querySelector('input[name="dreamnodeType"]:checked').value;
 
     if (!name) {
         alert('Please enter a name for the DreamNode.');
@@ -216,12 +232,13 @@ createDreamnodeBtn.addEventListener('click', () => {
         return;
     }
 
-    ipcRenderer.send('create-dreamnode', { name, clone, repoUrl });
+    ipcRenderer.send('create-dreamnode', { name, clone, repoUrl, type });
     newDreamnodeDialog.style.display = 'none';
     dreamnodeNameInput.value = '';
     cloneCheckbox.checked = false;
     repoUrlInput.value = '';
     repoUrlInput.style.display = 'none';
+    document.getElementById('typeIdea').checked = true;
 });
 
 ipcRenderer.on('dreamnode-created', (event, success) => {

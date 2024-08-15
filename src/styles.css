@@ -19,7 +19,6 @@ h1 {
 
 .dreamnode-item {
     background-color: #000000;
-    border: 3px solid #0077be;
     padding: 10px;
     border-radius: 50%;
     cursor: pointer;
@@ -31,6 +30,14 @@ h1 {
     height: 180px;
     transition: all 0.3s ease;
     overflow: hidden;
+}
+
+.idea-node {
+    border: 3px solid #0077be;
+}
+
+.person-node {
+    border: 3px solid #be0000;
 }
 
 .dreamnode-item:hover {
