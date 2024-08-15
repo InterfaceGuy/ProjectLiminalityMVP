@@ -1,4 +1,4 @@
-const { ipcRenderer } = require('electron');
+const { ipcRenderer, clipboard } = require('electron');
 const fs = require('fs-extra');
 const path = require('path');
 
@@ -45,6 +45,7 @@ function displayDreamnodes(dreamnodes) {
     dreamnodes.forEach(dreamnode => {
         const listItem = document.createElement('div');
         listItem.className = 'dreamnode-item';
+        listItem.setAttribute('data-dreamnode', dreamnode);
         
         const mediaFile = getMediaFile(dreamnode);
         if (mediaFile) {
@@ -67,10 +68,69 @@ function displayDreamnodes(dreamnodes) {
         listItem.appendChild(label);
         
         listItem.addEventListener('click', () => {
-            ipcRenderer.send('open-in-finder', dreamnode);
+            centerDreamnode(dreamnode);
         });
+
+        listItem.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            showContextMenu(e, dreamnode);
+        });
+
         dreamnodeList.appendChild(listItem);
     });
+}
+
+function centerDreamnode(dreamnode) {
+    const dreamnodes = document.querySelectorAll('.dreamnode-item');
+    dreamnodes.forEach(node => {
+        if (node.getAttribute('data-dreamnode') === dreamnode) {
+            node.classList.add('centered');
+        } else {
+            node.classList.add('hidden');
+        }
+    });
+}
+
+function showContextMenu(e, dreamnode) {
+    const contextMenu = document.getElementById('contextMenu');
+    contextMenu.style.display = 'block';
+    contextMenu.style.left = `${e.clientX}px`;
+    contextMenu.style.top = `${e.clientY}px`;
+
+    const openFinderOption = document.getElementById('openFinder');
+    const openGitFoxOption = document.getElementById('openGitFox');
+    const copyDreamTalkOption = document.getElementById('copyDreamTalk');
+    const openKeynodeOption = document.getElementById('openKeynode');
+
+    openFinderOption.onclick = () => {
+        ipcRenderer.send('open-in-finder', dreamnode);
+        contextMenu.style.display = 'none';
+    };
+
+    openGitFoxOption.onclick = () => {
+        ipcRenderer.send('open-in-gitfox', dreamnode);
+        contextMenu.style.display = 'none';
+    };
+
+    copyDreamTalkOption.onclick = () => {
+        const dreamTalk = generateDreamTalk(dreamnode);
+        clipboard.writeText(dreamTalk);
+        contextMenu.style.display = 'none';
+    };
+
+    openKeynodeOption.onclick = () => {
+        ipcRenderer.send('open-keynode', dreamnode);
+        contextMenu.style.display = 'none';
+    };
+
+    document.addEventListener('click', () => {
+        contextMenu.style.display = 'none';
+    }, { once: true });
+}
+
+function generateDreamTalk(dreamnode) {
+    // Implement the logic to generate DreamTalk here
+    return `DreamTalk for ${dreamnode}`;
 }
 
 function filterDreamnodes(searchTerm) {

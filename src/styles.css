@@ -120,3 +120,33 @@ h1 {
 #newDreamnodeBtn:hover {
     background-color: #45a049;
 }
+
+.context-menu {
+    display: none;
+    position: fixed;
+    background-color: #1a1a1a;
+    border: 1px solid #3a3a3a;
+    padding: 5px 0;
+    z-index: 1000;
+}
+
+.context-menu div {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.context-menu div:hover {
+    background-color: #2a2a2a;
+}
+
+.dreamnode-item.centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.5);
+    z-index: 100;
+}
+
+.dreamnode-item.hidden {
+    display: none;
+}
