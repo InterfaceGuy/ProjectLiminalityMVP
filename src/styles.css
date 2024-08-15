@@ -151,14 +151,28 @@ h1 {
 }
 
 #searchBar {
-    width: 100%;
+    width: calc(100% - 120px);
     font-size: 18px;
     padding: 10px;
     border: none;
-    border-radius: 10px;
+    border-radius: 10px 0 0 10px;
     background-color: #2a2a2a;
     color: #ffffff;
     outline: none;
+    display: inline-block;
+}
+
+#sortSelect {
+    width: 120px;
+    font-size: 18px;
+    padding: 10px;
+    border: none;
+    border-radius: 0 10px 10px 0;
+    background-color: #2a2a2a;
+    color: #ffffff;
+    outline: none;
+    display: inline-block;
+    vertical-align: top;
 }
 
 #newDreamnodeBtn {
