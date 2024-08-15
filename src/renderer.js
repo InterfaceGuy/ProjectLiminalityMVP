@@ -85,10 +85,16 @@ function getDreamnodeType(dreamnodeName) {
 }
 
 function displayDreamnodes(dreamnodes) {
+    console.log('Displaying dreamnodes:', dreamnodes);
     const dreamnodeList = document.getElementById('dreamnodeList');
+    if (!dreamnodeList) {
+        console.error('dreamnodeList element not found');
+        return;
+    }
     dreamnodeList.innerHTML = ''; // Clear existing list
 
     dreamnodes.forEach(dreamnode => {
+        console.log('Creating element for dreamnode:', dreamnode);
         const listItem = document.createElement('div');
         listItem.className = 'dreamnode-item';
         listItem.setAttribute('data-dreamnode', dreamnode.name);
@@ -97,6 +103,7 @@ function displayDreamnodes(dreamnodes) {
         
         const mediaFile = getMediaFile(dreamnode.name);
         if (mediaFile) {
+            console.log('Media file found for dreamnode:', mediaFile);
             if (mediaFile.format === 'mp4') {
                 const video = document.createElement('video');
                 video.src = mediaFile.path;
@@ -109,6 +116,8 @@ function displayDreamnodes(dreamnodes) {
                 img.src = mediaFile.path;
                 listItem.appendChild(img);
             }
+        } else {
+            console.log('No media file found for dreamnode:', dreamnode.name);
         }
         
         const label = document.createElement('span');
@@ -127,6 +136,7 @@ function displayDreamnodes(dreamnodes) {
 
         dreamnodeList.appendChild(listItem);
     });
+    console.log('Finished displaying dreamnodes');
 }
 
 function sortDreamnodes(dreamnodes, method) {
@@ -330,12 +340,20 @@ document.addEventListener('keydown', (e) => {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOMContentLoaded event fired');
     allDreamnodes = getDreamnodes();
-    displayDreamnodes(sortDreamnodes(allDreamnodes, currentSortMethod));
+    console.log('All dreamnodes:', allDreamnodes);
+    const sortedDreamnodes = sortDreamnodes(allDreamnodes, currentSortMethod);
+    console.log('Sorted dreamnodes:', sortedDreamnodes);
+    displayDreamnodes(sortedDreamnodes);
 
     const sortSelect = document.getElementById('sortSelect');
     sortSelect.addEventListener('change', (e) => {
+        console.log('Sort method changed to:', e.target.value);
         currentSortMethod = e.target.value;
         displayDreamnodes(sortDreamnodes(allDreamnodes, currentSortMethod));
     });
 });
+
+// Add this at the end of the file
+console.log('renderer.js loaded');
