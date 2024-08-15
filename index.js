@@ -4,6 +4,7 @@ const fs = require('fs-extra');
 const { exec } = require('child_process');
 
 const VAULT_PATH = '/Users/davidrug/Library/Mobile Documents/iCloud~md~obsidian/Documents/InterBrain';
+const GITFOX_PATH = '/Applications/GitFox.app';
 
 function createWindow() {
     const win = new BrowserWindow({
@@ -66,4 +67,22 @@ ipcMain.on('create-dreamnode', (event, { name, clone, repoUrl }) => {
 ipcMain.on('open-in-finder', (event, repoName) => {
     const repoPath = path.join(VAULT_PATH, repoName);
     shell.openPath(repoPath);
+});
+
+ipcMain.on('open-in-gitfox', (event, repoName) => {
+    const repoPath = path.join(VAULT_PATH, repoName);
+    exec(`open -a "${GITFOX_PATH}" "${repoPath}"`, (error) => {
+        if (error) {
+            console.error(`Error opening GitFox: ${error}`);
+        }
+    });
+});
+
+ipcMain.on('open-keynode', (event, repoName) => {
+    const keynodePath = path.join(VAULT_PATH, repoName, `${repoName}.md`);
+    if (fs.existsSync(keynodePath)) {
+        shell.openPath(keynodePath);
+    } else {
+        console.error(`Keynode file not found: ${keynodePath}`);
+    }
 });
