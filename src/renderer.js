@@ -334,13 +334,13 @@ function generateDreamTalk(dreamnode) {
 
 function filterDreamnodes(searchTerm) {
     return allDreamnodes.filter(dreamnode => 
-        dreamnode.toLowerCase().includes(searchTerm.toLowerCase())
+        dreamnode.name.toLowerCase().includes(searchTerm.toLowerCase())
     ).sort((a, b) => {
-        const aStartsWith = a.toLowerCase().startsWith(searchTerm.toLowerCase());
-        const bStartsWith = b.toLowerCase().startsWith(searchTerm.toLowerCase());
+        const aStartsWith = a.name.toLowerCase().startsWith(searchTerm.toLowerCase());
+        const bStartsWith = b.name.toLowerCase().startsWith(searchTerm.toLowerCase());
         if (aStartsWith && !bStartsWith) return -1;
         if (!aStartsWith && bStartsWith) return 1;
-        return a.localeCompare(b);
+        return a.name.localeCompare(b.name);
     });
 }
 
