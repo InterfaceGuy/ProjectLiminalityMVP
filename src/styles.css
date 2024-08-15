@@ -209,6 +209,28 @@ h1 {
     background-color: #2a2a2a;
 }
 
+#metadataDialog {
+    width: 300px;
+}
+
+#metadataForm {
+    display: flex;
+    flex-direction: column;
+}
+
+#metadataForm label {
+    margin-top: 10px;
+}
+
+#metadataForm input {
+    margin-bottom: 10px;
+}
+
+#updateMetadataBtn {
+    margin-top: 10px;
+    align-self: flex-end;
+}
+
 .dreamnode-item.centered {
     position: fixed;
     top: 50%;

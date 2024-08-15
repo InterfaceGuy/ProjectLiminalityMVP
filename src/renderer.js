@@ -228,6 +228,7 @@ function showContextMenu(e, dreamnode) {
     const openGitFoxOption = document.getElementById('openGitFox');
     const copyDreamTalkOption = document.getElementById('copyDreamTalk');
     const openKeynodeOption = document.getElementById('openKeynode');
+    const editMetadataOption = document.getElementById('editMetadata');
 
     openFinderOption.onclick = () => {
         ipcRenderer.send('open-in-finder', dreamnode);
@@ -250,9 +251,61 @@ function showContextMenu(e, dreamnode) {
         contextMenu.style.display = 'none';
     };
 
+    editMetadataOption.onclick = () => {
+        showMetadataDialog(dreamnode);
+        contextMenu.style.display = 'none';
+    };
+
     document.addEventListener('click', () => {
         contextMenu.style.display = 'none';
     }, { once: true });
+}
+
+function showMetadataDialog(dreamnode) {
+    const metadata = getMetadata(dreamnode);
+    const metadataDialog = document.getElementById('metadataDialog');
+    const metadataForm = document.getElementById('metadataForm');
+    
+    metadataForm.innerHTML = '';
+    
+    for (const [key, value] of Object.entries(metadata)) {
+        const label = document.createElement('label');
+        label.textContent = key;
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = value;
+        input.name = key;
+        metadataForm.appendChild(label);
+        metadataForm.appendChild(input);
+    }
+    
+    metadataDialog.style.display = 'block';
+    
+    const updateMetadataBtn = document.getElementById('updateMetadataBtn');
+    updateMetadataBtn.onclick = () => {
+        const updatedMetadata = {};
+        const formData = new FormData(metadataForm);
+        for (const [key, value] of formData.entries()) {
+            updatedMetadata[key] = value;
+        }
+        updateMetadata(dreamnode, updatedMetadata);
+        metadataDialog.style.display = 'none';
+    };
+}
+
+function getMetadata(dreamnode) {
+    const plPath = path.join(VAULT_PATH, dreamnode, '.pl');
+    if (fs.existsSync(plPath)) {
+        return JSON.parse(fs.readFileSync(plPath, 'utf-8'));
+    }
+    return {};
+}
+
+function updateMetadata(dreamnode, metadata) {
+    const plPath = path.join(VAULT_PATH, dreamnode, '.pl');
+    fs.writeFileSync(plPath, JSON.stringify(metadata, null, 2));
+    allDreamnodes = getDreamnodes();
+    displayDreamnodes(sortDreamnodes(allDreamnodes, currentSortMethod));
 }
 
 function generateDreamTalk(dreamnode) {
@@ -321,7 +374,6 @@ createDreamnodeBtn.addEventListener('click', () => {
     cloneCheckbox.checked = false;
     repoUrlInput.value = '';
     repoUrlInput.style.display = 'none';
-    document.getElementById('typeIdea').checked = true;
 });
 
 ipcRenderer.on('dreamnode-created', (event, success) => {
