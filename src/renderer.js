@@ -26,8 +26,14 @@ function getDreamnodes() {
                 logger.log(`Checking for .pl in: ${plPath}`);
                 let metadata = {};
                 if (fs.existsSync(plPath)) {
-                    metadata = JSON.parse(fs.readFileSync(plPath, 'utf-8'));
-                    logger.log(`Metadata found: ${JSON.stringify(metadata)}`);
+                    try {
+                        metadata = JSON.parse(fs.readFileSync(plPath, 'utf-8'));
+                        logger.log(`Metadata found: ${JSON.stringify(metadata)}`);
+                    } catch (error) {
+                        logger.log(`Error reading .pl file: ${error.message}`);
+                        metadata = createPlFile(file);
+                        logger.log(`Created new metadata due to error: ${JSON.stringify(metadata)}`);
+                    }
                 } else {
                     metadata = createPlFile(file);
                     logger.log(`Created new metadata: ${JSON.stringify(metadata)}`);
@@ -103,6 +109,14 @@ function displayDreamnodes(dreamnodes) {
     }
     dreamnodeList.innerHTML = ''; // Clear existing list
 
+    if (dreamnodes.length === 0) {
+        logger.log('No dreamnodes to display');
+        const noNodesMessage = document.createElement('div');
+        noNodesMessage.textContent = 'No dreamnodes found';
+        dreamnodeList.appendChild(noNodesMessage);
+        return;
+    }
+
     dreamnodes.forEach(dreamnode => {
         logger.log(`Creating element for dreamnode: ${JSON.stringify(dreamnode)}`);
         const listItem = document.createElement('div');
@@ -146,7 +160,7 @@ function displayDreamnodes(dreamnodes) {
 
         dreamnodeList.appendChild(listItem);
     });
-    logger.log('Finished displaying dreamnodes');
+    logger.log(`Finished displaying ${dreamnodes.length} dreamnodes`);
 }
 
 function sortDreamnodes(dreamnodes, method) {
