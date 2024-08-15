@@ -100,6 +100,26 @@ function exitFullScreen() {
     });
 }
 
+function handleEscapeKey(e) {
+    if (e.key === 'Escape') {
+        exitFullScreen();
+        document.removeEventListener('keydown', handleEscapeKey);
+    }
+}
+
+function centerDreamnode(dreamnode) {
+    const dreamnodes = document.querySelectorAll('.dreamnode-item');
+    dreamnodes.forEach(node => {
+        if (node.getAttribute('data-dreamnode') === dreamnode) {
+            node.classList.add('centered');
+            node.addEventListener('click', exitFullScreen);
+        } else {
+            node.classList.add('hidden');
+        }
+    });
+    document.addEventListener('keydown', handleEscapeKey);
+}
+
 function showContextMenu(e, dreamnode) {
     const contextMenu = document.getElementById('contextMenu');
     contextMenu.style.display = 'block';
