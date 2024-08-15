@@ -19,33 +19,38 @@ h1 {
 
 .dreamnode-item {
     background-color: #000000;
-    border: 1px solid #ddd;
+    border: 3px solid #0077be;
     padding: 10px;
-    border-radius: 4px;
+    border-radius: 50%;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 200px;
-    height: 200px;
+    width: 180px;
+    height: 180px;
+    transition: all 0.3s ease;
+    overflow: hidden;
 }
 
 .dreamnode-item:hover {
-    background-color: #1a1a1a;
+    transform: scale(1.05);
 }
 
 .dreamnode-item img, .dreamnode-item video {
     max-width: 100%;
-    max-height: 150px;
+    max-height: 120px;
     object-fit: cover;
     margin-bottom: 10px;
+    border-radius: 50%;
 }
 
 .dreamnode-item span {
     text-align: center;
     word-break: break-word;
     color: #ffffff;
+    font-size: 14px;
+    max-width: 90%;
 }
 
 .dialog {
