@@ -148,7 +148,7 @@ h1 {
     background-color: rgba(26, 26, 26, 0.9);
     border-radius: 20px;
     padding: 10px;
-    display: flex;
+    display: none;
     flex-direction: column;
 }
 

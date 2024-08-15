@@ -415,11 +415,15 @@ searchBar.addEventListener('keydown', (e) => {
 });
 
 function handleEscapeKey(e) {
-    if (e.key === 'Escape' && searchDialog.style.display === 'block') {
-        searchDialog.style.display = 'none';
-        searchBar.value = '';
-        currentSearchTerm = '';
-        displayDreamnodes(sortDreamnodes(allDreamnodes, currentSortMethod));
+    if (e.key === 'Escape') {
+        const searchDialog = document.getElementById('searchDialog');
+        if (searchDialog.style.display === 'flex') {
+            searchDialog.style.display = 'none';
+            const searchBar = document.getElementById('searchBar');
+            searchBar.value = '';
+            currentSearchTerm = '';
+            displayDreamnodes(sortDreamnodes(allDreamnodes, currentSortMethod));
+        }
     }
 }
 
@@ -475,3 +479,5 @@ function updateActiveButton(activeMethod) {
 }
 
 logger.log('renderer.js loaded');
+// Add event listener for Escape key
+document.addEventListener('keydown', handleEscapeKey);
