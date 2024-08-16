@@ -245,7 +245,12 @@ function centerDreamnode(dreamnode) {
             // Create dream song side
             const dreamSongSide = document.createElement('div');
             dreamSongSide.classList.add('dream-song-side');
-            dreamSongSide.textContent = 'Dream Song';
+        
+            const dreamSongContent = document.createElement('div');
+            dreamSongContent.classList.add('dream-song-content');
+            dreamSongContent.textContent = 'DreamSong';
+        
+            dreamSongSide.appendChild(dreamSongContent);
             
             // Append flip button to body, not to the node
             document.body.appendChild(flipButton);
@@ -263,7 +268,7 @@ function flipDreamnode(node) {
     node.classList.toggle('flipped');
     const flipButton = document.querySelector('.flip-button');
     if (flipButton) {
-        flipButton.textContent = node.classList.contains('flipped') ? 'Unflip' : 'Flip';
+        flipButton.textContent = node.classList.contains('flipped') ? 'Show DreamTalk' : 'Show DreamSong';
     }
 }
 
