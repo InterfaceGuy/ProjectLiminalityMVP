@@ -1,4 +1,6 @@
 const { app, BrowserWindow, ipcMain, shell } = require('electron');
+const fs = require('fs');
+const path = require('path');
 const path = require('path');
 const fs = require('fs-extra');
 const { exec } = require('child_process');
