@@ -77,7 +77,7 @@ h1 {
 }
 
 .honeycomb-row:nth-child(even) {
-    margin-left: 90px; /* Half of the dreamnode width plus gap */
+    margin-left: 80px; /* Adjusted to create the equilateral triangle effect */
 }
 
 .dreamnode-item {
@@ -95,7 +95,7 @@ h1 {
     padding: 10px;
     box-sizing: border-box;
     overflow: hidden;
-    margin: 0 10px 20px;
+    margin: 0 20px 20px; /* Increased horizontal margin */
 }
 
 .idea-node {
