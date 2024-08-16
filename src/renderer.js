@@ -267,8 +267,17 @@ function showContextMenu(e, dreamnode) {
         'copyDreamTalk': () => {
             const mediaFile = getMediaFile(dreamnode);
             if (mediaFile) {
-                clipboard.writeImage(mediaFile.path);
-                logger.log(`Copied media file for ${dreamnode} to clipboard`);
+                const fileContent = fs.readFileSync(mediaFile.path);
+                if (['gif', 'png', 'jpeg', 'jpg', 'webp'].includes(mediaFile.format)) {
+                    clipboard.writeImage(mediaFile.path);
+                } else if (mediaFile.format === 'svg') {
+                    clipboard.writeText(fileContent.toString('utf-8'));
+                } else if (mediaFile.format === 'mp4') {
+                    clipboard.writeBuffer('public.mpeg-4', fileContent);
+                } else {
+                    clipboard.writeBuffer('public.data', fileContent);
+                }
+                logger.log(`Copied media file (${mediaFile.format}) for ${dreamnode} to clipboard`);
             } else {
                 logger.log(`No media file found for ${dreamnode}`);
                 alert(`No media file found for ${dreamnode}`);
