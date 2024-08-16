@@ -278,11 +278,21 @@ function exitFullScreen() {
     document.querySelectorAll('.dreamnode-item.hidden').forEach(node => {
         node.classList.remove('hidden');
     });
+    removeFlipButton();
+    document.removeEventListener('keydown', handleEscapeKey);
+}
+
+function removeFlipButton() {
     const flipButton = document.querySelector('.flip-button');
     if (flipButton) {
         flipButton.remove();
     }
-    document.removeEventListener('keydown', handleEscapeKey);
+}
+
+function handleEscapeKey(e) {
+    if (e.key === 'Escape') {
+        exitFullScreen();
+    }
 }
 
 function showContextMenu(e, dreamnode) {
