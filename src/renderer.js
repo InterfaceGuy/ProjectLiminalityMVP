@@ -291,6 +291,13 @@ function removeFlipButton() {
     }
 }
 
+function removeFlipButton() {
+    const flipButton = document.querySelector('.flip-button');
+    if (flipButton) {
+        flipButton.remove();
+    }
+}
+
 function handleEscapeKey(e) {
     if (e.key === 'Escape') {
         exitFullScreen();
