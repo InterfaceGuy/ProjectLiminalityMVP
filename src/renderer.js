@@ -303,7 +303,6 @@ function handleExitFullScreen(e) {
         return;
     }
     exitFullScreen();
-    }
 }
 
 function showContextMenu(e, dreamnode) {
