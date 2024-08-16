@@ -169,11 +169,14 @@ function adjustDreamnodeSpacing() {
     const dreamnodeItems = dreamnodeList.querySelectorAll('.dreamnode-item');
     const listWidth = dreamnodeList.offsetWidth;
     const itemWidth = dreamnodeItems[0].offsetWidth;
-    const itemsPerRow = Math.floor(listWidth / itemWidth);
-    const totalGap = listWidth - (itemsPerRow * itemWidth);
-    const gapPerItem = totalGap / (itemsPerRow - 1);
+    const verticalGap = 20; // This should match the vertical gap in CSS
+    const minHorizontalGap = verticalGap;
+    
+    let itemsPerRow = Math.floor((listWidth + minHorizontalGap) / (itemWidth + minHorizontalGap));
+    let totalGap = listWidth - (itemsPerRow * itemWidth);
+    let gapPerItem = Math.max(minHorizontalGap, totalGap / (itemsPerRow - 1));
 
-    dreamnodeList.style.gap = `20px ${gapPerItem}px`;
+    dreamnodeList.style.gap = `${verticalGap}px ${gapPerItem}px`;
 }
 
 // Add event listener for window resize
