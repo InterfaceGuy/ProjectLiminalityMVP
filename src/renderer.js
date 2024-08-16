@@ -228,6 +228,7 @@ function showContextMenu(e, dreamnode) {
     const openGitFoxOption = document.getElementById('openGitFox');
     const copyDreamTalkOption = document.getElementById('copyDreamTalk');
     const openKeynodeOption = document.getElementById('openKeynode');
+    const renameOption = document.getElementById('rename');
     const editMetadataOption = document.getElementById('editMetadata');
 
     openFinderOption.onclick = () => {
@@ -330,6 +331,78 @@ function updateMetadata(dreamnode, metadata) {
 function generateDreamTalk(dreamnode) {
     // Implement the logic to generate DreamTalk here
     return `DreamTalk for ${dreamnode}`;
+}
+
+function showRenameDialog(dreamnode) {
+    const renameDialog = document.getElementById('renameDialog');
+    const renameInput = document.getElementById('renameInput');
+    const confirmRenameBtn = document.getElementById('confirmRename');
+    const cancelRenameBtn = document.getElementById('cancelRename');
+
+    renameInput.value = dreamnode;
+    renameDialog.style.display = 'block';
+
+    confirmRenameBtn.onclick = () => {
+        const newName = renameInput.value.trim();
+        if (newName && newName !== dreamnode) {
+            renameDreamnode(dreamnode, newName);
+        }
+        renameDialog.style.display = 'none';
+    };
+
+    cancelRenameBtn.onclick = () => {
+        renameDialog.style.display = 'none';
+    };
+
+    const handleEscapeKey = (e) => {
+        if (e.key === 'Escape') {
+            renameDialog.style.display = 'none';
+            document.removeEventListener('keydown', handleEscapeKey);
+        }
+    };
+
+    document.addEventListener('keydown', handleEscapeKey);
+}
+
+function renameDreamnode(oldName, newName) {
+    const oldPath = path.join(VAULT_PATH, oldName);
+    const newPath = path.join(VAULT_PATH, newName);
+
+    try {
+        // Rename the directory
+        fs.renameSync(oldPath, newPath);
+
+        // Update .pl file
+        const plPath = path.join(newPath, '.pl');
+        if (fs.existsSync(plPath)) {
+            const plContent = JSON.parse(fs.readFileSync(plPath, 'utf-8'));
+            plContent.dateModified = new Date().toISOString();
+            fs.writeFileSync(plPath, JSON.stringify(plContent, null, 2));
+        }
+
+        // Rename media file if it exists
+        const mediaFile = getMediaFile(oldName);
+        if (mediaFile) {
+            const oldMediaPath = mediaFile.path;
+            const newMediaPath = path.join(newPath, `${newName}.${mediaFile.format}`);
+            fs.renameSync(oldMediaPath, newMediaPath);
+        }
+
+        // Update Git repository
+        const git = simpleGit(newPath);
+        git.add('./*')
+           .commit(`Renamed dreamnode from ${oldName} to ${newName}`)
+           .catch((err) => console.error('Error updating Git repository:', err));
+
+        // Refresh the dreamnode list
+        allDreamnodes = getDreamnodes();
+        displayDreamnodes(sortDreamnodes(allDreamnodes, currentSortMethod));
+
+        logger.log(`Successfully renamed dreamnode from ${oldName} to ${newName}`);
+    } catch (error) {
+        console.error('Error renaming dreamnode:', error);
+        logger.log(`Error renaming dreamnode from ${oldName} to ${newName}: ${error.message}`);
+    }
 }
 
 function filterAndSortDreamnodes(searchTerm, sortMethod) {
