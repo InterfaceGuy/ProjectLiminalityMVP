@@ -270,15 +270,17 @@ function showContextMenu(e, dreamnode) {
                 if (mediaFile) {
                     const fileContent = fs.readFileSync(mediaFile.path);
                     const nativeImage = require('electron').nativeImage;
-                    if (['gif', 'png', 'jpeg', 'jpg', 'webp'].includes(mediaFile.format)) {
+                    if (mediaFile.format === 'gif') {
+                        clipboard.writeBuffer('image/gif', fileContent);
+                    } else if (['png', 'jpeg', 'jpg', 'webp'].includes(mediaFile.format)) {
                         const image = nativeImage.createFromBuffer(fileContent);
                         clipboard.writeImage(image);
                     } else if (mediaFile.format === 'svg') {
                         clipboard.writeText(fileContent.toString('utf-8'));
                     } else if (mediaFile.format === 'mp4') {
-                        clipboard.writeBuffer('public.mpeg-4', fileContent);
+                        clipboard.writeBuffer('video/mp4', fileContent);
                     } else {
-                        clipboard.writeBuffer('public.data', fileContent);
+                        clipboard.writeBuffer('application/octet-stream', fileContent);
                     }
                     logger.log(`Copied media file (${mediaFile.format}) for ${dreamnode} to clipboard`);
                 } else {
