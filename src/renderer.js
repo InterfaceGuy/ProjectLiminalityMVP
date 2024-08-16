@@ -119,12 +119,19 @@ function displayDreamnodes(dreamnodes) {
 
     const itemsPerRow = Math.floor(dreamnodeList.offsetWidth / 200); // Adjust 200 based on item width + gap
     let currentRow;
+    let rowIndex = 0;
 
     dreamnodes.forEach((dreamnode, index) => {
         if (index % itemsPerRow === 0) {
             currentRow = document.createElement('div');
             currentRow.className = 'honeycomb-row';
             dreamnodeList.appendChild(currentRow);
+            rowIndex++;
+        }
+
+        // Skip the last item in even rows
+        if (rowIndex % 2 === 0 && (index + 1) % itemsPerRow === 0) {
+            return;
         }
 
         logger.log(`Creating element for dreamnode: ${JSON.stringify(dreamnode)}`);
