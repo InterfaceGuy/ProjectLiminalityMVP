@@ -381,6 +381,7 @@ h1 {
 .dreamnode-item.centered .dream-song-side {
     background-color: #000000;
     transform: rotateY(180deg);
+    display: none;
 }
 
 .dreamnode-item.centered img,
@@ -410,15 +411,17 @@ h1 {
 }
 
 .dreamnode-item.centered.flipped {
-    transform: translate(-50%, -50%) rotateY(180deg);
+    transform: translate(-50%, -50%);
 }
 
 .dreamnode-item.centered.flipped .dream-talk-side {
-    transform: rotateY(180deg);
+    display: none;
 }
 
 .dreamnode-item.centered.flipped .dream-song-side {
+    display: flex;
     transform: rotateY(0deg);
+    transition: transform 0.3s ease-in-out;
 }
 
 .flip-button {

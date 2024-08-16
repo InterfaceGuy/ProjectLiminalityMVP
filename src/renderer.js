@@ -235,7 +235,7 @@ function centerDreamnode(dreamnode) {
             
             // Create flip button
             const flipButton = document.createElement('button');
-            flipButton.textContent = 'Flip';
+            flipButton.textContent = 'Show DreamSong';
             flipButton.classList.add('flip-button');
             flipButton.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -273,10 +273,30 @@ function centerDreamnode(dreamnode) {
 }
 
 function flipDreamnode(node) {
-    node.classList.toggle('flipped');
     const flipButton = document.querySelector('.flip-button');
-    if (flipButton) {
-        flipButton.textContent = node.classList.contains('flipped') ? 'Show DreamTalk' : 'Show DreamSong';
+    const dreamTalkSide = node.querySelector('.dream-talk-side');
+    const dreamSongSide = node.querySelector('.dream-song-side');
+
+    if (node.classList.contains('flipped')) {
+        node.classList.remove('flipped');
+        dreamSongSide.style.transform = 'rotateY(180deg)';
+        setTimeout(() => {
+            dreamTalkSide.style.display = 'flex';
+            dreamSongSide.style.display = 'none';
+        }, 150);
+        if (flipButton) {
+            flipButton.textContent = 'Show DreamSong';
+        }
+    } else {
+        node.classList.add('flipped');
+        dreamSongSide.style.display = 'flex';
+        dreamTalkSide.style.display = 'none';
+        setTimeout(() => {
+            dreamSongSide.style.transform = 'rotateY(0deg)';
+        }, 0);
+        if (flipButton) {
+            flipButton.textContent = 'Show DreamTalk';
+        }
     }
 }
 
