@@ -1,11 +1,14 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 20px 100px; /* Increased padding on left and right */
+    padding: 20px;
     background-color: #000000;
     color: #ffffff;
     position: relative;
     overflow: auto;
+    max-width: calc(100% - 200px); /* Subtract 2 * 100px from the total width */
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .fade-frame {
