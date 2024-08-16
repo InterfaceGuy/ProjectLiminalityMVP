@@ -242,19 +242,27 @@ function centerDreamnode(dreamnode) {
                 flipDreamnode(node);
             });
             
+            // Create dream talk side
+            const dreamTalkSide = document.createElement('div');
+            dreamTalkSide.classList.add('dream-talk-side');
+            while (node.firstChild) {
+                dreamTalkSide.appendChild(node.firstChild);
+            }
+            
             // Create dream song side
             const dreamSongSide = document.createElement('div');
             dreamSongSide.classList.add('dream-song-side');
-        
             const dreamSongContent = document.createElement('div');
             dreamSongContent.classList.add('dream-song-content');
             dreamSongContent.textContent = 'DreamSong';
-        
             dreamSongSide.appendChild(dreamSongContent);
+            
+            // Append both sides to the node
+            node.appendChild(dreamTalkSide);
+            node.appendChild(dreamSongSide);
             
             // Append flip button to body, not to the node
             document.body.appendChild(flipButton);
-            node.appendChild(dreamSongSide);
             
             node.addEventListener('click', handleExitFullScreen);
         } else {
