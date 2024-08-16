@@ -75,7 +75,7 @@ ipcMain.on('open-in-finder', (event, repoName) => {
 
 ipcMain.on('open-in-gitfox', (event, repoName) => {
     const repoPath = path.join(VAULT_PATH, repoName);
-    exec(`open -a "${GITFOX_PATH}" "${repoPath}"`, (error) => {
+    exec(`cd "${VAULT_PATH}" && gitfox "${repoName}"`, (error) => {
         if (error) {
             console.error(`Error opening GitFox: ${error}`);
         }
