@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: 20px 100px; /* Increased padding on left and right */
     background-color: #000000;
     color: #ffffff;
     position: relative;
@@ -32,7 +32,7 @@ body {
 .fade-left, .fade-right {
     top: 0;
     bottom: 0;
-    width: 100px;
+    width: 100px; /* Keep the same width as the body padding */
 }
 
 .fade-top {
