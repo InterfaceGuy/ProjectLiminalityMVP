@@ -236,12 +236,34 @@ function centerDreamnode(dreamnode) {
     dreamnodes.forEach(node => {
         if (node.getAttribute('data-dreamnode') === dreamnode) {
             node.classList.add('centered');
+            
+            // Create flip button
+            const flipButton = document.createElement('button');
+            flipButton.textContent = 'Flip';
+            flipButton.classList.add('flip-button');
+            flipButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                flipDreamnode(node);
+            });
+            
+            // Create dream song side
+            const dreamSongSide = document.createElement('div');
+            dreamSongSide.classList.add('dream-song-side');
+            dreamSongSide.textContent = 'Dream Song';
+            
+            node.appendChild(flipButton);
+            node.appendChild(dreamSongSide);
+            
             node.addEventListener('click', exitFullScreen);
         } else {
             node.classList.add('hidden');
         }
     });
     document.addEventListener('keydown', handleEscapeKey);
+}
+
+function flipDreamnode(node) {
+    node.classList.toggle('flipped');
 }
 
 function showContextMenu(e, dreamnode) {
