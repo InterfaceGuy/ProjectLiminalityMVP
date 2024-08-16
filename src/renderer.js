@@ -224,47 +224,46 @@ function showContextMenu(e, dreamnode) {
     contextMenu.style.left = `${e.clientX}px`;
     contextMenu.style.top = `${e.clientY}px`;
 
-    const openFinderOption = document.getElementById('openFinder');
-    const openGitFoxOption = document.getElementById('openGitFox');
-    const copyDreamTalkOption = document.getElementById('copyDreamTalk');
-    const openKeynodeOption = document.getElementById('openKeynode');
-    const renameOption = document.getElementById('rename');
-    const editMetadataOption = document.getElementById('editMetadata');
-
-    openFinderOption.onclick = () => {
-        ipcRenderer.send('open-in-finder', dreamnode);
-        contextMenu.style.display = 'none';
+    const menuOptions = {
+        'openFinder': () => ipcRenderer.send('open-in-finder', dreamnode),
+        'openGitFox': () => ipcRenderer.send('open-in-gitfox', dreamnode),
+        'copyDreamTalk': () => {
+            const dreamTalk = generateDreamTalk(dreamnode);
+            clipboard.writeText(dreamTalk);
+        },
+        'openKeynode': () => ipcRenderer.send('open-keynode', dreamnode),
+        'rename': () => showRenameDialog(dreamnode),
+        'editMetadata': () => showMetadataDialog(dreamnode)
     };
 
-    openGitFoxOption.onclick = () => {
-        ipcRenderer.send('open-in-gitfox', dreamnode);
-        contextMenu.style.display = 'none';
+    Object.keys(menuOptions).forEach(optionId => {
+        const option = document.getElementById(optionId);
+        if (option) {
+            option.onclick = () => {
+                menuOptions[optionId]();
+                contextMenu.style.display = 'none';
+            };
+        }
+    });
+
+    const closeContextMenu = (e) => {
+        if (!contextMenu.contains(e.target)) {
+            contextMenu.style.display = 'none';
+            document.removeEventListener('click', closeContextMenu);
+            document.removeEventListener('keydown', handleEscapeKey);
+        }
     };
 
-    copyDreamTalkOption.onclick = () => {
-        const dreamTalk = generateDreamTalk(dreamnode);
-        clipboard.writeText(dreamTalk);
-        contextMenu.style.display = 'none';
+    const handleEscapeKey = (e) => {
+        if (e.key === 'Escape') {
+            contextMenu.style.display = 'none';
+            document.removeEventListener('click', closeContextMenu);
+            document.removeEventListener('keydown', handleEscapeKey);
+        }
     };
 
-    openKeynodeOption.onclick = () => {
-        ipcRenderer.send('open-keynode', dreamnode);
-        contextMenu.style.display = 'none';
-    };
-
-    renameOption.onclick = () => {
-        showRenameDialog(dreamnode);
-        contextMenu.style.display = 'none';
-    };
-
-    editMetadataOption.onclick = () => {
-        showMetadataDialog(dreamnode);
-        contextMenu.style.display = 'none';
-    };
-
-    document.addEventListener('click', () => {
-        contextMenu.style.display = 'none';
-    }, { once: true });
+    document.addEventListener('click', closeContextMenu);
+    document.addEventListener('keydown', handleEscapeKey);
 }
 
 function showMetadataDialog(dreamnode) {
