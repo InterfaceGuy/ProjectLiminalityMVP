@@ -78,6 +78,7 @@ h1 {
     transition: all 0.3s ease;
     overflow: hidden;
     position: relative;
+    z-index: 1; /* Ensure regular dreamnodes are below dialogs */
 }
 
 .idea-node {
@@ -141,6 +142,7 @@ h1 {
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(255,255,255,0.1);
     color: #ffffff;
+    z-index: 1001; /* Higher than search-dialog to keep the ordering you prefer */
 }
 
 .dialog input[type="text"] {
@@ -171,6 +173,7 @@ h1 {
     padding: 10px;
     display: none;
     flex-direction: column;
+    z-index: 1000; /* Ensure it's always on top */
 }
 
 #searchBar {
@@ -329,7 +332,7 @@ h1 {
     width: 90vmin;
     height: 90vmin;
     border-radius: 50%;
-    z-index: 100;
+    z-index: 999; /* Lower than dialogs but higher than regular dreamnodes */
     display: flex;
     flex-direction: column;
     justify-content: center;
