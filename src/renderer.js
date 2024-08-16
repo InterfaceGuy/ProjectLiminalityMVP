@@ -255,6 +255,14 @@ function showContextMenu(e, dreamnode) {
         'openGitFox': () => {
             logger.log(`Attempting to open GitFox for dreamnode: ${dreamnode}`);
             ipcRenderer.send('open-in-gitfox', dreamnode);
+            ipcRenderer.once('gitfox-opened', (event, result) => {
+                if (result.success) {
+                    logger.log(`Successfully opened GitFox for ${dreamnode}`);
+                } else {
+                    logger.log(`Failed to open GitFox for ${dreamnode}: ${result.error}`);
+                    alert(`Failed to open GitFox: ${result.error}`);
+                }
+            });
         },
         'copyDreamTalk': () => {
             const dreamTalk = generateDreamTalk(dreamnode);
