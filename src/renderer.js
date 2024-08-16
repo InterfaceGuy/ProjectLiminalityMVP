@@ -161,7 +161,30 @@ function displayDreamnodes(dreamnodes) {
         dreamnodeList.appendChild(listItem);
     });
     logger.log(`Finished displaying ${dreamnodes.length} dreamnodes`);
+    adjustDreamnodeSpacing();
 }
+
+function adjustDreamnodeSpacing() {
+    const dreamnodeList = document.getElementById('dreamnodeList');
+    const dreamnodeItems = dreamnodeList.querySelectorAll('.dreamnode-item');
+    const listWidth = dreamnodeList.offsetWidth;
+    const itemWidth = dreamnodeItems[0].offsetWidth;
+    const itemsPerRow = Math.floor(listWidth / itemWidth);
+    const totalGap = listWidth - (itemsPerRow * itemWidth);
+    const gapPerItem = totalGap / (itemsPerRow - 1);
+
+    dreamnodeList.style.gap = `20px ${gapPerItem}px`;
+}
+
+// Add event listener for window resize
+window.addEventListener('resize', adjustDreamnodeSpacing);
+
+// Call adjustDreamnodeSpacing after initial render
+document.addEventListener('DOMContentLoaded', () => {
+    // ... (existing code)
+    displayDreamnodes(sortedDreamnodes);
+    adjustDreamnodeSpacing();
+});
 
 function sortDreamnodes(dreamnodes, method) {
     switch (method) {
