@@ -266,7 +266,9 @@ function centerDreamnode(dreamnode) {
 function flipDreamnode(node) {
     node.classList.toggle('flipped');
     const flipButton = document.querySelector('.flip-button');
-    flipButton.style.display = node.classList.contains('flipped') ? 'none' : 'block';
+    if (flipButton) {
+        flipButton.textContent = node.classList.contains('flipped') ? 'Unflip' : 'Flip';
+    }
 }
 
 function exitFullScreen() {

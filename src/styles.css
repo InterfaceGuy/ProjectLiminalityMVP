@@ -356,6 +356,7 @@ h1 {
     height: auto;
     object-fit: contain;
     border-radius: 50%;
+    backface-visibility: hidden;
 }
 
 .dreamnode-item.centered span {
@@ -366,6 +367,7 @@ h1 {
     font-size: 24px;
     text-align: center;
     max-width: 80%;
+    backface-visibility: hidden;
 }
 
 .dreamnode-item.hidden {
@@ -373,7 +375,7 @@ h1 {
 }
 
 .dreamnode-item.flipped {
-    transform: translate(-50%, -50%) rotateX(180deg);
+    transform: translate(-50%, -50%) rotateY(180deg);
 }
 
 .flip-button {
@@ -396,7 +398,7 @@ h1 {
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
-    transform: rotateX(180deg);
+    transform: rotateY(180deg);
     display: flex;
     justify-content: center;
     align-items: center;
