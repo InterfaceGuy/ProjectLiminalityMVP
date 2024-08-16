@@ -265,8 +265,14 @@ function showContextMenu(e, dreamnode) {
             });
         },
         'copyDreamTalk': () => {
-            const dreamTalk = generateDreamTalk(dreamnode);
-            clipboard.writeText(dreamTalk);
+            const mediaFile = getMediaFile(dreamnode);
+            if (mediaFile) {
+                clipboard.writeImage(mediaFile.path);
+                logger.log(`Copied media file for ${dreamnode} to clipboard`);
+            } else {
+                logger.log(`No media file found for ${dreamnode}`);
+                alert(`No media file found for ${dreamnode}`);
+            }
         },
         'openKeynode': () => ipcRenderer.send('open-keynode', dreamnode),
         'rename': () => showRenameDialog(dreamnode),
@@ -369,10 +375,6 @@ function updateMetadata(dreamnode, metadata) {
     displayDreamnodes(sortDreamnodes(allDreamnodes, currentSortMethod));
 }
 
-function generateDreamTalk(dreamnode) {
-    // Implement the logic to generate DreamTalk here
-    return `DreamTalk for ${dreamnode}`;
-}
 
 function showRenameDialog(dreamnode) {
     const renameDialog = document.getElementById('renameDialog');
