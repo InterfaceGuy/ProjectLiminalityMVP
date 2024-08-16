@@ -2,7 +2,6 @@ const { ipcRenderer, clipboard } = require('electron');
 const fs = require('fs-extra');
 const path = require('path');
 const logger = require('./logger');
-const simpleGit = require('simple-git');
 
 const VAULT_PATH = '/Users/davidrug/Library/Mobile Documents/iCloud~md~obsidian/Documents/InterBrain';
 
@@ -392,12 +391,6 @@ function renameDreamnode(oldName, newName) {
             const newMediaPath = path.join(newPath, `${newName}.${mediaFile.format}`);
             fs.renameSync(oldMediaPath, newMediaPath);
         }
-
-        // Update Git repository
-        const git = simpleGit(newPath);
-        git.add('./*')
-           .commit(`Renamed dreamnode from ${oldName} to ${newName}`)
-           .catch((err) => console.error('Error updating Git repository:', err));
 
         // Refresh the dreamnode list
         allDreamnodes = getDreamnodes();
