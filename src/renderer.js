@@ -298,7 +298,7 @@ function flipDreamnode(node) {
             dreamTalkSide.style.display = 'flex';
             dreamSongSide.style.display = 'none';
         }
-    }, 150); // Half of the animation duration
+    }, 450); // Half of the new animation duration (3 * 300ms = 900ms, so half is 450ms)
 }
 
 function exitFullScreen() {
