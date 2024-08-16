@@ -270,18 +270,28 @@ function showContextMenu(e, dreamnode) {
                 if (mediaFile) {
                     const fileContent = fs.readFileSync(mediaFile.path);
                     const nativeImage = require('electron').nativeImage;
+                    
                     if (mediaFile.format === 'gif') {
+                        // For GIF, we'll use a custom MIME type
                         clipboard.writeBuffer('image/gif', fileContent);
                     } else if (['png', 'jpeg', 'jpg', 'webp'].includes(mediaFile.format)) {
+                        // For static images, we'll use nativeImage
                         const image = nativeImage.createFromBuffer(fileContent);
                         clipboard.writeImage(image);
                     } else if (mediaFile.format === 'svg') {
+                        // For SVG, we'll write it as text
                         clipboard.writeText(fileContent.toString('utf-8'));
                     } else if (mediaFile.format === 'mp4') {
+                        // For MP4, we'll use a custom MIME type
                         clipboard.writeBuffer('video/mp4', fileContent);
                     } else {
+                        // For any other format, we'll use a generic MIME type
                         clipboard.writeBuffer('application/octet-stream', fileContent);
                     }
+                    
+                    // Additionally, we'll write the file path to the clipboard as text
+                    clipboard.writeText(mediaFile.path, 'selection');
+                    
                     logger.log(`Copied media file (${mediaFile.format}) for ${dreamnode} to clipboard`);
                 } else {
                     logger.log(`No media file found for ${dreamnode}`);
