@@ -83,7 +83,7 @@ h1 {
     transition: all 0.3s ease;
     overflow: hidden;
     position: relative;
-    z-index: 1; /* Ensure regular dreamnodes are below dialogs */
+    z-index: 1;
 }
 
 .idea-node {
@@ -101,7 +101,7 @@ h1 {
 .dreamnode-item img, .dreamnode-item video {
     width: 90%;
     height: 90%;
-    object-fit: contain;
+    object-fit: cover;
     border-radius: 50%;
 }
 
@@ -334,16 +334,18 @@ h1 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 90vmin;
-    height: 90vmin;
+    width: 80vmin;
+    height: 80vmin;
     border-radius: 50%;
-    z-index: 999; /* Lower than dialogs but higher than regular dreamnodes */
+    z-index: 999;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: #000000;
     overflow: hidden;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
 }
 
 .dreamnode-item.centered img,
@@ -370,6 +372,39 @@ h1 {
     display: none;
 }
 
+.dreamnode-item.flipped {
+    transform: translate(-50%, -50%) rotateX(180deg);
+}
+
+.flip-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1001;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.dream-song-side {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    transform: rotateX(180deg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000000;
+    color: #ffffff;
+    border-radius: 50%;
+}
+
 /* Customizing the scrollbar */
 ::-webkit-scrollbar {
     width: 12px;
@@ -387,6 +422,7 @@ h1 {
 ::-webkit-scrollbar-thumb:hover {
     background: #444444;
 }
+
 #sortButtons {
     margin-bottom: 10px;
 }
@@ -404,6 +440,7 @@ h1 {
     background-color: #007bff;
     color: white;
 }
+
 .dreamnode-item:not(:has(img)):not(:has(video)) {
     background-color: rgba(0, 0, 0, 0.7);
 }
@@ -414,49 +451,4 @@ h1 {
 
 .dreamnode-item:not(:has(img)):not(:has(video)):hover::after {
     opacity: 0;
-}
-.dreamnode-item {
-    position: relative;
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
-}
-
-.dreamnode-item.centered {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
-    width: 80vw;
-    height: 80vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    box-shadow: 0 0 20px rgba(0,0,0,0.3);
-}
-
-.dreamnode-item.flipped {
-    transform: translate(-50%, -50%) rotateY(180deg);
-}
-
-.flip-button {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    z-index: 1001;
-}
-
-.dream-song-side {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    transform: rotateY(180deg);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f0f0f0;
 }

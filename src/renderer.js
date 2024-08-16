@@ -251,7 +251,8 @@ function centerDreamnode(dreamnode) {
             dreamSongSide.classList.add('dream-song-side');
             dreamSongSide.textContent = 'Dream Song';
             
-            node.appendChild(flipButton);
+            // Append flip button to body, not to the node
+            document.body.appendChild(flipButton);
             node.appendChild(dreamSongSide);
             
             node.addEventListener('click', exitFullScreen);
@@ -264,6 +265,24 @@ function centerDreamnode(dreamnode) {
 
 function flipDreamnode(node) {
     node.classList.toggle('flipped');
+    const flipButton = document.querySelector('.flip-button');
+    flipButton.style.display = node.classList.contains('flipped') ? 'none' : 'block';
+}
+
+function exitFullScreen() {
+    const centeredNode = document.querySelector('.dreamnode-item.centered');
+    if (centeredNode) {
+        centeredNode.classList.remove('centered', 'flipped');
+        centeredNode.removeEventListener('click', exitFullScreen);
+    }
+    document.querySelectorAll('.dreamnode-item.hidden').forEach(node => {
+        node.classList.remove('hidden');
+    });
+    const flipButton = document.querySelector('.flip-button');
+    if (flipButton) {
+        flipButton.remove();
+    }
+    document.removeEventListener('keydown', handleEscapeKey);
 }
 
 function showContextMenu(e, dreamnode) {
