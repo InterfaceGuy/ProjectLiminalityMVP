@@ -355,6 +355,18 @@ function showContextMenu(e, dreamnode) {
                 }
             });
         },
+        'openKeynote': () => {
+            logger.log(`Attempting to open Keynote for dreamnode: ${dreamnode}`);
+            ipcRenderer.send('open-in-keynote', dreamnode);
+            ipcRenderer.once('keynote-opened', (event, result) => {
+                if (result.success) {
+                    logger.log(`Successfully opened Keynote for ${dreamnode}`);
+                } else {
+                    logger.log(`Failed to open Keynote for ${dreamnode}: ${result.error}`);
+                    alert(`Failed to open Keynote: ${result.error}`);
+                }
+            });
+        },
         'copyDreamTalk': () => {
             try {
                 const mediaFile = getMediaFile(dreamnode);

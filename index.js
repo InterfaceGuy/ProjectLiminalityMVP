@@ -5,6 +5,7 @@ const { exec } = require('child_process');
 
 const VAULT_PATH = '/Users/davidrug/Library/Mobile Documents/iCloud~md~obsidian/Documents/InterBrain';
 const GITFOX_PATH = '/Applications/GitFox.app';
+const KEYNOTE_PATH = '/Applications/Keynote.app';
 
 function createWindow() {
     const win = new BrowserWindow({
@@ -96,5 +97,35 @@ ipcMain.on('open-keynode', (event, repoName) => {
         shell.openPath(keynodePath);
     } else {
         console.error(`Keynode file not found: ${keynodePath}`);
+    }
+});
+
+ipcMain.on('open-in-keynote', (event, repoName) => {
+    const repoPath = path.join(VAULT_PATH, repoName);
+    const keynoteFiles = fs.readdirSync(repoPath).filter(file => file.endsWith('.key'));
+    
+    let keynoteFile;
+    if (keynoteFiles.length > 0) {
+        // Prefer the file with the same name as the repository
+        keynoteFile = keynoteFiles.find(file => file === `${repoName}.key`) || keynoteFiles[0];
+    }
+
+    if (keynoteFile) {
+        const keynoteFilePath = path.join(repoPath, keynoteFile);
+        exec(`open -a "${KEYNOTE_PATH}" "${keynoteFilePath}"`, (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Error opening Keynote: ${error}`);
+                event.reply('keynote-opened', { success: false, error: error.message });
+            } else if (stderr) {
+                console.error(`Keynote stderr: ${stderr}`);
+                event.reply('keynote-opened', { success: false, error: stderr });
+            } else {
+                console.log(`Successfully opened Keynote for ${repoName}`);
+                event.reply('keynote-opened', { success: true });
+            }
+        });
+    } else {
+        console.error(`No Keynote file found in: ${repoPath}`);
+        event.reply('keynote-opened', { success: false, error: 'No Keynote file found' });
     }
 });
