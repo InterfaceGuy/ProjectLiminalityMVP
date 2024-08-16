@@ -291,16 +291,18 @@ function removeFlipButton() {
     }
 }
 
-function removeFlipButton() {
-    const flipButton = document.querySelector('.flip-button');
-    if (flipButton) {
-        flipButton.remove();
-    }
-}
-
 function handleEscapeKey(e) {
     if (e.key === 'Escape') {
         exitFullScreen();
+    }
+}
+
+// Add this new function to handle both Escape key and click
+function handleExitFullScreen(e) {
+    if (e.type === 'keydown' && e.key !== 'Escape') {
+        return;
+    }
+    exitFullScreen();
     }
 }
 
