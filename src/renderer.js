@@ -279,25 +279,26 @@ function flipDreamnode(node) {
 
     if (node.classList.contains('flipped')) {
         node.classList.remove('flipped');
-        dreamSongSide.style.transform = 'rotateY(180deg)';
-        setTimeout(() => {
-            dreamTalkSide.style.display = 'flex';
-            dreamSongSide.style.display = 'none';
-        }, 150);
         if (flipButton) {
             flipButton.textContent = 'Show DreamSong';
         }
     } else {
         node.classList.add('flipped');
-        dreamSongSide.style.display = 'flex';
-        dreamTalkSide.style.display = 'none';
-        setTimeout(() => {
-            dreamSongSide.style.transform = 'rotateY(0deg)';
-        }, 0);
         if (flipButton) {
             flipButton.textContent = 'Show DreamTalk';
         }
     }
+
+    // Switch content at the midpoint of the animation
+    setTimeout(() => {
+        if (node.classList.contains('flipped')) {
+            dreamTalkSide.style.display = 'none';
+            dreamSongSide.style.display = 'flex';
+        } else {
+            dreamTalkSide.style.display = 'flex';
+            dreamSongSide.style.display = 'none';
+        }
+    }, 150); // Half of the animation duration
 }
 
 function exitFullScreen() {
