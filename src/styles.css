@@ -93,9 +93,9 @@ h1 {
 }
 
 .dreamnode-item img, .dreamnode-item video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
     border-radius: 50%;
 }
 
