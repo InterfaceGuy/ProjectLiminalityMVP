@@ -252,6 +252,11 @@ function showContextMenu(e, dreamnode) {
         contextMenu.style.display = 'none';
     };
 
+    renameOption.onclick = () => {
+        showRenameDialog(dreamnode);
+        contextMenu.style.display = 'none';
+    };
+
     editMetadataOption.onclick = () => {
         showMetadataDialog(dreamnode);
         contextMenu.style.display = 'none';
