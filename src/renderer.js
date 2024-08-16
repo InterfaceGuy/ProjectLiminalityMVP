@@ -739,6 +739,85 @@ document.addEventListener('DOMContentLoaded', () => {
         sortButtons.appendChild(button);
     });
     updateActiveButton(currentSortMethod);
+
+    // Set up drag and drop
+    setupDragAndDrop();
+});
+
+function setupDragAndDrop() {
+    const dropZone = document.getElementById('dropZone');
+    const body = document.body;
+
+    body.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.add('active');
+    });
+
+    body.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.remove('active');
+    });
+
+    body.addEventListener('drop', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.remove('active');
+
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            handleDroppedFile(files[0]);
+        }
+    });
+}
+
+function handleDroppedFile(file) {
+    const supportedFormats = ['gif', 'mp4', 'png', 'jpeg', 'jpg', 'webp', 'svg'];
+    const fileExtension = file.name.split('.').pop().toLowerCase();
+
+    if (supportedFormats.includes(fileExtension)) {
+        showNewDreamnodeDialog(file);
+    } else {
+        alert('Unsupported file format. Please drop a supported media file.');
+    }
+}
+
+function showNewDreamnodeDialog(file) {
+    const newDreamnodeDialog = document.getElementById('newDreamnodeDialog');
+    const dreamnodeNameInput = document.getElementById('dreamnodeName');
+    const createDreamnodeBtn = document.getElementById('createDreamnodeBtn');
+
+    dreamnodeNameInput.value = file.name.split('.')[0]; // Set default name to file name without extension
+    newDreamnodeDialog.style.display = 'block';
+
+    const originalCreateHandler = createDreamnodeBtn.onclick;
+    createDreamnodeBtn.onclick = () => {
+        const name = dreamnodeNameInput.value.trim();
+        const type = document.querySelector('input[name="dreamnodeType"]:checked').value;
+
+        if (!name) {
+            alert('Please enter a name for the DreamNode.');
+            return;
+        }
+
+        ipcRenderer.send('create-dreamnode-with-media', { name, type, filePath: file.path });
+        newDreamnodeDialog.style.display = 'none';
+        dreamnodeNameInput.value = '';
+
+        // Reset the original event handler
+        createDreamnodeBtn.onclick = originalCreateHandler;
+    };
+}
+
+// Add a new IPC listener for the response
+ipcRenderer.on('dreamnode-with-media-created', (event, result) => {
+    if (result.success) {
+        allDreamnodes = getDreamnodes();
+        displayDreamnodes(filterAndSortDreamnodes(currentSearchTerm, currentSortMethod));
+    } else {
+        alert(`Failed to create DreamNode with media: ${result.error}`);
+    }
 });
 
 // Add this at the end of the file
