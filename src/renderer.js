@@ -253,8 +253,8 @@ function showContextMenu(e, dreamnode) {
     const menuOptions = {
         'openFinder': () => ipcRenderer.send('open-in-finder', dreamnode),
         'openGitFox': () => {
-            ipcRenderer.send('open-in-gitfox', dreamnode);
             logger.log(`Attempting to open GitFox for dreamnode: ${dreamnode}`);
+            ipcRenderer.send('open-in-gitfox', dreamnode);
         },
         'copyDreamTalk': () => {
             const dreamTalk = generateDreamTalk(dreamnode);
