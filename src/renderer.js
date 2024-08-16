@@ -255,12 +255,12 @@ function centerDreamnode(dreamnode) {
             document.body.appendChild(flipButton);
             node.appendChild(dreamSongSide);
             
-            node.addEventListener('click', exitFullScreen);
+            node.addEventListener('click', handleExitFullScreen);
         } else {
             node.classList.add('hidden');
         }
     });
-    document.addEventListener('keydown', handleEscapeKey);
+    document.addEventListener('keydown', handleExitFullScreen);
 }
 
 function flipDreamnode(node) {
