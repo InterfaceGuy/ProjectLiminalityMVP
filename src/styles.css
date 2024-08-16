@@ -68,17 +68,16 @@ h1 {
 
 .dreamnode-item {
     background-color: #000000;
-    padding: 10px;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 180px;
     height: 180px;
     transition: all 0.3s ease;
     overflow: hidden;
+    position: relative;
 }
 
 .idea-node {
@@ -94,19 +93,41 @@ h1 {
 }
 
 .dreamnode-item img, .dreamnode-item video {
-    max-width: 100%;
-    max-height: 120px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    margin-bottom: 10px;
     border-radius: 50%;
 }
 
 .dreamnode-item span {
+    display: none;
+    position: absolute;
     text-align: center;
     word-break: break-word;
     color: #ffffff;
     font-size: 14px;
     max-width: 90%;
+    z-index: 2;
+}
+
+.dreamnode-item::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.dreamnode-item:hover::after {
+    opacity: 1;
+}
+
+.dreamnode-item:hover span {
+    display: block;
 }
 
 .dialog {
@@ -353,4 +374,15 @@ h1 {
 #sortButtons button.active {
     background-color: #007bff;
     color: white;
+}
+.dreamnode-item:not(:has(img)):not(:has(video)) {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.dreamnode-item:not(:has(img)):not(:has(video)) span {
+    display: block;
+}
+
+.dreamnode-item:not(:has(img)):not(:has(video)):hover::after {
+    opacity: 0;
 }
