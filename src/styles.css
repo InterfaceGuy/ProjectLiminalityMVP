@@ -77,7 +77,7 @@ h1 {
 }
 
 .honeycomb-row:nth-child(even) {
-    margin-left: 80px; /* Adjusted to create the equilateral triangle effect */
+    margin-left: 0px; /* Adjusted to create the equilateral triangle effect */
 }
 
 .dreamnode-item {
