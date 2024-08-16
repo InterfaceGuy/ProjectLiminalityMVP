@@ -270,7 +270,9 @@ function showContextMenu(e, dreamnode) {
                 if (mediaFile) {
                     const fileContent = fs.readFileSync(mediaFile.path);
                     if (['gif', 'png', 'jpeg', 'jpg', 'webp'].includes(mediaFile.format)) {
-                        clipboard.writeImage(mediaFile.path);
+                        const nativeImage = require('electron').nativeImage;
+                        const image = nativeImage.createFromPath(mediaFile.path);
+                        clipboard.writeImage(image);
                     } else if (mediaFile.format === 'svg') {
                         clipboard.writeText(fileContent.toString('utf-8'));
                     } else if (mediaFile.format === 'mp4') {
