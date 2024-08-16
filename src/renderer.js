@@ -269,7 +269,9 @@ function showContextMenu(e, dreamnode) {
                 const mediaFile = getMediaFile(dreamnode);
                 if (mediaFile) {
                     const fileContent = fs.readFileSync(mediaFile.path);
-                    if (['gif', 'png', 'jpeg', 'jpg', 'webp'].includes(mediaFile.format)) {
+                    if (mediaFile.format === 'gif') {
+                        clipboard.writeBuffer('image/gif', fileContent);
+                    } else if (['png', 'jpeg', 'jpg', 'webp'].includes(mediaFile.format)) {
                         const nativeImage = require('electron').nativeImage;
                         const image = nativeImage.createFromPath(mediaFile.path);
                         clipboard.writeImage(image);
