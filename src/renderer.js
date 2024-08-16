@@ -117,7 +117,16 @@ function displayDreamnodes(dreamnodes) {
         return;
     }
 
-    dreamnodes.forEach(dreamnode => {
+    const itemsPerRow = Math.floor(dreamnodeList.offsetWidth / 200); // Adjust 200 based on item width + gap
+    let currentRow;
+
+    dreamnodes.forEach((dreamnode, index) => {
+        if (index % itemsPerRow === 0) {
+            currentRow = document.createElement('div');
+            currentRow.className = 'honeycomb-row';
+            dreamnodeList.appendChild(currentRow);
+        }
+
         logger.log(`Creating element for dreamnode: ${JSON.stringify(dreamnode)}`);
         const listItem = document.createElement('div');
         listItem.className = 'dreamnode-item';
@@ -158,35 +167,15 @@ function displayDreamnodes(dreamnodes) {
             showContextMenu(e, dreamnode.name);
         });
 
-        dreamnodeList.appendChild(listItem);
+        currentRow.appendChild(listItem);
     });
     logger.log(`Finished displaying ${dreamnodes.length} dreamnodes`);
-    adjustDreamnodeSpacing();
 }
 
-function adjustDreamnodeSpacing() {
-    const dreamnodeList = document.getElementById('dreamnodeList');
-    const dreamnodeItems = dreamnodeList.querySelectorAll('.dreamnode-item');
-    const listWidth = dreamnodeList.offsetWidth;
-    const itemWidth = dreamnodeItems[0].offsetWidth;
-    const verticalGap = 20; // This should match the vertical gap in CSS
-    const minHorizontalGap = verticalGap;
-    
-    let itemsPerRow = Math.floor((listWidth + minHorizontalGap) / (itemWidth + minHorizontalGap));
-    let totalGap = listWidth - (itemsPerRow * itemWidth);
-    let gapPerItem = Math.max(minHorizontalGap, totalGap / (itemsPerRow - 1));
-
-    dreamnodeList.style.gap = `${verticalGap}px ${gapPerItem}px`;
-}
-
-// Add event listener for window resize
-window.addEventListener('resize', adjustDreamnodeSpacing);
-
-// Call adjustDreamnodeSpacing after initial render
+// Call displayDreamnodes after initial render
 document.addEventListener('DOMContentLoaded', () => {
     // ... (existing code)
     displayDreamnodes(sortedDreamnodes);
-    adjustDreamnodeSpacing();
 });
 
 function sortDreamnodes(dreamnodes, method) {

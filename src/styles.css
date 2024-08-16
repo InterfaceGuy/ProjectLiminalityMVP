@@ -67,8 +67,17 @@ h1 {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
-    /* The gap property will be dynamically set by JavaScript */
+    padding: 0 10%;
+}
+
+.honeycomb-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: -30px; /* Adjust this value to control vertical spacing */
+}
+
+.honeycomb-row:nth-child(even) {
+    margin-left: 90px; /* Half of the dreamnode width plus gap */
 }
 
 .dreamnode-item {
@@ -78,14 +87,15 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 180px;
-    height: 180px;
+    width: 160px;
+    height: 160px;
     transition: all 0.3s ease;
     position: relative;
     z-index: 1;
-    padding: 10px; /* Add padding to create space for the border */
+    padding: 10px;
     box-sizing: border-box;
     overflow: hidden;
+    margin: 0 10px 20px;
 }
 
 .idea-node {
