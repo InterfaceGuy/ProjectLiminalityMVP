@@ -91,14 +91,6 @@ ipcMain.on('open-in-gitfox', (event, repoName) => {
     });
 });
 
-ipcMain.on('open-keynode', (event, repoName) => {
-    const keynodePath = path.join(VAULT_PATH, repoName, `${repoName}.md`);
-    if (fs.existsSync(keynodePath)) {
-        shell.openPath(keynodePath);
-    } else {
-        console.error(`Keynode file not found: ${keynodePath}`);
-    }
-});
 
 ipcMain.on('open-in-keynote', (event, repoName) => {
     const repoPath = path.join(VAULT_PATH, repoName);
