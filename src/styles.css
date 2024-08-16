@@ -81,9 +81,10 @@ h1 {
     width: 180px;
     height: 180px;
     transition: all 0.3s ease;
-    overflow: hidden;
     position: relative;
     z-index: 1;
+    padding: 10px; /* Add padding to create space for the border */
+    box-sizing: border-box;
 }
 
 .idea-node {
@@ -99,9 +100,11 @@ h1 {
 }
 
 .dreamnode-item img, .dreamnode-item video {
-    width: 90%;
-    height: 90%;
-    object-fit: cover;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
     border-radius: 50%;
 }
 
@@ -343,15 +346,16 @@ h1 {
     justify-content: center;
     align-items: center;
     background-color: #000000;
-    overflow: hidden;
     transition: transform 0.6s;
     transform-style: preserve-3d;
+    padding: 20px; /* Increase padding for the larger view */
+    box-sizing: border-box;
 }
 
 .dreamnode-item.centered img,
 .dreamnode-item.centered video {
-    max-width: 80%;
-    max-height: 80%;
+    max-width: 100%;
+    max-height: 100%;
     width: auto;
     height: auto;
     object-fit: contain;
