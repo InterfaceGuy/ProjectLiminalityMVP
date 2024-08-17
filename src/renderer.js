@@ -48,6 +48,31 @@ function getDreamnodes() {
     return dreamnodes;
 }
 
+function displaySelectedRelatedNodes(selectedNodes) {
+    const selectedRelatedNodes = document.getElementById('selectedRelatedNodes');
+    selectedRelatedNodes.innerHTML = ''; // Clear previous content
+
+    selectedNodes.forEach(node => {
+        const nodeElement = document.createElement('div');
+        nodeElement.className = 'selected-node';
+        
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = node;
+        nodeElement.appendChild(nameSpan);
+        
+        const removeButton = document.createElement('span');
+        removeButton.className = 'remove-node';
+        removeButton.textContent = '×';
+        removeButton.addEventListener('click', () => {
+            selectedRelatedNodes.removeChild(nodeElement);
+            selectedNodes = selectedNodes.filter(n => n !== node);
+        });
+
+        nodeElement.appendChild(removeButton);
+        selectedRelatedNodes.appendChild(nodeElement);
+    });
+}
+
 function createPlFile(dreamnodeName, type = 'idea') {
     const plPath = path.join(VAULT_PATH, dreamnodeName, '.pl');
     const metadata = {
@@ -57,6 +82,9 @@ function createPlFile(dreamnodeName, type = 'idea') {
         type: type,
         relatedNodes: []
     };
+    const existingMetadata = getMetadata(dreamnode);
+    const updatedRelatedNodes = new Set([...existingMetadata.relatedNodes, ...metadata.relatedNodes]);
+    metadata.relatedNodes = Array.from(updatedRelatedNodes);
     fs.writeFileSync(plPath, JSON.stringify(metadata, null, 2));
     return metadata;
 }
@@ -530,6 +558,7 @@ function showMetadataDialog(dreamnode) {
         
         // Set up related nodes
         setupRelatedNodesInput(dreamnode, metadata.type || 'idea', metadata.relatedNodes || []);
+        displaySelectedRelatedNodes(metadata.relatedNodes || []);
         
         metadataDialog.style.display = 'block';
         
@@ -591,7 +620,7 @@ function setupRelatedNodesInput(currentNode, nodeType, selectedNodes) {
     selectedRelatedNodes.innerHTML = '';
 
     // Add selected nodes
-    selectedNodes.forEach(node => addSelectedNode(node));
+    displaySelectedRelatedNodes(selectedNodes);
 
     // Get all nodes of the opposite type
     const oppositeType = nodeType === 'idea' ? 'person' : 'idea';
