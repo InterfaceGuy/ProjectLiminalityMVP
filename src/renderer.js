@@ -48,13 +48,14 @@ function getDreamnodes() {
     return dreamnodes;
 }
 
-function createPlFile(dreamnodeName) {
+function createPlFile(dreamnodeName, type = 'idea') {
     const plPath = path.join(VAULT_PATH, dreamnodeName, '.pl');
     const metadata = {
         dateCreated: new Date().toISOString(),
         dateModified: new Date().toISOString(),
         interactions: 0,
-        type: 'idea'
+        type: type,
+        relatedNodes: []
     };
     fs.writeFileSync(plPath, JSON.stringify(metadata, null, 2));
     return metadata;
@@ -229,6 +230,11 @@ function handleEscapeKey(e) {
 
 function centerDreamnode(dreamnode) {
     const dreamnodes = document.querySelectorAll('.dreamnode-item');
+    const metadata = getMetadata(dreamnode);
+    const relatedNodes = metadata.relatedNodes || [];
+    const liminalWeb = document.createElement('div');
+    liminalWeb.id = 'liminalWeb';
+
     dreamnodes.forEach(node => {
         if (node.getAttribute('data-dreamnode') === dreamnode) {
             node.classList.add('centered');
@@ -269,7 +275,65 @@ function centerDreamnode(dreamnode) {
             node.classList.add('hidden');
         }
     });
+
+    // Create and position related nodes
+    relatedNodes.forEach((relatedNode, index) => {
+        const relatedNodeElement = createRelatedNodeElement(relatedNode);
+        liminalWeb.appendChild(relatedNodeElement);
+        positionRelatedNode(relatedNodeElement, index, relatedNodes.length);
+    });
+
+    document.body.appendChild(liminalWeb);
     document.addEventListener('keydown', handleExitFullScreen);
+}
+
+function createRelatedNodeElement(nodeName) {
+    const element = document.createElement('div');
+    element.className = 'related-node';
+    element.setAttribute('data-dreamnode', nodeName);
+    const metadata = getMetadata(nodeName);
+    
+    if (metadata.type === 'person') {
+        element.classList.add('person-node');
+    } else {
+        element.classList.add('idea-node');
+    }
+
+    const mediaFile = getMediaFile(nodeName);
+    if (mediaFile) {
+        if (mediaFile.format === 'mp4') {
+            const video = document.createElement('video');
+            video.src = mediaFile.path;
+            video.autoplay = true;
+            video.loop = true;
+            video.muted = true;
+            element.appendChild(video);
+        } else {
+            const img = document.createElement('img');
+            img.src = mediaFile.path;
+            element.appendChild(img);
+        }
+    }
+
+    const label = document.createElement('span');
+    label.textContent = nodeName;
+    element.appendChild(label);
+
+    element.addEventListener('click', () => {
+        exitFullScreen();
+        centerDreamnode(nodeName);
+    });
+
+    return element;
+}
+
+function positionRelatedNode(element, index, total) {
+    const angle = (index / total) * 2 * Math.PI;
+    const radius = 300; // Adjust this value to change the distance from the center
+    const x = Math.cos(angle) * radius;
+    const y = Math.sin(angle) * radius;
+
+    element.style.transform = `translate(${x}px, ${y}px)`;
 }
 
 function flipDreamnode(node) {
