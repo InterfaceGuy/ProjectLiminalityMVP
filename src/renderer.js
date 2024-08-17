@@ -502,7 +502,10 @@ function showContextMenu(e, dreamnode) {
             });
         },
         'rename': () => showRenameDialog(dreamnode),
-        'editMetadata': () => showMetadataDialog(dreamnode)
+        'editMetadata': () => {
+            logger.log(`Attempting to edit metadata for dreamnode: ${dreamnode}`);
+            showMetadataDialog(dreamnode);
+        }
     };
 
     Object.keys(menuOptions).forEach(optionId => {
@@ -516,6 +519,20 @@ function showContextMenu(e, dreamnode) {
     });
 
     const closeContextMenu = (e) => {
+        if (!contextMenu.contains(e.target)) {
+            contextMenu.style.display = 'none';
+            document.removeEventListener('click', closeContextMenu);
+            document.removeEventListener('keydown', handleEscapeKey);
+        }
+    };
+
+    const handleEscapeKey = (e) => {
+        if (e.key === 'Escape') {
+            contextMenu.style.display = 'none';
+            document.removeEventListener('click', closeContextMenu);
+            document.removeEventListener('keydown', handleEscapeKey);
+        }
+    };
         if (!contextMenu.contains(e.target)) {
             contextMenu.style.display = 'none';
             document.removeEventListener('click', closeContextMenu);
