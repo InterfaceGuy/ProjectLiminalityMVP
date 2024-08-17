@@ -487,11 +487,11 @@ h1 {
 }
 
 .dreamnode-item.centered.idea-node {
-    border: calc(6px * (80vmin / 160px)) solid #00a2ff;
+    border: 6px solid #00a2ff;
 }
 
 .dreamnode-item.centered.person-node {
-    border: calc(6px * (80vmin / 160px)) solid #FF644E;
+    border: 6px solid #FF644E;
 }
 
 .dreamnode-item.centered:hover::before {
