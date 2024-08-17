@@ -581,6 +581,11 @@ function setupRelatedNodesInput(currentNode, nodeType, selectedNodes) {
     const relatedNodesList = document.getElementById('relatedNodesList');
     const selectedRelatedNodes = document.getElementById('selectedRelatedNodes');
 
+    if (!relatedNodesInput || !relatedNodesList || !selectedRelatedNodes) {
+        logger.log('Related nodes elements not found');
+        return;
+    }
+
     // Clear previous content
     relatedNodesList.innerHTML = '';
     selectedRelatedNodes.innerHTML = '';

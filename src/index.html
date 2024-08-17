@@ -88,6 +88,12 @@
                 <input type="radio" id="typePerson" name="type" value="person">
                 <label for="typePerson">Person</label>
             </div>
+            <label for="relatedNodesInput">Related Nodes:</label>
+            <div class="related-nodes-container">
+                <input type="text" id="relatedNodesInput" placeholder="Search related nodes...">
+                <ul id="relatedNodesList"></ul>
+            </div>
+            <div id="selectedRelatedNodes"></div>
         </form>
         <div class="dialog-buttons">
             <button id="updateMetadataBtn">Update</button>
