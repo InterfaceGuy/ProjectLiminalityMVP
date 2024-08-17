@@ -43,19 +43,19 @@ body {
 
 .fade-top, .fade-bottom, .fade-left, .fade-right {
     position: absolute;
-    background: linear-gradient(to var(--direction), rgba(0,0,0,0.7), rgba(0,0,0,0));
+    background: linear-gradient(to var(--direction), rgba(0,0,0,1), rgba(0,0,0,0.7) 30%, rgba(0,0,0,0));
 }
 
 .fade-top, .fade-bottom {
     left: 0;
     right: 0;
-    height: 100px;
+    height: 120px; /* Increased height for a more gradual fade */
 }
 
 .fade-left, .fade-right {
     top: 0;
     bottom: 0;
-    width: 100px; /* Keep the same width as the body padding */
+    width: 120px; /* Increased width for a more gradual fade */
 }
 
 .fade-top {
