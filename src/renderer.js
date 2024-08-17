@@ -748,16 +748,23 @@ function setupDragAndDrop() {
     const dropZone = document.getElementById('dropZone');
     const body = document.body;
 
-    body.addEventListener('dragover', (e) => {
+    body.addEventListener('dragenter', (e) => {
         e.preventDefault();
         e.stopPropagation();
         dropZone.classList.add('active');
     });
 
+    body.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+    });
+
     body.addEventListener('dragleave', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        dropZone.classList.remove('active');
+        if (e.relatedTarget === null || !body.contains(e.relatedTarget)) {
+            dropZone.classList.remove('active');
+        }
     });
 
     body.addEventListener('drop', (e) => {
