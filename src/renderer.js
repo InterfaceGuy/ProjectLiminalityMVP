@@ -57,7 +57,7 @@ function displaySelectedRelatedNodes(selectedNodes) {
         nodeElement.className = 'selected-node';
         
         const nameSpan = document.createElement('span');
-        nameSpan.textContent = node;
+        nameSpan.textContent = node.trim().replace(/[^\x20-\x7E]/g, '');
         nodeElement.appendChild(nameSpan);
         
         const removeButton = document.createElement('span');
@@ -190,7 +190,7 @@ function displayDreamnodes(dreamnodes) {
         }
         
         const label = document.createElement('span');
-        label.textContent = dreamnode.name;
+        label.textContent = dreamnode.name.trim().replace(/[^\x20-\x7E]/g, '');
         listItem.appendChild(label);
         
         listItem.addEventListener('click', () => {
@@ -340,7 +340,7 @@ function createRelatedNodeElement(nodeName) {
     }
 
     const label = document.createElement('span');
-    label.textContent = nodeName;
+    label.textContent = nodeName.trim().replace(/[^\x20-\x7E]/g, '');
     element.appendChild(label);
 
     element.addEventListener('click', () => {
@@ -667,7 +667,7 @@ function setupRelatedNodesInput(currentNode, nodeType, selectedNodes) {
             nodeElement.className = 'selected-node';
             
             const nameSpan = document.createElement('span');
-            nameSpan.textContent = trimmedName;
+            nameSpan.textContent = trimmedName.replace(/[^\x20-\x7E]/g, '');
             nodeElement.appendChild(nameSpan);
             
             const removeButton = document.createElement('span');
