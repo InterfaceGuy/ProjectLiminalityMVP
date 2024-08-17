@@ -645,7 +645,7 @@ createDreamnodeBtn.addEventListener('click', () => {
 ipcRenderer.on('dreamnode-created', (event, success) => {
     if (success) {
         allDreamnodes = getDreamnodes();
-        displayDreamnodes(filterDreamnodes(currentSearchTerm));
+        displayDreamnodes(filterAndSortDreamnodes(currentSearchTerm, currentSortMethod));
     } else {
         alert('Failed to create DreamNode. Please try again.');
     }
@@ -810,11 +810,13 @@ function showNewDreamnodeDialog(file) {
 
         ipcRenderer.send('create-dreamnode-with-media', { name, type, filePath: file.path });
         newDreamnodeDialog.style.display = 'none';
-        dreamnodeNameInput.value = '';
 
         // Reset the original event handler
         createDreamnodeBtn.onclick = originalCreateHandler;
     };
+
+    // Focus on the name input
+    dreamnodeNameInput.focus();
 }
 
 // Add a new IPC listener for the response
