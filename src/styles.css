@@ -197,11 +197,18 @@ h1 {
 
 .dialog button {
     margin-right: 10px;
-    background-color: #00a2ff;
     color: #FFFFFF;
     border: none;
     padding: 5px 10px;
     cursor: pointer;
+}
+
+.dialog button.primary {
+    background-color: #00a2ff;
+}
+
+.dialog button.secondary {
+    background-color: #FF644E;
 }
 
 .search-dialog {
@@ -246,7 +253,7 @@ h1 {
 
 #newDreamnodeBtn {
     padding: 10px 20px;
-    background-color: #00a2ff;
+    background-color: #FF644E;
     color: #FFFFFF;
     border: none;
     border-radius: 4px;
@@ -257,7 +264,7 @@ h1 {
 }
 
 #newDreamnodeBtn:hover {
-    background-color: #0080ff;
+    background-color: #ff4f36;
 }
 
 .context-menu {
@@ -276,7 +283,7 @@ h1 {
 }
 
 .context-menu div:hover {
-    background-color: #00a2ff;
+    background-color: #FF644E;
 }
 
 #metadataDialog {
@@ -344,6 +351,14 @@ h1 {
 }
 
 #cancelMetadataBtn {
+    background-color: #FF644E;
+}
+
+#confirmRename {
+    background-color: #00a2ff;
+}
+
+#cancelRename {
     background-color: #FF644E;
 }
 
@@ -452,11 +467,15 @@ h1 {
     right: 20px;
     z-index: 1001;
     padding: 10px 20px;
-    background-color: #00a2ff;
+    background-color: #FF644E;
     color: #FFFFFF;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+}
+
+.flip-button:hover {
+    background-color: #ff4f36;
 }
 
 .dream-song-side {
