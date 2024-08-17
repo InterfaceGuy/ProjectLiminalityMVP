@@ -434,7 +434,7 @@ h1 {
     pointer-events: none;
     opacity: 1;
     transition: opacity 0.3s ease;
-    z-index: 2;
+    z-index: 3;
 }
 
 .dreamnode-item.centered .dream-talk-side,
@@ -470,6 +470,8 @@ h1 {
     object-fit: contain;
     border-radius: 50%;
     backface-visibility: hidden;
+    position: relative;
+    z-index: 2;
 }
 
 .dreamnode-item.centered span {
@@ -542,6 +544,21 @@ h1 {
     align-items: center;
     background-color: #000000;
     color: #FFFFFF;
+    border-radius: 50%;
+}
+
+.dreamnode-item.centered .dream-song-side::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.8) 70%, rgba(0,0,0,1) 90%);
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    z-index: 3;
     border-radius: 50%;
 }
 
