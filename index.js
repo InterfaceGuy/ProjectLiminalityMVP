@@ -4,7 +4,6 @@ const path = require('path');
 const { exec } = require('child_process');
 
 const VAULT_PATH = '/Users/davidrug/InterBrain';
-const KEYNOTE_PATH = '/Applications/Keynote.app';
 
 function createWindow() {
     const win = new BrowserWindow({
@@ -102,7 +101,7 @@ ipcMain.on('open-in-keynote', (event, repoName) => {
 
     if (keynoteFile) {
         const keynoteFilePath = path.join(repoPath, keynoteFile);
-        exec(`open -a "${KEYNOTE_PATH}" "${keynoteFilePath}"`, (error, stdout, stderr) => {
+        exec(`open "${keynoteFilePath}"`, (error, stdout, stderr) => {
             if (error) {
                 console.error(`Error opening Keynote: ${error}`);
                 event.reply('keynote-opened', { success: false, error: error.message });
