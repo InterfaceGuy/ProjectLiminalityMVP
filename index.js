@@ -118,3 +118,33 @@ ipcMain.on('open-in-keynote', (event, repoName) => {
         event.reply('keynote-opened', { success: false, error: 'No Keynote file found' });
     }
 });
+
+ipcMain.on('open-in-c4d', (event, repoName) => {
+    const repoPath = path.join(VAULT_PATH, repoName);
+    const c4dFiles = fs.readdirSync(repoPath).filter(file => file.endsWith('.c4d'));
+    
+    let c4dFile;
+    if (c4dFiles.length > 0) {
+        // Prefer the file with the same name as the repository
+        c4dFile = c4dFiles.find(file => file === `${repoName}.c4d`) || c4dFiles[0];
+    }
+
+    if (c4dFile) {
+        const c4dFilePath = path.join(repoPath, c4dFile);
+        exec(`open "${c4dFilePath}"`, (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Error opening Cinema 4D: ${error}`);
+                event.reply('c4d-opened', { success: false, error: error.message });
+            } else if (stderr) {
+                console.error(`Cinema 4D stderr: ${stderr}`);
+                event.reply('c4d-opened', { success: false, error: stderr });
+            } else {
+                console.log(`Successfully opened Cinema 4D for ${repoName}`);
+                event.reply('c4d-opened', { success: true });
+            }
+        });
+    } else {
+        console.error(`No Cinema 4D file found in: ${repoPath}`);
+        event.reply('c4d-opened', { success: false, error: 'No Cinema 4D file found' });
+    }
+});
