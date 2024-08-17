@@ -4,7 +4,6 @@ const path = require('path');
 const { exec } = require('child_process');
 
 const VAULT_PATH = '/Users/davidrug/InterBrain';
-const GITFOX_PATH = '/Applications/GitFox.app';
 const KEYNOTE_PATH = '/Applications/Keynote.app';
 
 function createWindow() {
@@ -75,9 +74,8 @@ ipcMain.on('open-in-finder', (event, repoName) => {
 });
 
 ipcMain.on('open-in-gitfox', (event, repoName) => {
-    const repoPath = path.join(VAULT_PATH, repoName);
-    console.log(`Attempting to open GitFox for: ${repoPath}`);
-    exec(`open -a "${GITFOX_PATH}" "${repoPath}"`, (error, stdout, stderr) => {
+    console.log(`Attempting to open GitFox for: ${repoName}`);
+    exec(`cd "${VAULT_PATH}" && gitfox "${repoName}"`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Error opening GitFox: ${error}`);
             event.reply('gitfox-opened', { success: false, error: error.message });
