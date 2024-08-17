@@ -459,24 +459,18 @@ function showContextMenu(e, dreamnode) {
                     const nativeImage = require('electron').nativeImage;
                     
                     if (mediaFile.format === 'gif') {
-                        // For GIF, we'll use a custom MIME type
                         clipboard.writeBuffer('image/gif', fileContent);
                     } else if (['png', 'jpeg', 'jpg', 'webp'].includes(mediaFile.format)) {
-                        // For static images, we'll use nativeImage
                         const image = nativeImage.createFromBuffer(fileContent);
                         clipboard.writeImage(image);
                     } else if (mediaFile.format === 'svg') {
-                        // For SVG, we'll write it as text
                         clipboard.writeText(fileContent.toString('utf-8'));
                     } else if (mediaFile.format === 'mp4') {
-                        // For MP4, we'll use a custom MIME type
                         clipboard.writeBuffer('video/mp4', fileContent);
                     } else {
-                        // For any other format, we'll use a generic MIME type
                         clipboard.writeBuffer('application/octet-stream', fileContent);
                     }
                     
-                    // Additionally, we'll write the file path to the clipboard as text
                     clipboard.writeText(mediaFile.path, 'selection');
                     
                     logger.log(`Copied media file (${mediaFile.format}) for ${dreamnode} to clipboard`);
@@ -488,18 +482,6 @@ function showContextMenu(e, dreamnode) {
                 logger.log(`Error copying media file for ${dreamnode}: ${error.message}`);
                 alert(`Error copying media file: ${error.message}`);
             }
-        },
-        'openKeynote': () => {
-            logger.log(`Attempting to open Keynote for dreamnode: ${dreamnode}`);
-            ipcRenderer.send('open-in-keynote', dreamnode);
-            ipcRenderer.once('keynote-opened', (event, result) => {
-                if (result.success) {
-                    logger.log(`Successfully opened Keynote for ${dreamnode}`);
-                } else {
-                    logger.log(`Failed to open Keynote for ${dreamnode}: ${result.error}`);
-                    alert(`Failed to open Keynote: ${result.error}`);
-                }
-            });
         },
         'rename': () => showRenameDialog(dreamnode),
         'editMetadata': () => {
@@ -533,24 +515,10 @@ function showContextMenu(e, dreamnode) {
             document.removeEventListener('keydown', handleEscapeKey);
         }
     };
-        if (!contextMenu.contains(e.target)) {
-            contextMenu.style.display = 'none';
-            document.removeEventListener('click', closeContextMenu);
-            document.removeEventListener('keydown', handleEscapeKey);
-        }
-    };
-
-    const handleEscapeKey = (e) => {
-        if (e.key === 'Escape') {
-            contextMenu.style.display = 'none';
-            document.removeEventListener('click', closeContextMenu);
-            document.removeEventListener('keydown', handleEscapeKey);
-        }
-    };
 
     document.addEventListener('click', closeContextMenu);
     document.addEventListener('keydown', handleEscapeKey);
-};
+}
 
 function showMetadataDialog(dreamnode) {
     const metadata = getMetadata(dreamnode);
