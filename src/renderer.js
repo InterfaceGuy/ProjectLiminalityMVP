@@ -367,6 +367,18 @@ function showContextMenu(e, dreamnode) {
                 }
             });
         },
+        'openC4D': () => {
+            logger.log(`Attempting to open Cinema 4D for dreamnode: ${dreamnode}`);
+            ipcRenderer.send('open-in-c4d', dreamnode);
+            ipcRenderer.once('c4d-opened', (event, result) => {
+                if (result.success) {
+                    logger.log(`Successfully opened Cinema 4D for ${dreamnode}`);
+                } else {
+                    logger.log(`Failed to open Cinema 4D for ${dreamnode}: ${result.error}`);
+                    alert(`Failed to open Cinema 4D: ${result.error}`);
+                }
+            });
+        },
         'copyDreamTalk': () => {
             try {
                 const mediaFile = getMediaFile(dreamnode);
