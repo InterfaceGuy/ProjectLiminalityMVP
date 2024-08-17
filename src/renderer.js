@@ -641,24 +641,30 @@ function setupRelatedNodesInput(currentNode, nodeType, selectedNodes) {
     });
 
     function addSelectedNode(nodeName) {
-        const nodeElement = document.createElement('div');
-        nodeElement.className = 'selected-node';
-        
-        const nameSpan = document.createElement('span');
-        nameSpan.textContent = nodeName;
-        nodeElement.appendChild(nameSpan);
-        
-        const removeButton = document.createElement('span');
-        removeButton.className = 'remove-node';
-        removeButton.textContent = '×';
-        removeButton.addEventListener('click', () => {
-            selectedRelatedNodes.removeChild(nodeElement);
-            selectedNodes = selectedNodes.filter(node => node !== nodeName);
-        });
+        if (!selectedNodes.includes(nodeName)) {
+            const nodeElement = document.createElement('div');
+            nodeElement.className = 'selected-node';
+            
+            const nameSpan = document.createElement('span');
+            nameSpan.textContent = nodeName.trim(); // Ensure the name is trimmed
+            nodeElement.appendChild(nameSpan);
+            
+            const removeButton = document.createElement('span');
+            removeButton.className = 'remove-node';
+            removeButton.textContent = '×';
+            removeButton.addEventListener('click', () => {
+                selectedRelatedNodes.removeChild(nodeElement);
+                selectedNodes = selectedNodes.filter(node => node !== nodeName);
+            });
 
-        nodeElement.appendChild(removeButton);
-        selectedRelatedNodes.appendChild(nodeElement);
-        selectedNodes.push(nodeName);
+            nodeElement.appendChild(removeButton);
+            selectedRelatedNodes.appendChild(nodeElement);
+            selectedNodes.push(nodeName.trim()); // Add trimmed name to the array
+            
+            // Clear the input and hide the list after adding
+            relatedNodesInput.value = '';
+            relatedNodesList.style.display = 'none';
+        }
     }
 }
 
