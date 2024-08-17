@@ -293,11 +293,7 @@ function createRelatedNodeElement(nodeName) {
     element.setAttribute('data-dreamnode', nodeName);
     const metadata = getMetadata(nodeName);
     
-    if (metadata.type === 'person') {
-        element.classList.add('person-node');
-    } else {
-        element.classList.add('idea-node');
-    }
+    element.classList.add(metadata.type === 'person' ? 'person-node' : 'idea-node');
 
     const mediaFile = getMediaFile(nodeName);
     if (mediaFile) {
@@ -647,7 +643,10 @@ function setupRelatedNodesInput(currentNode, nodeType, selectedNodes) {
     function addSelectedNode(nodeName) {
         const nodeElement = document.createElement('div');
         nodeElement.className = 'selected-node';
-        nodeElement.textContent = nodeName;
+        
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = nodeName;
+        nodeElement.appendChild(nameSpan);
         
         const removeButton = document.createElement('span');
         removeButton.className = 'remove-node';
