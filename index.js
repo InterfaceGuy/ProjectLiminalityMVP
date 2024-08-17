@@ -3,7 +3,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const { exec } = require('child_process');
 
-const VAULT_PATH = '/Users/davidrug/Library/Mobile Documents/iCloud~md~obsidian/Documents/InterBrain';
+const VAULT_PATH = '/Users/davidrug/InterBrain';
 const GITFOX_PATH = '/Applications/GitFox.app';
 const KEYNOTE_PATH = '/Applications/Keynote.app';
 
