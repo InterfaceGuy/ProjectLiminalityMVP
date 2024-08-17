@@ -203,11 +203,13 @@ h1 {
     cursor: pointer;
 }
 
-.dialog button.primary {
+.dialog button.primary,
+#createDreamnodeBtn {
     background-color: #00a2ff;
 }
 
-.dialog button.secondary {
+.dialog button.secondary,
+#cancelNewDreamnodeBtn {
     background-color: #FF644E;
 }
 
@@ -504,12 +506,17 @@ h1 {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #00a2ff;
+    background: #000000;
     border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #0080ff;
+    background: #FFFFFF;
+}
+
+/* Make the entire scrollbar area responsive to hover */
+::-webkit-scrollbar-track:hover {
+    background: rgba(255, 255, 255, 0.1);
 }
 
 #sortButtons {
