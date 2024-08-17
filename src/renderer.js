@@ -550,7 +550,7 @@ function showContextMenu(e, dreamnode) {
 
     document.addEventListener('click', closeContextMenu);
     document.addEventListener('keydown', handleEscapeKey);
-}
+};
 
 function showMetadataDialog(dreamnode) {
     const metadata = getMetadata(dreamnode);
