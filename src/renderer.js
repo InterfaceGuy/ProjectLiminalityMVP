@@ -573,7 +573,8 @@ function showMetadataDialog(dreamnode) {
             dateModified: document.getElementById('dateModified').value,
             interactions: parseInt(document.getElementById('interactions').value, 10),
             type: document.querySelector('input[name="type"]:checked').value,
-            relatedNodes: Array.from(document.querySelectorAll('.selected-node')).map(node => node.textContent.trim())
+            relatedNodes: Array.from(document.querySelectorAll('.selected-node'))
+                .map(node => node.querySelector('span').textContent.trim())
         };
         updateMetadata(dreamnode, updatedMetadata);
         closeDialog();
@@ -678,6 +679,10 @@ function getMetadata(dreamnode) {
 
 function updateMetadata(dreamnode, metadata) {
     const plPath = path.join(VAULT_PATH, dreamnode, '.pl');
+    // Ensure all related nodes are trimmed
+    if (metadata.relatedNodes) {
+        metadata.relatedNodes = metadata.relatedNodes.map(node => node.trim());
+    }
     fs.writeFileSync(plPath, JSON.stringify(metadata, null, 2));
     allDreamnodes = getDreamnodes();
     displayDreamnodes(sortDreamnodes(allDreamnodes, currentSortMethod));
