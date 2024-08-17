@@ -550,6 +550,9 @@ function showMetadataDialog(dreamnode) {
     document.getElementById('interactions').value = metadata.interactions || 0;
     document.querySelector(`input[name="type"][value="${metadata.type || 'idea'}"]`).checked = true;
     
+    // Set up related nodes
+    setupRelatedNodesInput(dreamnode, metadata.type || 'idea', metadata.relatedNodes || []);
+    
     metadataDialog.style.display = 'block';
     
     const updateMetadataBtn = document.getElementById('updateMetadataBtn');
@@ -573,7 +576,8 @@ function showMetadataDialog(dreamnode) {
             dateCreated: document.getElementById('dateCreated').value,
             dateModified: document.getElementById('dateModified').value,
             interactions: parseInt(document.getElementById('interactions').value, 10),
-            type: document.querySelector('input[name="type"]:checked').value
+            type: document.querySelector('input[name="type"]:checked').value,
+            relatedNodes: Array.from(document.querySelectorAll('.selected-node')).map(node => node.textContent.trim())
         };
         updateMetadata(dreamnode, updatedMetadata);
         closeDialog();
@@ -588,6 +592,75 @@ function showMetadataDialog(dreamnode) {
             document.getElementById(inputId).value = new Date().toISOString().slice(0, 16);
         };
     });
+}
+
+function setupRelatedNodesInput(currentNode, nodeType, selectedNodes) {
+    const relatedNodesInput = document.getElementById('relatedNodesInput');
+    const relatedNodesList = document.getElementById('relatedNodesList');
+    const selectedRelatedNodes = document.getElementById('selectedRelatedNodes');
+
+    // Clear previous content
+    relatedNodesList.innerHTML = '';
+    selectedRelatedNodes.innerHTML = '';
+
+    // Add selected nodes
+    selectedNodes.forEach(node => addSelectedNode(node));
+
+    // Get all nodes of the opposite type
+    const oppositeType = nodeType === 'idea' ? 'person' : 'idea';
+    const availableNodes = allDreamnodes.filter(node => node.type === oppositeType && node.name !== currentNode);
+
+    relatedNodesInput.addEventListener('input', () => {
+        const searchTerm = relatedNodesInput.value.toLowerCase();
+        const filteredNodes = availableNodes.filter(node => 
+            node.name.toLowerCase().includes(searchTerm) && 
+            !selectedNodes.includes(node.name)
+        );
+
+        relatedNodesList.innerHTML = '';
+        filteredNodes.forEach(node => {
+            const li = document.createElement('li');
+            li.textContent = node.name;
+            li.addEventListener('click', () => {
+                addSelectedNode(node.name);
+                relatedNodesInput.value = '';
+                relatedNodesList.style.display = 'none';
+            });
+            relatedNodesList.appendChild(li);
+        });
+
+        relatedNodesList.style.display = filteredNodes.length > 0 ? 'block' : 'none';
+    });
+
+    relatedNodesInput.addEventListener('focus', () => {
+        if (relatedNodesList.children.length > 0) {
+            relatedNodesList.style.display = 'block';
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!relatedNodesInput.contains(e.target) && !relatedNodesList.contains(e.target)) {
+            relatedNodesList.style.display = 'none';
+        }
+    });
+
+    function addSelectedNode(nodeName) {
+        const nodeElement = document.createElement('div');
+        nodeElement.className = 'selected-node';
+        nodeElement.textContent = nodeName;
+        
+        const removeButton = document.createElement('span');
+        removeButton.className = 'remove-node';
+        removeButton.textContent = '×';
+        removeButton.addEventListener('click', () => {
+            selectedRelatedNodes.removeChild(nodeElement);
+            selectedNodes = selectedNodes.filter(node => node !== nodeName);
+        });
+
+        nodeElement.appendChild(removeButton);
+        selectedRelatedNodes.appendChild(nodeElement);
+        selectedNodes.push(nodeName);
+    }
 }
 
 function getMetadata(dreamnode) {
