@@ -484,10 +484,7 @@ function showContextMenu(e, dreamnode) {
             }
         },
         'rename': () => showRenameDialog(dreamnode),
-        'editMetadata': () => {
-            logger.log(`Attempting to edit metadata for dreamnode: ${dreamnode}`);
-            showMetadataDialog(dreamnode);
-        }
+        'editMetadata': () => showMetadataDialog(dreamnode)
     };
 
     Object.keys(menuOptions).forEach(optionId => {
@@ -521,59 +518,62 @@ function showContextMenu(e, dreamnode) {
 }
 
 function showMetadataDialog(dreamnode) {
-    const metadata = getMetadata(dreamnode);
-    const metadataDialog = document.getElementById('metadataDialog');
-    const metadataForm = document.getElementById('metadataForm');
-    
-    // Set values for each input
-    document.getElementById('dateCreated').value = metadata.dateCreated ? new Date(metadata.dateCreated).toISOString().slice(0, 16) : '';
-    document.getElementById('dateModified').value = metadata.dateModified ? new Date(metadata.dateModified).toISOString().slice(0, 16) : '';
-    document.getElementById('interactions').value = metadata.interactions || 0;
-    document.querySelector(`input[name="type"][value="${metadata.type || 'idea'}"]`).checked = true;
-    
-    // Set up related nodes
-    setupRelatedNodesInput(dreamnode, metadata.type || 'idea', metadata.relatedNodes || []);
-    
-    metadataDialog.style.display = 'block';
-    
-    const updateMetadataBtn = document.getElementById('updateMetadataBtn');
-    const cancelMetadataBtn = document.getElementById('cancelMetadataBtn');
-    
-    const closeDialog = () => {
-        metadataDialog.style.display = 'none';
-        document.removeEventListener('keydown', handleEscapeKey);
-    };
-    
-    const handleEscapeKey = (e) => {
-        if (e.key === 'Escape') {
+    if (metadataDialog) {
+        const metadata = getMetadata(dreamnode);
+        const metadataForm = document.getElementById('metadataForm');
+        
+        // Set values for each input
+        document.getElementById('dateCreated').value = metadata.dateCreated ? new Date(metadata.dateCreated).toISOString().slice(0, 16) : '';
+        document.getElementById('dateModified').value = metadata.dateModified ? new Date(metadata.dateModified).toISOString().slice(0, 16) : '';
+        document.getElementById('interactions').value = metadata.interactions || 0;
+        document.querySelector(`input[name="type"][value="${metadata.type || 'idea'}"]`).checked = true;
+        
+        // Set up related nodes
+        setupRelatedNodesInput(dreamnode, metadata.type || 'idea', metadata.relatedNodes || []);
+        
+        metadataDialog.style.display = 'block';
+        
+        const updateMetadataBtn = document.getElementById('updateMetadataBtn');
+        const cancelMetadataBtn = document.getElementById('cancelMetadataBtn');
+        
+        const closeDialog = () => {
+            metadataDialog.style.display = 'none';
+            document.removeEventListener('keydown', handleEscapeKey);
+        };
+        
+        const handleEscapeKey = (e) => {
+            if (e.key === 'Escape') {
+                closeDialog();
+            }
+        };
+        
+        document.addEventListener('keydown', handleEscapeKey);
+        
+        updateMetadataBtn.onclick = () => {
+            const updatedMetadata = {
+                dateCreated: document.getElementById('dateCreated').value,
+                dateModified: document.getElementById('dateModified').value,
+                interactions: parseInt(document.getElementById('interactions').value, 10),
+                type: document.querySelector('input[name="type"]:checked').value,
+                relatedNodes: Array.from(document.querySelectorAll('.selected-node'))
+                    .map(node => node.querySelector('span').textContent.trim())
+            };
+            updateMetadata(dreamnode, updatedMetadata);
             closeDialog();
-        }
-    };
-    
-    document.addEventListener('keydown', handleEscapeKey);
-    
-    updateMetadataBtn.onclick = () => {
-        const updatedMetadata = {
-            dateCreated: document.getElementById('dateCreated').value,
-            dateModified: document.getElementById('dateModified').value,
-            interactions: parseInt(document.getElementById('interactions').value, 10),
-            type: document.querySelector('input[name="type"]:checked').value,
-            relatedNodes: Array.from(document.querySelectorAll('.selected-node'))
-                .map(node => node.querySelector('span').textContent.trim())
         };
-        updateMetadata(dreamnode, updatedMetadata);
-        closeDialog();
-    };
-    
-    cancelMetadataBtn.onclick = closeDialog;
-    
-    // Add functionality for "Now" buttons
-    document.querySelectorAll('.now-btn').forEach(btn => {
-        btn.onclick = () => {
-            const inputId = btn.getAttribute('data-for');
-            document.getElementById(inputId).value = new Date().toISOString().slice(0, 16);
-        };
-    });
+        
+        cancelMetadataBtn.onclick = closeDialog;
+        
+        // Add functionality for "Now" buttons
+        document.querySelectorAll('.now-btn').forEach(btn => {
+            btn.onclick = () => {
+                const inputId = btn.getAttribute('data-for');
+                document.getElementById(inputId).value = new Date().toISOString().slice(0, 16);
+            };
+        });
+    } else {
+        logger.log('Metadata dialog element not found');
+    }
 }
 
 function setupRelatedNodesInput(currentNode, nodeType, selectedNodes) {
