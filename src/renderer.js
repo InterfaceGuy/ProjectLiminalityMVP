@@ -379,6 +379,18 @@ function showContextMenu(e, dreamnode) {
                 }
             });
         },
+        'openSublime': () => {
+            logger.log(`Attempting to open Sublime Text for dreamnode: ${dreamnode}`);
+            ipcRenderer.send('open-in-sublime', dreamnode);
+            ipcRenderer.once('sublime-opened', (event, result) => {
+                if (result.success) {
+                    logger.log(`Successfully opened Sublime Text for ${dreamnode}`);
+                } else {
+                    logger.log(`Failed to open Sublime Text for ${dreamnode}: ${result.error}`);
+                    alert(`Failed to open Sublime Text: ${result.error}`);
+                }
+            });
+        },
         'copyDreamTalk': () => {
             try {
                 const mediaFile = getMediaFile(dreamnode);

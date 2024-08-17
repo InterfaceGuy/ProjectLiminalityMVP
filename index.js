@@ -148,3 +148,33 @@ ipcMain.on('open-in-c4d', (event, repoName) => {
         event.reply('c4d-opened', { success: false, error: 'No Cinema 4D file found' });
     }
 });
+
+ipcMain.on('open-in-sublime', (event, repoName) => {
+    const repoPath = path.join(VAULT_PATH, repoName);
+    const sublimeFiles = fs.readdirSync(repoPath).filter(file => file.endsWith('.sublime-project'));
+    
+    let sublimeFile;
+    if (sublimeFiles.length > 0) {
+        // Prefer the file with the same name as the repository
+        sublimeFile = sublimeFiles.find(file => file === `${repoName}.sublime-project`) || sublimeFiles[0];
+    }
+
+    if (sublimeFile) {
+        const sublimeFilePath = path.join(repoPath, sublimeFile);
+        exec(`open -a "Sublime Text" "${sublimeFilePath}"`, (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Error opening Sublime Text: ${error}`);
+                event.reply('sublime-opened', { success: false, error: error.message });
+            } else if (stderr) {
+                console.error(`Sublime Text stderr: ${stderr}`);
+                event.reply('sublime-opened', { success: false, error: stderr });
+            } else {
+                console.log(`Successfully opened Sublime Text for ${repoName}`);
+                event.reply('sublime-opened', { success: true });
+            }
+        });
+    } else {
+        console.error(`No Sublime Text project file found in: ${repoPath}`);
+        event.reply('sublime-opened', { success: false, error: 'No Sublime Text project file found' });
+    }
+});
