@@ -82,9 +82,23 @@ function createPlFile(dreamnodeName, type = 'idea') {
         type: type,
         relatedNodes: []
     };
-    const existingMetadata = getMetadata(dreamnode);
-    const updatedRelatedNodes = new Set([...existingMetadata.relatedNodes, ...metadata.relatedNodes]);
-    metadata.relatedNodes = Array.from(updatedRelatedNodes);
+    const updateNodeMetadata = (node, relatedNode) => {
+        const plPath = path.join(VAULT_PATH, node, '.pl');
+        let nodeMetadata = {};
+        if (fs.existsSync(plPath)) {
+            nodeMetadata = JSON.parse(fs.readFileSync(plPath, 'utf-8'));
+        } else {
+            nodeMetadata = createPlFile(node);
+        }
+        if (!nodeMetadata.relatedNodes.includes(relatedNode)) {
+            nodeMetadata.relatedNodes.push(relatedNode);
+        }
+        fs.writeFileSync(plPath, JSON.stringify(nodeMetadata, null, 2));
+    };
+
+    metadata.relatedNodes.forEach(relatedNode => {
+        updateNodeMetadata(relatedNode, dreamnodeName);
+    });
     fs.writeFileSync(plPath, JSON.stringify(metadata, null, 2));
     return metadata;
 }
@@ -698,12 +712,32 @@ function getMetadata(dreamnode) {
 }
 
 function updateMetadata(dreamnode, metadata) {
-    const plPath = path.join(VAULT_PATH, dreamnode, '.pl');
-    // Ensure all related nodes are trimmed
+    const updateNodeMetadata = (node, relatedNode) => {
+        const plPath = path.join(VAULT_PATH, node, '.pl');
+        let nodeMetadata = {};
+        if (fs.existsSync(plPath)) {
+            nodeMetadata = JSON.parse(fs.readFileSync(plPath, 'utf-8'));
+        } else {
+            nodeMetadata = createPlFile(node);
+        }
+        if (!nodeMetadata.relatedNodes.includes(relatedNode)) {
+            nodeMetadata.relatedNodes.push(relatedNode);
+        }
+        fs.writeFileSync(plPath, JSON.stringify(nodeMetadata, null, 2));
+    };
+
+    // Update metadata for the main dreamnode
+    const mainPlPath = path.join(VAULT_PATH, dreamnode, '.pl');
     if (metadata.relatedNodes) {
         metadata.relatedNodes = metadata.relatedNodes.map(node => node.trim());
     }
-    fs.writeFileSync(plPath, JSON.stringify(metadata, null, 2));
+    fs.writeFileSync(mainPlPath, JSON.stringify(metadata, null, 2));
+
+    // Update metadata for each related node to ensure bidirectional relationship
+    metadata.relatedNodes.forEach(relatedNode => {
+        updateNodeMetadata(relatedNode, dreamnode);
+    });
+
     allDreamnodes = getDreamnodes();
     displayDreamnodes(sortDreamnodes(allDreamnodes, currentSortMethod));
 }
