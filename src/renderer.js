@@ -6,7 +6,7 @@ const logger = require('./logger');
 const VAULT_PATH = '/Users/davidrug/Library/Mobile Documents/iCloud~md~obsidian/Documents/InterBrain';
 
 let allDreamnodes = [];
-let currentSortMethod = 'alphabetical';
+let currentSortMethod = 'activity';
 let currentSearchTerm = '';
 
 function getDreamnodes() {
