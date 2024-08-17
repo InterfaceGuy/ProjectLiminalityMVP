@@ -59,10 +59,10 @@ function displaySelectedRelatedNodes(selectedNodes) {
         const nameSpan = document.createElement('span');
         nameSpan.textContent = node.trim().replace(/[^\x20-\x7E]/g, '');
         nodeElement.appendChild(nameSpan);
-        
-        const removeButton = document.createElement('span');
+
+        const removeButton = document.createElement('button');
         removeButton.className = 'remove-node';
-        removeButton.textContent = '×';
+        removeButton.innerHTML = '&times;';
         removeButton.addEventListener('click', () => {
             selectedRelatedNodes.removeChild(nodeElement);
             selectedNodes = selectedNodes.filter(n => n !== node);
@@ -670,9 +670,9 @@ function setupRelatedNodesInput(currentNode, nodeType, selectedNodes) {
             nameSpan.textContent = trimmedName.replace(/[^\x20-\x7E]/g, '');
             nodeElement.appendChild(nameSpan);
             
-            const removeButton = document.createElement('span');
+            const removeButton = document.createElement('button');
             removeButton.className = 'remove-node';
-            removeButton.textContent = '×';
+            removeButton.innerHTML = '&times;';
             removeButton.addEventListener('click', () => {
                 selectedRelatedNodes.removeChild(nodeElement);
                 selectedNodes = selectedNodes.filter(node => node !== trimmedName);
