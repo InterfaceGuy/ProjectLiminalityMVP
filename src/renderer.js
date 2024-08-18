@@ -9,6 +9,10 @@ let allDreamnodes = [];
 let currentSortMethod = 'activity';
 let currentSearchTerm = '';
 
+/**
+ * Retrieves all dreamnodes from the vault path
+ * @returns {Array} An array of dreamnode objects
+ */
 function getDreamnodes() {
     logger.log(`Getting dreamnodes from: ${VAULT_PATH}`);
     const dreamnodes = [];
@@ -48,6 +52,10 @@ function getDreamnodes() {
     return dreamnodes;
 }
 
+/**
+ * Displays the selected related nodes in the UI
+ * @param {Array} selectedNodes - An array of selected node names
+ */
 function displaySelectedRelatedNodes(selectedNodes) {
     const selectedRelatedNodes = document.getElementById('selectedRelatedNodes');
     selectedRelatedNodes.innerHTML = ''; // Clear previous content
@@ -73,6 +81,12 @@ function displaySelectedRelatedNodes(selectedNodes) {
     });
 }
 
+/**
+ * Creates a new .pl file for a dreamnode
+ * @param {string} dreamnodeName - The name of the dreamnode
+ * @param {string} [type='idea'] - The type of the dreamnode
+ * @returns {Object} The metadata object for the new dreamnode
+ */
 function createPlFile(dreamnodeName, type = 'idea') {
     const plPath = path.join(VAULT_PATH, dreamnodeName, '.pl');
     const metadata = {
@@ -103,6 +117,11 @@ function createPlFile(dreamnodeName, type = 'idea') {
     return metadata;
 }
 
+/**
+ * Updates the .pl file for a dreamnode
+ * @param {string} dreamnodeName - The name of the dreamnode to update
+ * @returns {Object} The updated metadata object
+ */
 function updatePlFile(dreamnodeName) {
     const plPath = path.join(VAULT_PATH, dreamnodeName, '.pl');
     let metadata = {};
@@ -117,6 +136,11 @@ function updatePlFile(dreamnodeName) {
     return metadata;
 }
 
+/**
+ * Retrieves the media file associated with a dreamnode
+ * @param {string} dreamnodeName - The name of the dreamnode
+ * @returns {Object|null} An object containing the path and format of the media file, or null if not found
+ */
 function getMediaFile(dreamnodeName) {
     const dreamnodePath = path.join(VAULT_PATH, dreamnodeName);
     const mediaFormats = ['gif', 'mp4', 'png', 'jpeg', 'jpg', 'webp', 'svg'];
@@ -131,6 +155,11 @@ function getMediaFile(dreamnodeName) {
     return null;
 }
 
+/**
+ * Retrieves the type of a dreamnode
+ * @param {string} dreamnodeName - The name of the dreamnode
+ * @returns {string} The type of the dreamnode, defaults to 'idea' if not found
+ */
 function getDreamnodeType(dreamnodeName) {
     const plPath = path.join(VAULT_PATH, dreamnodeName, '.pl');
     if (fs.existsSync(plPath)) {
@@ -143,6 +172,10 @@ function getDreamnodeType(dreamnodeName) {
     return 'idea'; // Default to 'idea' if no .pl file or type not specified
 }
 
+/**
+ * Displays the dreamnodes in the UI
+ * @param {Array} dreamnodes - An array of dreamnode objects to display
+ */
 function displayDreamnodes(dreamnodes) {
     logger.log(`Displaying dreamnodes: ${JSON.stringify(dreamnodes)}`);
     const dreamnodeList = document.getElementById('dreamnodeList');
@@ -228,6 +261,12 @@ document.addEventListener('DOMContentLoaded', () => {
     displayDreamnodes(sortedDreamnodes);
 });
 
+/**
+ * Sorts the dreamnodes based on the specified method
+ * @param {Array} dreamnodes - An array of dreamnode objects to sort
+ * @param {string} method - The sorting method ('alphabetical', 'dateCreated', 'dateModified', or 'activity')
+ * @returns {Array} The sorted array of dreamnodes
+ */
 function sortDreamnodes(dreamnodes, method) {
     switch (method) {
         case 'alphabetical':
@@ -245,6 +284,10 @@ function sortDreamnodes(dreamnodes, method) {
 
 /**
  * Center a specific dreamnode in the UI
+ * @param {string} dreamnode - The name of the dreamnode to center
+ */
+/**
+ * Centers a specific dreamnode in the UI and displays its related nodes
  * @param {string} dreamnode - The name of the dreamnode to center
  */
 function centerDreamnode(dreamnode) {
@@ -311,6 +354,11 @@ function centerDreamnode(dreamnode) {
  * @param {string} nodeName - The name of the related node
  * @returns {HTMLElement} The created element for the related node
  */
+/**
+ * Creates an element for a related node
+ * @param {string} nodeName - The name of the related node
+ * @returns {HTMLElement} The created element for the related node
+ */
 function createRelatedNodeElement(nodeName) {
     const element = document.createElement('div');
     element.className = 'related-node';
@@ -353,6 +401,12 @@ function createRelatedNodeElement(nodeName) {
  * @param {number} index - The index of the element
  * @param {number} total - The total number of elements
  */
+/**
+ * Positions a related node element in a circular layout
+ * @param {HTMLElement} element - The element to position
+ * @param {number} index - The index of the element
+ * @param {number} total - The total number of elements
+ */
 function positionRelatedNode(element, index, total) {
     const angle = (index / total) * 2 * Math.PI;
     const radius = 300; // Adjust this value to change the distance from the center
@@ -364,6 +418,10 @@ function positionRelatedNode(element, index, total) {
 
 /**
  * Flip a dreamnode to show its DreamSong side
+ * @param {HTMLElement} node - The dreamnode element to flip
+ */
+/**
+ * Flips a dreamnode to show its DreamSong side or back to DreamTalk side
  * @param {HTMLElement} node - The dreamnode element to flip
  */
 function flipDreamnode(node) {
@@ -398,6 +456,9 @@ function flipDreamnode(node) {
 /**
  * Exit full screen mode
  */
+/**
+ * Exits full screen mode for a centered dreamnode
+ */
 function exitFullScreen() {
     const centeredNode = document.querySelector('.dreamnode-item.centered');
     if (centeredNode) {
@@ -414,6 +475,9 @@ function exitFullScreen() {
 /**
  * Remove the flip button from the UI
  */
+/**
+ * Removes the flip button from the UI
+ */
 function removeFlipButton() {
     const flipButton = document.querySelector('.flip-button');
     if (flipButton) {
@@ -423,6 +487,10 @@ function removeFlipButton() {
 
 /**
  * Handle the Escape key press
+ * @param {KeyboardEvent} e - The keyboard event
+ */
+/**
+ * Handles the Escape key press
  * @param {KeyboardEvent} e - The keyboard event
  */
 function handleEscapeKey(e) {
@@ -435,6 +503,10 @@ function handleEscapeKey(e) {
  * Handle exiting full screen mode
  * @param {Event} e - The event that triggered the exit
  */
+/**
+ * Handles exiting full screen mode
+ * @param {Event} e - The event that triggered the exit
+ */
 function handleExitFullScreen(e) {
     if (e.type === 'keydown' && e.key !== 'Escape') {
         return;
@@ -444,6 +516,11 @@ function handleExitFullScreen(e) {
 
 /**
  * Show the context menu for a dreamnode
+ * @param {MouseEvent} e - The mouse event that triggered the context menu
+ * @param {string} dreamnode - The name of the dreamnode
+ */
+/**
+ * Shows the context menu for a dreamnode
  * @param {MouseEvent} e - The mouse event that triggered the context menu
  * @param {string} dreamnode - The name of the dreamnode
  */
@@ -979,6 +1056,9 @@ document.addEventListener('DOMContentLoaded', () => {
     setupDragAndDrop();
 });
 
+/**
+ * Sets up drag and drop functionality for the application
+ */
 function setupDragAndDrop() {
     const dropZone = document.getElementById('dropZone');
     const body = document.body;
@@ -1014,6 +1094,10 @@ function setupDragAndDrop() {
     });
 }
 
+/**
+ * Handles a file dropped onto the application
+ * @param {File} file - The dropped file
+ */
 function handleDroppedFile(file) {
     const supportedFormats = ['gif', 'mp4', 'png', 'jpeg', 'jpg', 'webp', 'svg'];
     const fileExtension = file.name.split('.').pop().toLowerCase();
@@ -1025,6 +1109,10 @@ function handleDroppedFile(file) {
     }
 }
 
+/**
+ * Shows the dialog for creating a new dreamnode from a dropped file
+ * @param {File} file - The dropped file
+ */
 function showNewDreamnodeDialog(file) {
     const newDreamnodeDialog = document.getElementById('newDreamnodeDialog');
     const dreamnodeNameInput = document.getElementById('dreamnodeName');
@@ -1065,6 +1153,10 @@ ipcRenderer.on('dreamnode-with-media-created', (event, result) => {
 });
 
 // Add this at the end of the file
+/**
+ * Updates the active state of sort buttons
+ * @param {string} activeMethod - The currently active sorting method
+ */
 function updateActiveButton(activeMethod) {
     const buttons = document.querySelectorAll('#sortButtons button');
     buttons.forEach(button => {
