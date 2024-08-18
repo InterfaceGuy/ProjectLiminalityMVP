@@ -15,7 +15,7 @@ describe('Electron app functions', () => {
   });
 
   test('createWindow function creates a new BrowserWindow', () => {
-    const { createWindow } = require('./index');
+    const { createWindow } = require('../index');
     createWindow();
 
     expect(BrowserWindow).toHaveBeenCalledWith({
@@ -32,7 +32,7 @@ describe('Electron app functions', () => {
   });
 
   test('create-dreamnode event handler creates a new dreamnode', () => {
-    const { createWindow } = require('./index');
+    const { createWindow } = require('../index');
     createWindow();
 
     const mockEvent = { reply: jest.fn() };
