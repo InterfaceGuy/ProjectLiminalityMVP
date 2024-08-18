@@ -57,13 +57,15 @@ app.on('window-all-closed', () => {
     }
 }
 
+ipcMain.on('open-in-sublime', handleOpenInSublime);
+
 ipcMain.on('create-dreamnode', handleCreateDreamnode);
 
 app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
         createWindow();
     }
-}
+});
 
 ipcMain.on('open-in-finder', handleOpenInFinder);
 
@@ -224,7 +226,9 @@ function handleOpenInC4D(event, repoName) {
         console.error(`No Cinema 4D file found in: ${repoPath}`);
         event.reply('c4d-opened', { success: false, error: 'No Cinema 4D file found' });
     }
-});
+}
+
+ipcMain.on('open-in-c4d', handleOpenInC4D);
 
 /**
  * Opens the Sublime Text project file associated with the specified repository.
