@@ -55,9 +55,7 @@ app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit();
     }
-}
-
-ipcMain.on('open-in-sublime', handleOpenInSublime);
+});
 
 ipcMain.on('create-dreamnode', handleCreateDreamnode);
 
@@ -264,4 +262,6 @@ function handleOpenInSublime(event, repoName) {
         console.error(`No Sublime Text project file found in: ${repoPath}`);
         event.reply('sublime-opened', { success: false, error: 'No Sublime Text project file found' });
     }
-});
+}
+
+ipcMain.on('open-in-sublime', handleOpenInSublime);
