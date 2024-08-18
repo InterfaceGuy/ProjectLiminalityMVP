@@ -646,6 +646,10 @@ function showContextMenu(e, dreamnode) {
     document.addEventListener('keydown', handleEscapeKey);
 }
 
+/**
+ * Shows the metadata dialog for a dreamnode
+ * @param {string} dreamnode - The name of the dreamnode
+ */
 function showMetadataDialog(dreamnode) {
     if (metadataDialog) {
         const metadata = getMetadata(dreamnode);
@@ -706,6 +710,12 @@ function showMetadataDialog(dreamnode) {
     }
 }
 
+/**
+ * Sets up the input for related nodes in the metadata dialog
+ * @param {string} currentNode - The name of the current dreamnode
+ * @param {string} nodeType - The type of the current dreamnode
+ * @param {string[]} selectedNodes - Array of currently selected related nodes
+ */
 function setupRelatedNodesInput(currentNode, nodeType, selectedNodes) {
     const relatedNodesInput = document.getElementById('relatedNodesInput');
     const relatedNodesList = document.getElementById('relatedNodesList');
@@ -790,6 +800,11 @@ function setupRelatedNodesInput(currentNode, nodeType, selectedNodes) {
     }
 }
 
+/**
+ * Retrieves the metadata for a dreamnode
+ * @param {string} dreamnode - The name of the dreamnode
+ * @returns {Object} The metadata object for the dreamnode
+ */
 function getMetadata(dreamnode) {
     const plPath = path.join(VAULT_PATH, dreamnode, '.pl');
     if (fs.existsSync(plPath)) {
@@ -798,6 +813,11 @@ function getMetadata(dreamnode) {
     return {};
 }
 
+/**
+ * Updates the metadata for a dreamnode
+ * @param {string} dreamnode - The name of the dreamnode
+ * @param {Object} metadata - The new metadata object
+ */
 function updateMetadata(dreamnode, metadata) {
     const updateNodeMetadata = (node, relatedNode) => {
         const plPath = path.join(VAULT_PATH, node, '.pl');
@@ -830,6 +850,10 @@ function updateMetadata(dreamnode, metadata) {
 }
 
 
+/**
+ * Shows the rename dialog for a dreamnode
+ * @param {string} dreamnode - The name of the dreamnode to rename
+ */
 function showRenameDialog(dreamnode) {
     const renameDialog = document.getElementById('renameDialog');
     const renameInput = document.getElementById('renameInput');
@@ -861,6 +885,11 @@ function showRenameDialog(dreamnode) {
     document.addEventListener('keydown', handleEscapeKey);
 }
 
+/**
+ * Renames a dreamnode
+ * @param {string} oldName - The current name of the dreamnode
+ * @param {string} newName - The new name for the dreamnode
+ */
 function renameDreamnode(oldName, newName) {
     const oldPath = path.join(VAULT_PATH, oldName);
     const newPath = path.join(VAULT_PATH, newName);
@@ -896,6 +925,12 @@ function renameDreamnode(oldName, newName) {
     }
 }
 
+/**
+ * Filters and sorts the dreamnodes based on search term and sort method
+ * @param {string} searchTerm - The term to filter dreamnodes by
+ * @param {string} sortMethod - The method to sort dreamnodes by
+ * @returns {Array} The filtered and sorted array of dreamnodes
+ */
 function filterAndSortDreamnodes(searchTerm, sortMethod) {
     const filtered = allDreamnodes.filter(dreamnode => 
         dreamnode.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -1023,6 +1058,9 @@ document.addEventListener('keydown', (e) => {
 });
 
 // Add this function to clear the search when Escape is pressed
+/**
+ * Clears the current search and resets the dreamnode display
+ */
 function clearSearch() {
     currentSearchTerm = '';
     searchBar.value = '';
