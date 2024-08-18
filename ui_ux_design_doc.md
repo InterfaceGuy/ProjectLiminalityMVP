@@ -2,36 +2,48 @@
 
 ## Purpose and Scope
 
-Project Liminality is designed to provide a framework that allows users to create digital representations of ideas and stories that human beings carry in their interior and wish to share with others. The vision of Project Liminality is to provide digital infrastructure that enables people to share ideas in the most natural way possible, drawing inspiration from our indigenous roots and ancient methods of sharing ideas around campfires through face-to-face, free-flowing conversations.
+Project Liminality is a framework designed to enable users to create, organize, and share digital representations of ideas and stories in a natural, conversation-centric manner. By drawing from ancient storytelling traditions, the project aims to foster genuine human connections and understanding through a dialogos-centric approach. This document outlines the core features and user interface elements essential to realizing this vision.
 
-Project Liminality serves as a conversational co-pilot, centered around video calls or actual face-to-face conversations. It explores a dialogos-centric web, contrasting with the current monologos-centric internet, which is vulnerable to propaganda. The overarching goal is to return to a dialogos-centric approach while utilizing monologos to enhance the dialogos.
+## Feature List
 
-Key aspects of Project Liminality include:
+### DreamNode
+The DreamNode is the fundamental unit of Project Liminality, serving as a container for ideas, projects, or people. It is implemented as a Git repository, enabling version control, collaboration, and a local-first approach.
 
-1. Dreamnode Management: The fundamental unit of Project Liminality. Users can create, view, and interact with "dreamnodes," which represent individual ideas, projects, or persons. Each dreamnode is a self-contained entity that can be linked to other dreamnodes, forming a network of interconnected ideas.
+- **DreamTalk**
+  - A minimalist, potentially animated SVG-based symbol representing an idea.
+  - Serves as a visual shorthand for concepts, allowing for quick recognition and association.
+  - Represents the "front side" of a DreamNode.
 
-2. Dream Talk and Dream Song: Each dreamnode has a front side (Dream Talk) and a back side (Dream Song). Dream Talk is a minimalist, potentially animated SVG-based symbol representing an idea. It serves as a visual shorthand for the concept, allowing for quick recognition and association. Dream Song is a linear thread of Dream Talks, weaving multiple ideas into a larger story. It provides a more detailed exploration of the concept, potentially including text, images, or other media that elaborate on the idea represented by the Dream Talk.
+- **DreamSong**
+  - A linear thread of DreamTalks, weaving multiple ideas into a larger narrative.
+  - Provides detailed exploration of concepts, including text, images, or other media.
+  - Represents the "back side" of a DreamNode, illustrating the relationships and context of the ideas.
 
-3. Visual Representation: The application presents dreamnodes in a visually appealing and intuitive interface, allowing users to see connections and relationships between different elements in a holarchical structure. This interface uses a force-directed graph layout, where dreamnodes are represented as nodes and their relationships as edges. Users can zoom in and out, drag nodes to rearrange the layout, and click on nodes to explore their contents.
+- **DreamWeaving**
+  - The process of connecting and combining DreamTalks into DreamSongs to form complex ideas or perspectives.
+  - Involves creating new DreamNodes, modifying existing ones, and establishing links between them.
+  - Enables the creation of higher-order ideas through recursive weaving.
 
-4. Git-based Architecture: Each dreamnode is a Git repository, allowing for version control and collaboration. This architecture enables users to track changes over time, branch ideas, and merge different versions. Dream Songs can import Dream Talks from other dreamnodes using Git submodules, facilitating the reuse and combination of ideas across different contexts.
+### LiminalWeb
+The LiminalWeb is the visual interface that presents the network of DreamNodes in a holarchical structure. It provides an intuitive, visually appealing way for users to explore and interact with their ideas.
 
-5. Person-Idea Relationship: Dreamnodes can represent either ideas or persons, allowing users to visualize shared vocabularies and connections between people and concepts. This feature enables the mapping of intellectual lineages, collaborative networks, and the evolution of ideas across different thinkers and communities.
+- **Node Representation**
+  - DreamNodes are depicted as circular elements containing DreamTalk symbols.
+  - DreamNodes can represent either ideas or people
+  - People hold ideas and ideas hold people
+  - Selecting an idea shows all your friends that also hold this idea (StoryPlace)
+  - Selecting a friend shows all ideas you share with this friend (MemeticMirror)
 
-6. Local and Agent-centric: Users maintain their own set of dreamnodes, representing their personal perspective and memetic horizon. This local-first approach ensures privacy and data ownership while allowing for selective sharing and collaboration. The agent-centric model means that each user's view of the idea network is unique, reflecting their personal understanding and connections.
 
-7. Coherence Beacon: A mechanism for expanding one's idea network through resonant connections with friends. The coherence beacon works as follows:
-   a. Users can "activate" their coherence beacon for specific dreamnodes.
-   b. The system then analyzes the activated dreamnode's content and relationships.
-   c. It compares this analysis with the dreamnodes of the user's friends (who have agreed to participate in coherence beacon sharing).
-   d. The system identifies potentially resonant dreamnodes from friends' networks based on semantic similarity, shared references, or other relevant criteria.
-   e. These potential connections are then presented to the user as suggestions for exploration, allowing them to discover new ideas and perspectives that align with their interests.
+### CoherenceBeacon
+The CoherenceBeacon is a mechanism that allows users to discover resonant ideas within their network by analyzing and comparing DreamNodes.
 
-8. Dream Weaving: The process of playing with ideas and weaving them together into larger wholes. Dream weaving involves:
-   a. Creating new dreamnodes or modifying existing ones.
-   b. Establishing links between dreamnodes to form networks of related ideas.
-   c. Combining multiple Dream Talks into a Dream Song to create a narrative or argument.
-   d. Using the visual interface to rearrange and restructure idea networks, discovering new connections and insights.
-   e. Collaborating with others by sharing dreamnodes, importing elements from shared repositories, or engaging in real-time co-editing sessions.
+- **Activation and Analysis**
+  - Every time a user weaves together two or more DreamTalks into a DreamSong it triggers the CoherenceBeacon
+  - The mechanism identifies the user's friends who hold one or more of the respective input DreamNodes
+  - The proposed DreamSong together with all input DreamNodes is sent out to the appropriate friends asynchronously
+  - Each friend is invited to check out the DreamSong and if it resonates with them they accept it, thus both adding it to their set of DreamNodes as well as extending the signal in the same way laid out above
 
-The scope of Project Liminality is to provide a comprehensive tool for anyone who wishes to organize, develop, and share complex ideas in a more natural, conversation-centric manner. It aims to bridge the gap between ancient storytelling traditions and modern digital capabilities, offering a unique, visually-driven approach to idea organization and development that fosters genuine human connection and understanding.
+---
+
+This condensed document focuses on the key features and their roles in achieving the overall vision of Project Liminality. It should provide a clear roadmap for implementing the UI/UX elements that are central to the app's functionality.
