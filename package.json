@@ -17,3 +17,16 @@
     "fs-extra": "^11.2.0"
   }
 }
+{
+  "name": "your-app-name",
+  "version": "1.0.0",
+  "description": "Your app description",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^27.0.6",
+    "electron": "^13.1.7"
+  }
+}

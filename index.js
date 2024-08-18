@@ -24,6 +24,9 @@ function createWindow() {
 
 app.whenReady().then(createWindow);
 
+// Export createWindow for testing
+module.exports = { createWindow };
+
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit();
