@@ -243,33 +243,10 @@ function sortDreamnodes(dreamnodes, method) {
     }
 }
 
-function centerDreamnode(dreamnode) {
-    const dreamnodes = document.querySelectorAll('.dreamnode-item');
-    dreamnodes.forEach(node => {
-        if (node.getAttribute('data-dreamnode') === dreamnode) {
-            node.classList.add('centered');
-            node.addEventListener('click', exitFullScreen);
-        } else {
-            node.classList.add('hidden');
-        }
-    });
-}
-
-function exitFullScreen() {
-    const dreamnodes = document.querySelectorAll('.dreamnode-item');
-    dreamnodes.forEach(node => {
-        node.classList.remove('centered', 'hidden');
-        node.removeEventListener('click', exitFullScreen);
-    });
-}
-
-function handleEscapeKey(e) {
-    if (e.key === 'Escape') {
-        exitFullScreen();
-        document.removeEventListener('keydown', handleEscapeKey);
-    }
-}
-
+/**
+ * Center a specific dreamnode in the UI
+ * @param {string} dreamnode - The name of the dreamnode to center
+ */
 function centerDreamnode(dreamnode) {
     const dreamnodes = document.querySelectorAll('.dreamnode-item');
     const metadata = getMetadata(dreamnode);
@@ -329,6 +306,11 @@ function centerDreamnode(dreamnode) {
     document.addEventListener('keydown', handleExitFullScreen);
 }
 
+/**
+ * Create an element for a related node
+ * @param {string} nodeName - The name of the related node
+ * @returns {HTMLElement} The created element for the related node
+ */
 function createRelatedNodeElement(nodeName) {
     const element = document.createElement('div');
     element.className = 'related-node';
@@ -365,6 +347,12 @@ function createRelatedNodeElement(nodeName) {
     return element;
 }
 
+/**
+ * Position a related node element
+ * @param {HTMLElement} element - The element to position
+ * @param {number} index - The index of the element
+ * @param {number} total - The total number of elements
+ */
 function positionRelatedNode(element, index, total) {
     const angle = (index / total) * 2 * Math.PI;
     const radius = 300; // Adjust this value to change the distance from the center
@@ -374,6 +362,10 @@ function positionRelatedNode(element, index, total) {
     element.style.transform = `translate(${x}px, ${y}px)`;
 }
 
+/**
+ * Flip a dreamnode to show its DreamSong side
+ * @param {HTMLElement} node - The dreamnode element to flip
+ */
 function flipDreamnode(node) {
     const flipButton = document.querySelector('.flip-button');
     const dreamTalkSide = node.querySelector('.dream-talk-side');
@@ -403,6 +395,9 @@ function flipDreamnode(node) {
     }, 450); // Half of the new animation duration (3 * 300ms = 900ms, so half is 450ms)
 }
 
+/**
+ * Exit full screen mode
+ */
 function exitFullScreen() {
     const centeredNode = document.querySelector('.dreamnode-item.centered');
     if (centeredNode) {
@@ -416,6 +411,9 @@ function exitFullScreen() {
     document.removeEventListener('keydown', handleEscapeKey);
 }
 
+/**
+ * Remove the flip button from the UI
+ */
 function removeFlipButton() {
     const flipButton = document.querySelector('.flip-button');
     if (flipButton) {
@@ -423,13 +421,20 @@ function removeFlipButton() {
     }
 }
 
+/**
+ * Handle the Escape key press
+ * @param {KeyboardEvent} e - The keyboard event
+ */
 function handleEscapeKey(e) {
     if (e.key === 'Escape') {
         exitFullScreen();
     }
 }
 
-// Add this new function to handle both Escape key and click
+/**
+ * Handle exiting full screen mode
+ * @param {Event} e - The event that triggered the exit
+ */
 function handleExitFullScreen(e) {
     if (e.type === 'keydown' && e.key !== 'Escape') {
         return;
@@ -437,6 +442,11 @@ function handleExitFullScreen(e) {
     exitFullScreen();
 }
 
+/**
+ * Show the context menu for a dreamnode
+ * @param {MouseEvent} e - The mouse event that triggered the context menu
+ * @param {string} dreamnode - The name of the dreamnode
+ */
 function showContextMenu(e, dreamnode) {
     const contextMenu = document.getElementById('contextMenu');
     contextMenu.style.display = 'block';
