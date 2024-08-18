@@ -975,24 +975,7 @@ searchBar.addEventListener('keydown', (e) => {
     }
 });
 
-function handleEscapeKey(e) {
-    if (e.key === 'Escape') {
-        const searchDialog = document.getElementById('searchDialog');
-        const newDreamnodeDialog = document.getElementById('newDreamnodeDialog');
-        const metadataDialog = document.getElementById('metadataDialog');
-
-        if (newDreamnodeDialog.style.display !== 'none') {
-            newDreamnodeDialog.style.display = 'none';
-        } else if (metadataDialog.style.display !== 'none') {
-            metadataDialog.style.display = 'none';
-        } else {
-            // Always reset search when Escape is pressed
-            searchDialog.style.display = 'none';
-            clearSearch();
-            exitFullScreen();
-        }
-    }
-}
+// This block is intentionally left empty as we've merged the functionality into the previous handleEscapeKey function
 
 document.addEventListener('keydown', (e) => {
     if (e.metaKey && e.key === 'o') {
