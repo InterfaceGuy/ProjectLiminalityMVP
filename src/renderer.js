@@ -177,10 +177,10 @@ function getDreamnodeType(dreamnodeName) {
  * @param {Array} dreamnodes - An array of dreamnode objects to display
  */
 function displayDreamnodes(dreamnodes) {
-    logger.log(`Displaying dreamnodes: ${JSON.stringify(dreamnodes)}`);
+    console.log(`Displaying dreamnodes: ${JSON.stringify(dreamnodes)}`);
     const dreamnodeList = document.getElementById('dreamnodeList');
     if (!dreamnodeList) {
-        logger.log('dreamnodeList element not found');
+        console.log('dreamnodeList element not found');
         return;
     }
     dreamnodeList.innerHTML = ''; // Clear existing list
