@@ -40,19 +40,32 @@ if (app && app.whenReady) {
 }
 
 // Export createWindow and other functions for testing
-module.exports = { createWindow, VAULT_PATH };
+module.exports = {
+    createWindow,
+    VAULT_PATH,
+    handleCreateDreamnode,
+    handleOpenInFinder,
+    handleOpenInGitfox,
+    handleOpenInKeynote,
+    handleOpenInC4D,
+    handleOpenInSublime
+};
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit();
     }
-});
+}
+
+ipcMain.on('create-dreamnode', handleCreateDreamnode);
 
 app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
         createWindow();
     }
-});
+}
+
+ipcMain.on('open-in-finder', handleOpenInFinder);
 
 /**
  * Handles the creation of a new dreamnode.
@@ -64,7 +77,7 @@ app.on('activate', () => {
  * @param {string} options.type - The type of the dreamnode.
  * @returns {void}
  */
-ipcMain.on('create-dreamnode', (event, { name, clone, repoUrl, type }) => {
+function handleCreateDreamnode(event, { name, clone, repoUrl, type }) {
     const dreamnodePath = path.join(VAULT_PATH, name);
 
     if (fs.existsSync(dreamnodePath)) {
@@ -97,7 +110,9 @@ ipcMain.on('create-dreamnode', (event, { name, clone, repoUrl, type }) => {
             }
         });
     }
-});
+}
+
+ipcMain.on('open-in-gitfox', handleOpenInGitfox);
 
 /**
  * Opens the specified repository in Finder.
@@ -105,10 +120,12 @@ ipcMain.on('create-dreamnode', (event, { name, clone, repoUrl, type }) => {
  * @param {string} repoName - The name of the repository to open.
  * @returns {void}
  */
-ipcMain.on('open-in-finder', (event, repoName) => {
+function handleOpenInFinder(event, repoName) {
     const repoPath = path.join(VAULT_PATH, repoName);
     shell.openPath(repoPath);
-});
+}
+
+ipcMain.on('open-in-keynote', handleOpenInKeynote);
 
 /**
  * Opens the specified repository in GitFox.
@@ -116,7 +133,7 @@ ipcMain.on('open-in-finder', (event, repoName) => {
  * @param {string} repoName - The name of the repository to open.
  * @returns {void}
  */
-ipcMain.on('open-in-gitfox', (event, repoName) => {
+function handleOpenInGitfox(event, repoName) {
     console.log(`Attempting to open GitFox for: ${repoName}`);
     exec(`cd "${VAULT_PATH}" && gitfox "${repoName}"`, (error, stdout, stderr) => {
         if (error) {
@@ -130,7 +147,9 @@ ipcMain.on('open-in-gitfox', (event, repoName) => {
             event.reply('gitfox-opened', { success: true });
         }
     });
-});
+}
+
+ipcMain.on('open-in-c4d', handleOpenInC4D);
 
 
 /**
@@ -139,7 +158,7 @@ ipcMain.on('open-in-gitfox', (event, repoName) => {
  * @param {string} repoName - The name of the repository containing the Keynote file.
  * @returns {void}
  */
-ipcMain.on('open-in-keynote', (event, repoName) => {
+function handleOpenInKeynote(event, repoName) {
     const repoPath = path.join(VAULT_PATH, repoName);
     const keynoteFiles = fs.readdirSync(repoPath).filter(file => file.endsWith('.key'));
     
@@ -167,7 +186,9 @@ ipcMain.on('open-in-keynote', (event, repoName) => {
         console.error(`No Keynote file found in: ${repoPath}`);
         event.reply('keynote-opened', { success: false, error: 'No Keynote file found' });
     }
-});
+}
+
+ipcMain.on('open-in-sublime', handleOpenInSublime);
 
 /**
  * Opens the Cinema 4D file associated with the specified repository.
@@ -175,7 +196,7 @@ ipcMain.on('open-in-keynote', (event, repoName) => {
  * @param {string} repoName - The name of the repository containing the Cinema 4D file.
  * @returns {void}
  */
-ipcMain.on('open-in-c4d', (event, repoName) => {
+function handleOpenInC4D(event, repoName) {
     const repoPath = path.join(VAULT_PATH, repoName);
     const c4dFiles = fs.readdirSync(repoPath).filter(file => file.endsWith('.c4d'));
     
@@ -211,7 +232,7 @@ ipcMain.on('open-in-c4d', (event, repoName) => {
  * @param {string} repoName - The name of the repository containing the Sublime Text project file.
  * @returns {void}
  */
-ipcMain.on('open-in-sublime', (event, repoName) => {
+function handleOpenInSublime(event, repoName) {
     const repoPath = path.join(VAULT_PATH, repoName);
     const sublimeFiles = fs.readdirSync(repoPath).filter(file => file.endsWith('.sublime-project'));
     

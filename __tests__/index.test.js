@@ -1,26 +1,21 @@
+jest.mock('electron');
+jest.mock('fs-extra');
+jest.mock('child_process');
+
 const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const fs = require('fs-extra');
 const path = require('path');
 const { exec } = require('child_process');
-
-jest.mock('electron', () => ({
-  app: {
-    whenReady: jest.fn().mockResolvedValue(),
-    on: jest.fn(),
-  },
-  BrowserWindow: jest.fn(),
-  ipcMain: {
-    on: jest.fn(),
-    emit: jest.fn(),
-  },
-  shell: {
-    openPath: jest.fn(),
-  },
-}));
-jest.mock('fs-extra');
-jest.mock('child_process');
-
-const { createWindow, VAULT_PATH } = require('../index');
+const {
+    createWindow,
+    VAULT_PATH,
+    handleCreateDreamnode,
+    handleOpenInFinder,
+    handleOpenInGitfox,
+    handleOpenInKeynote,
+    handleOpenInC4D,
+    handleOpenInSublime
+} = require('../index');
 
 describe('Electron app functions', () => {
   beforeEach(() => {
@@ -66,7 +61,7 @@ describe('Electron app functions', () => {
 
     fs.existsSync.mockReturnValue(false);
 
-    ipcMain.emit('create-dreamnode', mockEvent, options);
+    handleCreateDreamnode(mockEvent, options);
 
     expect(fs.mkdirSync).toHaveBeenCalledWith(path.join(VAULT_PATH, 'testNode'));
     expect(fs.writeFileSync).toHaveBeenCalledWith(
@@ -90,7 +85,7 @@ describe('Electron app functions', () => {
 
     fs.existsSync.mockReturnValue(false);
 
-    ipcMain.emit('create-dreamnode', mockEvent, options);
+    handleCreateDreamnode(mockEvent, options);
 
     expect(fs.mkdirSync).toHaveBeenCalledWith(path.join(VAULT_PATH, 'testCloneNode'));
     expect(fs.writeFileSync).toHaveBeenCalledWith(
@@ -107,7 +102,7 @@ describe('Electron app functions', () => {
     const mockEvent = { reply: jest.fn() };
     const repoName = 'testRepo';
 
-    ipcMain.emit('open-in-finder', mockEvent, repoName);
+    handleOpenInFinder(mockEvent, repoName);
 
     expect(shell.openPath).toHaveBeenCalledWith(path.join(VAULT_PATH, repoName));
   });
@@ -116,7 +111,7 @@ describe('Electron app functions', () => {
     const mockEvent = { reply: jest.fn() };
     const repoName = 'testRepo';
 
-    ipcMain.emit('open-in-gitfox', mockEvent, repoName);
+    handleOpenInGitfox(mockEvent, repoName);
 
     expect(exec).toHaveBeenCalledWith(
       `cd "${VAULT_PATH}" && gitfox "${repoName}"`,
@@ -131,7 +126,7 @@ describe('Electron app functions', () => {
 
     fs.readdirSync.mockReturnValue([keynoteFileName]);
 
-    ipcMain.emit('open-in-keynote', mockEvent, repoName);
+    handleOpenInKeynote(mockEvent, repoName);
 
     expect(exec).toHaveBeenCalledWith(
       `open "${path.join(VAULT_PATH, repoName, keynoteFileName)}"`,
@@ -146,7 +141,7 @@ describe('Electron app functions', () => {
 
     fs.readdirSync.mockReturnValue([c4dFileName]);
 
-    ipcMain.emit('open-in-c4d', mockEvent, repoName);
+    handleOpenInC4D(mockEvent, repoName);
 
     expect(exec).toHaveBeenCalledWith(
       `open "${path.join(VAULT_PATH, repoName, c4dFileName)}"`,
@@ -161,7 +156,7 @@ describe('Electron app functions', () => {
 
     fs.readdirSync.mockReturnValue([sublimeFileName]);
 
-    ipcMain.emit('open-in-sublime', mockEvent, repoName);
+    handleOpenInSublime(mockEvent, repoName);
 
     expect(exec).toHaveBeenCalledWith(
       `open -a "Sublime Text" "${path.join(VAULT_PATH, repoName, sublimeFileName)}"`,
