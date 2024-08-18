@@ -5,6 +5,10 @@ const { exec } = require('child_process');
 
 const VAULT_PATH = '/Users/davidrug/InterBrain';
 
+/**
+ * Creates the main application window.
+ * @returns {void}
+ */
 function createWindow() {
     const win = new BrowserWindow({
         width: 800,
@@ -32,6 +36,16 @@ app.on('activate', () => {
     }
 });
 
+/**
+ * Handles the creation of a new dreamnode.
+ * @param {Object} event - The IPC event object.
+ * @param {Object} options - The options for creating the dreamnode.
+ * @param {string} options.name - The name of the dreamnode.
+ * @param {boolean} options.clone - Whether to clone an existing repository.
+ * @param {string} options.repoUrl - The URL of the repository to clone (if cloning).
+ * @param {string} options.type - The type of the dreamnode.
+ * @returns {void}
+ */
 ipcMain.on('create-dreamnode', (event, { name, clone, repoUrl, type }) => {
     const dreamnodePath = path.join(VAULT_PATH, name);
 
@@ -67,11 +81,23 @@ ipcMain.on('create-dreamnode', (event, { name, clone, repoUrl, type }) => {
     }
 });
 
+/**
+ * Opens the specified repository in Finder.
+ * @param {Object} event - The IPC event object.
+ * @param {string} repoName - The name of the repository to open.
+ * @returns {void}
+ */
 ipcMain.on('open-in-finder', (event, repoName) => {
     const repoPath = path.join(VAULT_PATH, repoName);
     shell.openPath(repoPath);
 });
 
+/**
+ * Opens the specified repository in GitFox.
+ * @param {Object} event - The IPC event object.
+ * @param {string} repoName - The name of the repository to open.
+ * @returns {void}
+ */
 ipcMain.on('open-in-gitfox', (event, repoName) => {
     console.log(`Attempting to open GitFox for: ${repoName}`);
     exec(`cd "${VAULT_PATH}" && gitfox "${repoName}"`, (error, stdout, stderr) => {
@@ -89,6 +115,12 @@ ipcMain.on('open-in-gitfox', (event, repoName) => {
 });
 
 
+/**
+ * Opens the Keynote file associated with the specified repository.
+ * @param {Object} event - The IPC event object.
+ * @param {string} repoName - The name of the repository containing the Keynote file.
+ * @returns {void}
+ */
 ipcMain.on('open-in-keynote', (event, repoName) => {
     const repoPath = path.join(VAULT_PATH, repoName);
     const keynoteFiles = fs.readdirSync(repoPath).filter(file => file.endsWith('.key'));
@@ -119,6 +151,12 @@ ipcMain.on('open-in-keynote', (event, repoName) => {
     }
 });
 
+/**
+ * Opens the Cinema 4D file associated with the specified repository.
+ * @param {Object} event - The IPC event object.
+ * @param {string} repoName - The name of the repository containing the Cinema 4D file.
+ * @returns {void}
+ */
 ipcMain.on('open-in-c4d', (event, repoName) => {
     const repoPath = path.join(VAULT_PATH, repoName);
     const c4dFiles = fs.readdirSync(repoPath).filter(file => file.endsWith('.c4d'));
@@ -149,6 +187,12 @@ ipcMain.on('open-in-c4d', (event, repoName) => {
     }
 });
 
+/**
+ * Opens the Sublime Text project file associated with the specified repository.
+ * @param {Object} event - The IPC event object.
+ * @param {string} repoName - The name of the repository containing the Sublime Text project file.
+ * @returns {void}
+ */
 ipcMain.on('open-in-sublime', (event, repoName) => {
     const repoPath = path.join(VAULT_PATH, repoName);
     const sublimeFiles = fs.readdirSync(repoPath).filter(file => file.endsWith('.sublime-project'));
