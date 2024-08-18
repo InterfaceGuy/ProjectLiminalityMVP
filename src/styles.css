@@ -1,3 +1,4 @@
+/* General body styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -11,6 +12,7 @@ body {
     margin-right: auto;
 }
 
+/* Drop zone styles for file uploads */
 .drop-zone {
     position: fixed;
     top: 0;
@@ -31,6 +33,7 @@ body {
     display: flex;
 }
 
+/* Fade frame for visual effects */
 .fade-frame {
     position: fixed;
     top: 0;
@@ -41,6 +44,7 @@ body {
     z-index: 9999;
 }
 
+/* Fade effect styles for top, bottom, left, and right */
 .fade-top, .fade-bottom, .fade-left, .fade-right {
     position: absolute;
     background: linear-gradient(to var(--direction), #000000, rgba(0,0,0,0));
@@ -82,6 +86,7 @@ h1 {
     color: #FFFFFF;
 }
 
+/* DreamNode list styles */
 #dreamnodeList {
     margin-top: 20px;
     display: flex;
@@ -90,6 +95,7 @@ h1 {
     padding: 0 10%;
 }
 
+/* Honeycomb layout styles */
 .honeycomb-row {
     display: flex;
     justify-content: center;
@@ -100,6 +106,7 @@ h1 {
     margin-left: 0px;
 }
 
+/* Individual DreamNode item styles */
 .dreamnode-item {
     background-color: #000000;
     cursor: pointer;
@@ -116,6 +123,7 @@ h1 {
     overflow: hidden;
 }
 
+/* DreamNode item hover and interaction styles */
 .dreamnode-item::before {
     content: '';
     position: absolute;
@@ -140,6 +148,7 @@ h1 {
     object-fit: contain;
 }
 
+/* Styles for different node types */
 .idea-node {
     border: 3px solid #00a2ff;
 }
@@ -148,6 +157,7 @@ h1 {
     border: 3px solid #FF644E;
 }
 
+/* Hover effects for DreamNode items */
 .dreamnode-item:hover::before {
     background: radial-gradient(circle, transparent 70%, rgba(0,0,0,0.5) 90%, rgba(0,0,0,0.7) 100%);
 }
@@ -193,6 +203,7 @@ h1 {
     opacity: 0;
 }
 
+/* Dialog styles */
 .dialog {
     display: none;
     position: fixed;
@@ -207,6 +218,7 @@ h1 {
     z-index: 1001;
 }
 
+/* Dialog input styles */
 .dialog input[type="text"] {
     display: block;
     width: 100%;
@@ -217,6 +229,7 @@ h1 {
     border: 1px solid #00a2ff;
 }
 
+/* Dialog button styles */
 .dialog button {
     margin-right: 10px;
     color: #FFFFFF;
@@ -235,6 +248,7 @@ h1 {
     background-color: #FF644E;
 }
 
+/* Search dialog styles */
 .search-dialog {
     top: 38.2%;
     width: 60%;
@@ -248,6 +262,7 @@ h1 {
     border: 1px solid #00a2ff;
 }
 
+/* Search bar styles */
 #searchBar {
     width: calc(100% - 120px);
     font-size: 18px;
@@ -261,6 +276,7 @@ h1 {
     border: 1px solid #00a2ff;
 }
 
+/* Sort select styles */
 #sortSelect {
     width: 120px;
     font-size: 18px;
@@ -275,6 +291,7 @@ h1 {
     border: 1px solid #00a2ff;
 }
 
+/* New DreamNode button styles */
 #newDreamnodeBtn {
     padding: 10px 20px;
     background-color: #FF644E;
