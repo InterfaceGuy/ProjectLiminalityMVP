@@ -73,6 +73,30 @@ describe('Electron app functions', () => {
     );
   });
 
+  test('create-dreamnode event handler clones a repository', () => {
+    const mockEvent = { reply: jest.fn() };
+    const options = {
+      name: 'testCloneNode',
+      clone: true,
+      repoUrl: 'https://github.com/test/repo.git',
+      type: 'project'
+    };
+
+    fs.existsSync.mockReturnValue(false);
+
+    ipcMain.emit('create-dreamnode', mockEvent, options);
+
+    expect(fs.mkdirSync).toHaveBeenCalledWith(path.join(VAULT_PATH, 'testCloneNode'));
+    expect(fs.writeFileSync).toHaveBeenCalledWith(
+      path.join(VAULT_PATH, 'testCloneNode', '.pl'),
+      'type: project'
+    );
+    expect(exec).toHaveBeenCalledWith(
+      `git clone https://github.com/test/repo.git "${path.join(VAULT_PATH, 'testCloneNode')}"`,
+      expect.any(Function)
+    );
+  });
+
   test('open-in-finder event handler opens the repository in Finder', () => {
     const mockEvent = { reply: jest.fn() };
     const repoName = 'testRepo';
@@ -90,6 +114,51 @@ describe('Electron app functions', () => {
 
     expect(exec).toHaveBeenCalledWith(
       `cd "${VAULT_PATH}" && gitfox "${repoName}"`,
+      expect.any(Function)
+    );
+  });
+
+  test('open-in-keynote event handler opens the Keynote file', () => {
+    const mockEvent = { reply: jest.fn() };
+    const repoName = 'testRepo';
+    const keynoteFileName = 'testRepo.key';
+
+    fs.readdirSync.mockReturnValue([keynoteFileName]);
+
+    ipcMain.emit('open-in-keynote', mockEvent, repoName);
+
+    expect(exec).toHaveBeenCalledWith(
+      `open "${path.join(VAULT_PATH, repoName, keynoteFileName)}"`,
+      expect.any(Function)
+    );
+  });
+
+  test('open-in-c4d event handler opens the Cinema 4D file', () => {
+    const mockEvent = { reply: jest.fn() };
+    const repoName = 'testRepo';
+    const c4dFileName = 'testRepo.c4d';
+
+    fs.readdirSync.mockReturnValue([c4dFileName]);
+
+    ipcMain.emit('open-in-c4d', mockEvent, repoName);
+
+    expect(exec).toHaveBeenCalledWith(
+      `open "${path.join(VAULT_PATH, repoName, c4dFileName)}"`,
+      expect.any(Function)
+    );
+  });
+
+  test('open-in-sublime event handler opens the Sublime Text project file', () => {
+    const mockEvent = { reply: jest.fn() };
+    const repoName = 'testRepo';
+    const sublimeFileName = 'testRepo.sublime-project';
+
+    fs.readdirSync.mockReturnValue([sublimeFileName]);
+
+    ipcMain.emit('open-in-sublime', mockEvent, repoName);
+
+    expect(exec).toHaveBeenCalledWith(
+      `open -a "Sublime Text" "${path.join(VAULT_PATH, repoName, sublimeFileName)}"`,
       expect.any(Function)
     );
   });
