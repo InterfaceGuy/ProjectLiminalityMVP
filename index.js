@@ -1,7 +1,15 @@
-const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const fs = require('fs-extra');
 const path = require('path');
 const { exec } = require('child_process');
+
+let electron;
+if (process.env.NODE_ENV === 'test') {
+  electron = require('./__mocks__/electron');
+} else {
+  electron = require('electron');
+}
+
+const { app, BrowserWindow, ipcMain, shell } = electron;
 
 const VAULT_PATH = '/Users/davidrug/InterBrain';
 
