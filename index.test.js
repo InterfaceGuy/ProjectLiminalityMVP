@@ -31,6 +31,9 @@ describe('Electron app functions', () => {
     const mockLoadFile = jest.fn();
     BrowserWindow.mockImplementation(() => ({
       loadFile: mockLoadFile,
+      webContents: {
+        openDevTools: jest.fn(),
+      },
     }));
 
     const win = createWindow();
@@ -45,6 +48,7 @@ describe('Electron app functions', () => {
     });
 
     expect(mockLoadFile).toHaveBeenCalledWith(expect.stringContaining('src/index.html'));
+    expect(win.loadFile).toHaveBeenCalledWith(expect.stringContaining('src/index.html'));
   });
 
   test('create-dreamnode event handler creates a new dreamnode', () => {
