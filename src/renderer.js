@@ -461,12 +461,33 @@ function removeFlipButton() {
 }
 
 /**
- * Handles the Escape key press
+ * Handles the Escape key press and other related actions
  * @param {KeyboardEvent} e - The keyboard event
  */
 function handleEscapeKey(e) {
     if (e.key === 'Escape') {
-        exitFullScreen();
+        const contextMenu = document.getElementById('contextMenu');
+        const searchDialog = document.getElementById('searchDialog');
+        const newDreamnodeDialog = document.getElementById('newDreamnodeDialog');
+        const metadataDialog = document.getElementById('metadataDialog');
+
+        // Close context menu if open
+        if (contextMenu && contextMenu.style.display !== 'none') {
+            contextMenu.style.display = 'none';
+            document.removeEventListener('click', closeContextMenu);
+            document.removeEventListener('keydown', handleEscapeKey);
+        }
+        // Handle dialogs
+        else if (newDreamnodeDialog.style.display !== 'none') {
+            newDreamnodeDialog.style.display = 'none';
+        } else if (metadataDialog.style.display !== 'none') {
+            metadataDialog.style.display = 'none';
+        } else {
+            // Reset search and exit full screen
+            searchDialog.style.display = 'none';
+            clearSearch();
+            exitFullScreen();
+        }
     }
 }
 
@@ -590,14 +611,6 @@ function showContextMenu(e, dreamnode) {
 
     const closeContextMenu = (e) => {
         if (!contextMenu.contains(e.target)) {
-            contextMenu.style.display = 'none';
-            document.removeEventListener('click', closeContextMenu);
-            document.removeEventListener('keydown', handleEscapeKey);
-        }
-    };
-
-    const handleEscapeKey = (e) => {
-        if (e.key === 'Escape') {
             contextMenu.style.display = 'none';
             document.removeEventListener('click', closeContextMenu);
             document.removeEventListener('keydown', handleEscapeKey);
