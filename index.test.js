@@ -1,4 +1,4 @@
-const { BrowserWindow, ipcMain, shell, app } = require('electron');
+const { BrowserWindow, ipcMain, shell } = require('electron');
 const fs = require('fs-extra');
 const path = require('path');
 const { exec } = require('child_process');
@@ -7,19 +7,20 @@ jest.mock('electron');
 jest.mock('fs-extra');
 jest.mock('child_process');
 
-const VAULT_PATH = '/Users/davidrug/InterBrain';
+const { createWindow, VAULT_PATH } = require('../index');
 
 describe('Electron app functions', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    app.whenReady = jest.fn().mockResolvedValue();
   });
 
   test('createWindow function creates a new BrowserWindow', () => {
-    jest.mock('../index', () => ({
-      createWindow: jest.fn()
+    const mockLoadFile = jest.fn();
+    BrowserWindow.mockImplementation(() => ({
+      loadFile: mockLoadFile,
     }));
-    createWindow();
+
+    const win = createWindow();
 
     expect(BrowserWindow).toHaveBeenCalledWith({
       width: 800,
@@ -30,14 +31,10 @@ describe('Electron app functions', () => {
       }
     });
 
-    const mockWin = BrowserWindow.mock.instances[0];
-    expect(mockWin.loadFile).toHaveBeenCalledWith(expect.stringContaining('src/index.html'));
+    expect(mockLoadFile).toHaveBeenCalledWith(expect.stringContaining('src/index.html'));
   });
 
   test('create-dreamnode event handler creates a new dreamnode', () => {
-    const { createWindow } = require('../index');
-    createWindow();
-
     const mockEvent = { reply: jest.fn() };
     const options = {
       name: 'testNode',
@@ -61,8 +58,6 @@ describe('Electron app functions', () => {
   });
 
   test('open-in-finder event handler opens the repository in Finder', () => {
-    createWindow();
-
     const mockEvent = { reply: jest.fn() };
     const repoName = 'testRepo';
 
@@ -72,9 +67,6 @@ describe('Electron app functions', () => {
   });
 
   test('open-in-gitfox event handler opens the repository in GitFox', () => {
-    const { createWindow } = require('./index');
-    createWindow();
-
     const mockEvent = { reply: jest.fn() };
     const repoName = 'testRepo';
 

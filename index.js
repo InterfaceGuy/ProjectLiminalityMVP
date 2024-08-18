@@ -7,7 +7,7 @@ const VAULT_PATH = '/Users/davidrug/InterBrain';
 
 /**
  * Creates the main application window.
- * @returns {void}
+ * @returns {BrowserWindow}
  */
 function createWindow() {
     const win = new BrowserWindow({
@@ -20,12 +20,15 @@ function createWindow() {
     });
 
     win.loadFile(path.join(__dirname, 'src', 'index.html'));
+    return win;
 }
 
-app.whenReady().then(createWindow);
+if (app.whenReady) {
+    app.whenReady().then(createWindow);
+}
 
-// Export createWindow for testing
-module.exports = { createWindow };
+// Export createWindow and other functions for testing
+module.exports = { createWindow, VAULT_PATH };
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
