@@ -19,7 +19,7 @@ function createWindow() {
         }
     });
 
-    win.loadFile(path.join(__dirname, 'src', 'index.html'));
+    win.loadURL(`file://${path.join(__dirname, 'src', 'index.html')}`);
     return win;
 }
 
