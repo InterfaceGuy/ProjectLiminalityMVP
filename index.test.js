@@ -7,7 +7,7 @@ jest.mock('electron');
 jest.mock('fs-extra');
 jest.mock('child_process');
 
-const { createWindow, VAULT_PATH } = require('../index');
+const { createWindow, VAULT_PATH } = require('./index');
 
 describe('Electron app functions', () => {
   beforeEach(() => {
