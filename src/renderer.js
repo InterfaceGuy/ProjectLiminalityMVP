@@ -1,7 +1,6 @@
 const { ipcRenderer, clipboard } = require('electron');
 const fs = require('fs-extra');
 const path = require('path');
-const logger = require('./logger');
 
 const VAULT_PATH = '/Users/davidrug/Library/Mobile Documents/iCloud~md~obsidian/Documents/InterBrain';
 
@@ -14,14 +13,14 @@ let currentSearchTerm = '';
  * @returns {Array} An array of dreamnode objects
  */
 function getDreamnodes() {
-    logger.log(`Getting dreamnodes from: ${VAULT_PATH}`);
+    console.log(`Getting dreamnodes from: ${VAULT_PATH}`);
     const dreamnodes = [];
     const files = fs.readdirSync(VAULT_PATH);
-    logger.log(`Files in VAULT_PATH: ${files.join(', ')}`);
+    console.log(`Files in VAULT_PATH: ${files.join(', ')}`);
 
     files.forEach(file => {
         const fullPath = path.join(VAULT_PATH, file);
-        logger.log(`Checking file: ${file}`);
+        console.log(`Checking file: ${file}`);
         if (fs.statSync(fullPath).isDirectory()) {
             const gitPath = path.join(fullPath, '.git');
             logger.log(`Checking for .git in: ${gitPath}`);
