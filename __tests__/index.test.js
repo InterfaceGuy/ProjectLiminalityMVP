@@ -1,17 +1,4 @@
-jest.mock('electron', () => ({
-  app: {
-    whenReady: jest.fn().mockResolvedValue(),
-    on: jest.fn(),
-  },
-  BrowserWindow: jest.fn(),
-  ipcMain: {
-    on: jest.fn(),
-    emit: jest.fn(),
-  },
-  shell: {
-    openPath: jest.fn(),
-  },
-}));
+jest.mock('electron');
 jest.mock('fs-extra');
 jest.mock('child_process');
 
@@ -36,11 +23,12 @@ describe('Electron app functions', () => {
   });
 
   test('createWindow function creates a new BrowserWindow', () => {
-    const mockLoadFile = jest.fn();
+    const mockLoadFile = jest.fn().mockResolvedValue();
+    const mockOpenDevTools = jest.fn();
     BrowserWindow.mockImplementation(() => ({
       loadFile: mockLoadFile,
       webContents: {
-        openDevTools: jest.fn(),
+        openDevTools: mockOpenDevTools,
       },
     }));
 
@@ -56,7 +44,7 @@ describe('Electron app functions', () => {
     });
 
     expect(mockLoadFile).toHaveBeenCalledWith(expect.stringMatching(/src[/\\]index\.html$/));
-    expect(win.webContents.openDevTools).toHaveBeenCalled();
+    expect(mockOpenDevTools).toHaveBeenCalled();
   });
 
   test('VAULT_PATH is defined', () => {
