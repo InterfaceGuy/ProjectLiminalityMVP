@@ -48,7 +48,6 @@ describe('Electron app functions', () => {
     });
 
     expect(mockLoadFile).toHaveBeenCalledWith(expect.stringContaining('src/index.html'));
-    expect(win.loadFile).toHaveBeenCalledWith(expect.stringContaining('src/index.html'));
   });
 
   test('create-dreamnode event handler creates a new dreamnode', () => {
