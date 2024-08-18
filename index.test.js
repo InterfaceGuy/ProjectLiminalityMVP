@@ -1,9 +1,22 @@
-const { BrowserWindow, ipcMain, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const fs = require('fs-extra');
 const path = require('path');
 const { exec } = require('child_process');
 
-jest.mock('electron');
+jest.mock('electron', () => ({
+  app: {
+    whenReady: jest.fn().mockResolvedValue(),
+    on: jest.fn(),
+  },
+  BrowserWindow: jest.fn(),
+  ipcMain: {
+    on: jest.fn(),
+    emit: jest.fn(),
+  },
+  shell: {
+    openPath: jest.fn(),
+  },
+}));
 jest.mock('fs-extra');
 jest.mock('child_process');
 

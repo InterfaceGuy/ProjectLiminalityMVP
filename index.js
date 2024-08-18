@@ -23,7 +23,7 @@ function createWindow() {
     return win;
 }
 
-if (app.whenReady) {
+if (app && app.whenReady) {
     app.whenReady().then(createWindow);
 }
 
