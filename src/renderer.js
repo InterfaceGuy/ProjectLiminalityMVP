@@ -283,10 +283,6 @@ function sortDreamnodes(dreamnodes, method) {
 }
 
 /**
- * Center a specific dreamnode in the UI
- * @param {string} dreamnode - The name of the dreamnode to center
- */
-/**
  * Centers a specific dreamnode in the UI and displays its related nodes
  * @param {string} dreamnode - The name of the dreamnode to center
  */
@@ -350,11 +346,6 @@ function centerDreamnode(dreamnode) {
 }
 
 /**
- * Create an element for a related node
- * @param {string} nodeName - The name of the related node
- * @returns {HTMLElement} The created element for the related node
- */
-/**
  * Creates an element for a related node
  * @param {string} nodeName - The name of the related node
  * @returns {HTMLElement} The created element for the related node
@@ -396,12 +387,6 @@ function createRelatedNodeElement(nodeName) {
 }
 
 /**
- * Position a related node element
- * @param {HTMLElement} element - The element to position
- * @param {number} index - The index of the element
- * @param {number} total - The total number of elements
- */
-/**
  * Positions a related node element in a circular layout
  * @param {HTMLElement} element - The element to position
  * @param {number} index - The index of the element
@@ -416,10 +401,6 @@ function positionRelatedNode(element, index, total) {
     element.style.transform = `translate(${x}px, ${y}px)`;
 }
 
-/**
- * Flip a dreamnode to show its DreamSong side
- * @param {HTMLElement} node - The dreamnode element to flip
- */
 /**
  * Flips a dreamnode to show its DreamSong side or back to DreamTalk side
  * @param {HTMLElement} node - The dreamnode element to flip
@@ -454,9 +435,6 @@ function flipDreamnode(node) {
 }
 
 /**
- * Exit full screen mode
- */
-/**
  * Exits full screen mode for a centered dreamnode
  */
 function exitFullScreen() {
@@ -473,9 +451,6 @@ function exitFullScreen() {
 }
 
 /**
- * Remove the flip button from the UI
- */
-/**
  * Removes the flip button from the UI
  */
 function removeFlipButton() {
@@ -485,10 +460,6 @@ function removeFlipButton() {
     }
 }
 
-/**
- * Handle the Escape key press
- * @param {KeyboardEvent} e - The keyboard event
- */
 /**
  * Handles the Escape key press
  * @param {KeyboardEvent} e - The keyboard event
@@ -500,10 +471,6 @@ function handleEscapeKey(e) {
 }
 
 /**
- * Handle exiting full screen mode
- * @param {Event} e - The event that triggered the exit
- */
-/**
  * Handles exiting full screen mode
  * @param {Event} e - The event that triggered the exit
  */
@@ -514,11 +481,6 @@ function handleExitFullScreen(e) {
     exitFullScreen();
 }
 
-/**
- * Show the context menu for a dreamnode
- * @param {MouseEvent} e - The mouse event that triggered the context menu
- * @param {string} dreamnode - The name of the dreamnode
- */
 /**
  * Shows the context menu for a dreamnode
  * @param {MouseEvent} e - The mouse event that triggered the context menu
