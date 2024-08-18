@@ -1,4 +1,4 @@
-const { BrowserWindow, ipcMain, shell } = require('electron');
+const { BrowserWindow, ipcMain, shell, app } = require('electron');
 const fs = require('fs-extra');
 const path = require('path');
 const { exec } = require('child_process');
@@ -12,10 +12,13 @@ const VAULT_PATH = '/Users/davidrug/InterBrain';
 describe('Electron app functions', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    app.whenReady = jest.fn().mockResolvedValue();
   });
 
   test('createWindow function creates a new BrowserWindow', () => {
-    const { createWindow } = require('../index');
+    jest.mock('../index', () => ({
+      createWindow: jest.fn()
+    }));
     createWindow();
 
     expect(BrowserWindow).toHaveBeenCalledWith({
@@ -58,7 +61,6 @@ describe('Electron app functions', () => {
   });
 
   test('open-in-finder event handler opens the repository in Finder', () => {
-    const { createWindow } = require('./index');
     createWindow();
 
     const mockEvent = { reply: jest.fn() };
