@@ -1,18 +1,15 @@
 const path = require('path');
 
-class BrowserWindowMock {
-  constructor(options) {
-    this.options = options;
-    this.webContents = {
-      openDevTools: jest.fn(),
-    };
-  }
-
-  loadFile(filePath) {
+const BrowserWindowMock = jest.fn().mockImplementation((options) => ({
+  options,
+  webContents: {
+    openDevTools: jest.fn(),
+  },
+  loadFile: jest.fn().mockImplementation((filePath) => {
     this.loadedFile = filePath;
     return Promise.resolve();
-  }
-}
+  }),
+}));
 
 const ipcMainMock = {
   on: jest.fn(),
