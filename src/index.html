@@ -3,12 +3,16 @@
 <head>
     <title>Project Liminality</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Content Security Policy to enhance security -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
 </head>
 <body>
+    <!-- Main content starts here -->
+    <!-- Drop zone for creating new DreamNodes -->
     <div id="dropZone" class="drop-zone">
         <p>Drag and drop media files here to create new DreamNodes</p>
     </div>
+    <!-- Inline styles for drop zone (consider moving to external CSS file) -->
     <style>
         .drop-zone {
             position: fixed;
@@ -26,17 +30,20 @@
             display: flex;
         }
     </style>
+    <!-- Fade frame for visual effects -->
     <div class="fade-frame">
         <div class="fade-top"></div>
         <div class="fade-bottom"></div>
         <div class="fade-left"></div>
         <div class="fade-right"></div>
     </div>
+    <!-- Search dialog for finding DreamNodes -->
     <div id="searchDialog" class="dialog search-dialog">
         <input type="text" id="searchBar" placeholder="Search DreamNodes...">
         <div id="sortButtons"></div>
         <button id="newDreamnodeBtn">New DreamNode</button>
     </div>
+    <!-- Dialog for creating a new DreamNode -->
     <div id="newDreamnodeDialog" class="dialog">
         <h2>Create New DreamNode</h2>
         <input type="text" id="dreamnodeName" placeholder="DreamNode Name">
@@ -54,9 +61,13 @@
         <button id="createDreamnodeBtn">Create</button>
         <button id="cancelBtn">Cancel</button>
     </div>
+    <!-- Container for the canvas element (possibly for visualization) -->
     <div id="canvas-container"></div>
+    <!-- List to display DreamNodes -->
     <div id="dreamnodeList"></div>
+    <!-- Container for the Liminal Web (possibly for node connections) -->
     <div id="liminalWeb"></div>
+    <!-- Context menu for DreamNode actions -->
     <div id="contextMenu" class="context-menu">
         <div id="openFinder">Open in Finder</div>
         <div id="openGitFox">Open in GitFox</div>
@@ -67,6 +78,7 @@
         <div id="rename">Rename</div>
         <div id="editMetadata">Edit Metadata</div>
     </div>
+    <!-- Dialog for editing DreamNode metadata -->
     <div id="metadataDialog" class="dialog">
         <h2>Edit Metadata</h2>
         <form id="metadataForm">
@@ -100,6 +112,7 @@
             <button id="cancelMetadataBtn">Cancel</button>
         </div>
     </div>
+    <!-- Dialog for renaming a DreamNode -->
     <div id="renameDialog" class="dialog">
         <h2>Rename Dreamnode</h2>
         <input type="text" id="renameInput">
@@ -108,6 +121,7 @@
             <button id="cancelRename">Cancel</button>
         </div>
     </div>
+    <!-- Main JavaScript file for the application -->
     <script src="renderer.js"></script>
 </body>
 </html>
