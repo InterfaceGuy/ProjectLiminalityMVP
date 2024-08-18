@@ -23,15 +23,6 @@ describe('Electron app functions', () => {
   });
 
   test('createWindow function creates a new BrowserWindow', () => {
-    const mockLoadFile = jest.fn().mockResolvedValue();
-    const mockOpenDevTools = jest.fn();
-    BrowserWindow.mockImplementation(() => ({
-      loadFile: mockLoadFile,
-      webContents: {
-        openDevTools: mockOpenDevTools,
-      },
-    }));
-
     const win = createWindow();
 
     expect(BrowserWindow).toHaveBeenCalledWith({
@@ -43,8 +34,8 @@ describe('Electron app functions', () => {
       }
     });
 
-    expect(mockLoadFile).toHaveBeenCalledWith(expect.stringMatching(/src[/\\]index\.html$/));
-    expect(mockOpenDevTools).toHaveBeenCalled();
+    expect(win.loadFile).toHaveBeenCalledWith(expect.stringMatching(/src[/\\]index\.html$/));
+    expect(win.webContents.openDevTools).toHaveBeenCalled();
   });
 
   test('VAULT_PATH is defined', () => {
